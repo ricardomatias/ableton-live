@@ -1,0 +1,64 @@
+{
+    "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "eslint:recommended",
+        "google",
+        "plugin:import/errors",
+        "plugin:import/warnings"
+    ],
+    "env": {
+        "browser": true,
+        "jest": true,
+        "node": true,
+        "es6": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "globals": {
+        "expect": true
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [
+                    ".js",
+                    ".ts"
+                ]
+            }
+        }
+    },
+    "rules": {
+        "no-console": "off",
+        "require-jsdoc": 0,
+        "indent": [
+            2,
+            "tab"
+        ],
+        "no-tabs": 0,
+        "max-len": [
+            "error",
+            {
+                "code": 120,
+                "ignoreComments": true
+            }
+        ],
+        "import/no-unresolved": "warn",
+        "no-multi-assign": 0,
+        "no-warning-comments": 0,
+        "object-curly-spacing": [
+            "error",
+            "always",
+            {
+                "objectsInObjects": false
+            }
+        ],
+        "array-bracket-spacing": [
+            "error",
+            "always"
+        ]
+    }
+}
