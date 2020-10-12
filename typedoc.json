@@ -1,0 +1,10 @@
+{
+	"entryPoints": ["lib"],
+	"out": "docs",
+	"name": "Ableton Live",
+	"includeVersion": false,
+	"hideGenerator": true,
+	"exclude": ["lib/index.ts", "lib/helpers/*.ts", "lib/Properties.ts"],
+	"excludePrivate": true,
+	"excludeProtected": true
+}

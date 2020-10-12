@@ -1,0 +1,15 @@
+{
+	"name": "@ricardomatias/node-content",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"private": true,
+	"keywords": [],
+	"author": "Ricardo Matias <ricardo.matias0@gmail.com>",
+	"dependencies": {
+		"@clusterws/cws": "^3.0.0"
+	}
+}

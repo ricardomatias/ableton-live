@@ -1,0 +1,215 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Ableton Live</title>
+	<meta name="description" content="Documentation for Ableton Live">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">Ableton Live</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>Ableton Live</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#ableton-live" id="ableton-live" style="color: inherit; text-decoration: none;">
+					<h1>Ableton Live</h1>
+				</a>
+				<p>A library for communicating with Live via WebSockets, works both in Node and in the Browser.</p>
+				<blockquote>
+					<p><em>Requires Max 4 Live to work</em></p>
+				</blockquote>
+				<a href="#install" id="install" style="color: inherit; text-decoration: none;">
+					<h2>Install</h2>
+				</a>
+				<pre><code class="language-bash"><span style="color: #000000">npm install --save ableton-live</span>
+</code></pre>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<a href="#browser" id="browser" style="color: inherit; text-decoration: none;">
+					<h3>Browser</h3>
+				</a>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">AbletonLive</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ableton-live&#039;</span><span style="color: #000000">;</span>
+</code></pre>
+				<a href="#nodejs" id="nodejs" style="color: inherit; text-decoration: none;">
+					<h3>NodeJS</h3>
+				</a>
+				<pre><code class="language-js"><span style="color: #008000">// polyfill for a browser API compatible WebSocket</span>
+<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">process</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #001080">global</span><span style="color: #000000">.</span><span style="color: #001080">WebSocket</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;ws&#039;</span><span style="color: #000000">);</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">AbletonLive</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ableton-live&#039;</span><span style="color: #000000">;</span>
+<span style="color: #008000">// or</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">AbletonLive</span><span style="color: #000000"> } = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;ableton-live&#039;</span><span style="color: #000000">);</span>
+</code></pre>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h2>Example</h2>
+				</a>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">AbletonLive</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;playa&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">live</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">AbletonLive</span><span style="color: #000000">();</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">main</span><span style="color: #000000"> = </span><span style="color: #0000FF">async</span><span style="color: #000000"> () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">try</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">live</span><span style="color: #000000">.</span><span style="color: #795E26">connect</span><span style="color: #000000">();</span>
+
+<span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">live</span><span style="color: #000000">.</span><span style="color: #795E26">connect</span><span style="color: #000000">();</span>
+
+<span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tracks</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">live</span><span style="color: #000000">.</span><span style="color: #001080">song</span><span style="color: #000000">.</span><span style="color: #795E26">children</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;tracks&#039;</span><span style="color: #000000">);</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">clips</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">tracks</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">].</span><span style="color: #795E26">getClips</span><span style="color: #000000">();</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">notes</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">clips</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">].</span><span style="color: #795E26">getNotes</span><span style="color: #000000">();</span>
+
+<span style="color: #000000">        </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">notes</span><span style="color: #000000">);</span>
+
+<span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">live</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;live_set tracks 0 clip_slots 0 clip&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;playing_position&#039;</span><span style="color: #000000">, (</span><span style="color: #001080">pos</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">            </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">pos</span><span style="color: #000000">);</span>
+<span style="color: #000000">        });</span>
+<span style="color: #000000">        </span><span style="color: #008000">// let first =  tracks[0];</span>
+<span style="color: #000000">    } </span><span style="color: #AF00DB">catch</span><span style="color: #000000"> (</span><span style="color: #001080">error</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">};</span>
+
+<span style="color: #795E26">main</span><span style="color: #000000">();</span>
+</code></pre>
+				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
+					<h2>Documentation</h2>
+				</a>
+				<a href="#test" id="test" style="color: inherit; text-decoration: none;">
+					<h2>Test</h2>
+				</a>
+				<ul>
+					<li>track - group_track</li>
+					<li>track - mixer_device</li>
+					<li>track - observe clip_slots (in general how to observe children)</li>
+				</ul>
+				<a href="#credits" id="credits" style="color: inherit; text-decoration: none;">
+					<h2>Credits</h2>
+				</a>
+				<p>A loose fork of <a href="github-link">ableton-js</a>, which was a great source of inspiration on how to approach handling Live&#39;s Object Model.</p>
+				<a href="#development" id="development" style="color: inherit; text-decoration: none;">
+					<h2>Development</h2>
+				</a>
+				<p>When not receiving try running <code>sudo lsof -i :send_port_number</code> and make sure only <strong>Max</strong> is using it.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/abletonlive.html">Ableton<wbr>Live</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clip.html">Clip</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clipslot.html">Clip<wbr>Slot</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/device.html">Device</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/deviceparameter.html">Device<wbr>Parameter</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/mixerdevice.html">Mixer<wbr>Device</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/note.html">Note</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/scene.html">Scene</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/song.html">Song</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/songview.html">Song<wbr>View</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/track.html">Track</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

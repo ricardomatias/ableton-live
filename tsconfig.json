@@ -1,26 +1,22 @@
 {
     "compilerOptions": {
         "outDir": "./build",
-        // Target latest version of ECMAScript.
-        "target": "esnext",
-        // Search under node_modules for non-relative imports.
-        "moduleResolution": "node",
-        // Process & infer types from .js files.
-        "allowJs": true,
-        // Don't emit; allow Babel to transform files.
-        "noEmit": true,
-        // Enable strictest settings like strictNullChecks & noImplicitAny.
-        "strict": true,
-        // Disallow features that require cross-file information for emit.
-        "isolatedModules": true,
-        // Import non-ES modules as default imports.
-        "esModuleInterop": true,
-        "inlineSourceMap": true,
-    },
+		"target": "ES6",
+		"module": "ES6",
+		"moduleResolution": "node",
+		"strict": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"allowJs": false,
+		"noImplicitAny": false,
+		"strictPropertyInitialization": false
+	},
     "include": [
-        "./index.ts"
+		"lib"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+		"external",
+		"test",
     ]
 }

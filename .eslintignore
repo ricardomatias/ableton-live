@@ -1,0 +1,3 @@
+external/**
+test/**
+esbuild.config.*
