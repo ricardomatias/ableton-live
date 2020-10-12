@@ -1,0 +1,13 @@
+{
+	"extends": "./tsconfig",
+	"compilerOptions": {
+		"outDir": "./build/cjs",
+		"declaration": true,
+		"declarationMap": true,
+		"isolatedModules": false,
+		"noEmit": false,
+		"checkJs": false,
+		"allowJs": false,
+		"emitDeclarationOnly": true
+	}
+}

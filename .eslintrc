@@ -2,7 +2,6 @@
     "extends": [
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "eslint:recommended",
         "google",
         "plugin:import/errors",
         "plugin:import/warnings"
@@ -42,11 +41,15 @@
         "max-len": [
             "error",
             {
-                "code": 120,
+                "code": 130,
                 "ignoreComments": true
             }
-        ],
-        "import/no-unresolved": "warn",
+		],
+		"camelcase": 0,
+		"@typescript-eslint/camelcase": 0,
+		"import/no-unresolved": "warn",
+		"no-invalid-this": 0,
+		"@typescript-eslint/explicit-function-return-type": 0,
         "no-multi-assign": 0,
         "no-warning-comments": 0,
         "object-curly-spacing": [

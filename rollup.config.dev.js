@@ -1,34 +1,39 @@
-import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import cleanup from 'rollup-plugin-cleanup';
 import clear from 'rollup-plugin-clear';
 import progress from 'rollup-plugin-progress';
+import typescript from 'rollup-plugin-typescript2';
 
 const extensions = [
 	'.js', '.ts',
 ];
 
-const baseConfig = {
-	input: 'index.js',
-	output: {
-		file: 'build/ableton-live.js',
-		format: 'cjs',
+export default [
+	{
+		input: 'lib/index.ts',
+		output: [
+			{
+				file: 'build/cjs/index.js',
+				format: 'cjs',
+				sourcemap: true,
+			},
+		],
+		plugins: [
+			clear({
+				// required, point out which directories should be clear.
+				targets: [ 'build' ],
+				// optional, whether clear the directores when rollup recompile on --watch mode.
+				watch: true, // default: false
+			}),
+			resolve({ extensions, preferBuiltins: true }),
+			commonjs(),
+			cleanup({
+				comments: 'none',
+				compactComments: false,
+			}),
+			typescript(),
+			progress(),
+		],
 	},
-	plugins: [
-		clear({
-			// required, point out which directories should be clear.
-			targets: [ 'build' ],
-			// optional, whether clear the directores when rollup recompile on --watch mode.
-			watch: true, // default: false
-		}),
-		resolve({ extensions }),
-		commonjs(),
-		babel({
-			extensions,
-			exclude: 'node_modules/**',
-		}),
-		progress(),
-	],
-};
-
-export default baseConfig;
+];
