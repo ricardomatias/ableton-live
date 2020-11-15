@@ -2,7 +2,6 @@
 const maxApi = require('max-api');
 const { WebSocket } = require('@clusterws/cws');
 const util = require('util');
-const graceful = require('node-graceful');
 
 const HEARTBEAT_INTERVAL = 5000;
 
@@ -32,6 +31,8 @@ maxApi.addHandler('port', async (port) => {
 	});
 
 	wss.on('connection', (ws, req) => {
+		console.log('[WebSockette] Client connected');
+
 		maxApi.outlet('connection', State.Connected);
 
 		const responseHandler = (response) => {
@@ -43,6 +44,7 @@ maxApi.addHandler('port', async (port) => {
 		ws.isAlive = true;
 
 		ws.on('close', () => {
+			maxApi.outlet('close');
 			maxApi.outlet('connection', State.Disconnected);
 			maxApi.removeHandler('response', responseHandler);
 			console.log('[WebSockette] Client disconnected');
@@ -50,8 +52,6 @@ maxApi.addHandler('port', async (port) => {
 
 		ws.on('message', (msg) => {
 			try {
-				console.log(msg);
-				// maxApi.post('msg', msg);
 				if (msg === 'pong') {
 					ws.isAlive = true;
 				} else {

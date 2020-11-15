@@ -120,12 +120,14 @@ export const enum ClipType {
 export interface RawClip {
 	id: string;
 	name: string;
+	length: number;
 	is_audio_clip: boolean;
 }
 
 export const RawClip = [
 	'name',
 	'is_audio_clip',
+	'length',
 ];
 
 
@@ -139,6 +141,7 @@ export class Clip extends Properties<
 	static path = 'live_set tracks $1 clip_slots $2 clip';
 	private _name: string;
 	private _type: ClipType;
+	private _length: number;
 
 	constructor(ableton: AbletonLive, public raw: RawClip, path?: string) {
 		super(ableton, 'clip', path ? path : Clip.path);
@@ -146,9 +149,31 @@ export class Clip extends Properties<
 		this._id = parseInt(raw.id, 10);
 		this._name = raw.name;
 		this._type = raw.is_audio_clip ? ClipType.Midi : ClipType.Audio;
+		this._length = raw.length;
 
-		this.transformers = { };
+		this.transformers = {};
 	}
+
+	// =========================================================================
+	// * Custom API
+	// =========================================================================
+
+	/**
+	 * Remove all selected notes
+	 *
+	 * @memberof Clip
+	 * @param {Note[]} notes
+	 * @return {(Promise<void>)}
+	 */
+	async removeSelectedNotes(notes: Note[]): Promise<void> {
+		await Promise.all(notes.map((n) => {
+			return this.removeNotes(n.start, n.duration, n.pitch, 1);
+		}));
+	}
+
+	// =========================================================================
+	// * Official API
+	// =========================================================================
 
 	/**
 	 * The name of the clip
@@ -170,6 +195,17 @@ export class Clip extends Properties<
 	 */
 	get type(): ClipType {
 		return this._type;
+	}
+
+	/**
+	 * The clip's length (duration)
+	 *
+	 * @readonly
+	 * @type {string}
+	 * @memberof Clip
+	 */
+	get length(): number {
+		return this._length;
 	}
 
 	/**
@@ -277,7 +313,8 @@ export class Clip extends Properties<
 	 * @return {void}
 	 */
 	public async getNotes(startTime = 0, timeRange = 256, startPitch = 0, pitchRange = 127): Promise<Note[]> {
-		return this.call('get_notes', [ startTime, startPitch, timeRange, pitchRange ]).then(this.parseNotes.bind(this));
+		return this.call('get_notes', [ startTime.toFixed(3), startPitch, timeRange.toFixed(3), pitchRange ])
+			.then(this.parseNotes.bind(this));
 	}
 
 	/**
@@ -343,7 +380,7 @@ export class Clip extends Properties<
 	 * @return {void}
 	 */
 	public async removeNotes(startTime = 0, timeRange = 256, startPitch = 0, pitchRange = 127): Promise<void> {
-		return this.call('remove_notes', [ startTime, startPitch, timeRange, pitchRange ]);
+		return this.call('remove_notes', [ startTime.toFixed(4), startPitch, timeRange.toFixed(4), pitchRange ]);
 	}
 
 	/**
@@ -360,11 +397,11 @@ export class Clip extends Properties<
 	 * @param {Array<Note>} notes
 	 * @return {void}
 	 */
-	public async replaceSelectedNotes( notes: Note[]): Promise<void> {
+	public async replaceSelectedNotes(notes: Note[]): Promise<void> {
 		return this.callMultiple([
 			[ 'replace_selected_notes' ],
 			[ 'notes', notes.length ],
-			...notes.map((note) => [ 'note' ].concat(note.toArray() as any[])),
+			...notes.map((note) => [ 'note' ].concat(note.serialize() as any[])),
 			[ 'done' ],
 		]);
 	}
@@ -420,7 +457,7 @@ export class Clip extends Properties<
 		return this.callMultiple([
 			[ 'set_notes' ],
 			[ 'notes', notes.length ],
-			...notes.map((note) => [ 'note' ].concat(note.toArray() as any[])),
+			...notes.map((note) => [ 'note' ].concat(note.serialize() as any[])),
 			[ 'done' ],
 		]);
 	}
@@ -455,7 +492,7 @@ export class Clip extends Properties<
 			notes.push(note);
 		}
 
-		notes.sort((a: Note, b: Note) => parseFloat(a.start) - parseFloat(b.start));
+		notes.sort((a: Note, b: Note) => a.start - b.start);
 
 		return notes;
 	}

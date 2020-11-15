@@ -65,7 +65,7 @@ export class Scene extends Properties<
 	private _isEmpty: boolean;
 
 	constructor(ableton: AbletonLive, public raw: RawScene, path?: string) {
-		super(ableton, 'track', path ? path : Scene.path, childrenInitialProps);
+		super(ableton, 'scene', path ? path : Scene.path, childrenInitialProps);
 
 		this._id = parseInt(raw.id, 10);
 		this._name = raw.name;

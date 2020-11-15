@@ -20,9 +20,9 @@ export interface GettableProperties {
 }
 
 export interface ChildrenProperties {
-	volume: RawDeviceParameter;
-	panning: RawDeviceParameter;
-	sends: RawDeviceParameter;
+	volume: RawDeviceParameter[];
+	panning: RawDeviceParameter[];
+	sends: RawDeviceParameter[];
 }
 
 export interface TransformedProperties {
@@ -52,6 +52,7 @@ export const RawMixerDevice = [
 const childrenInitialProps = {
 	volume: RawDeviceParameter,
 	panning: RawDeviceParameter,
+	sends: RawDeviceParameter,
 };
 
 export class MixerDevice extends Properties<
@@ -73,7 +74,7 @@ export class MixerDevice extends Properties<
 		this._panning = new DeviceParameter(this.ableton, raw.panning);
 
 		this.transformers = {
-			sends: (deviceParameter) => new DeviceParameter(this.ableton, deviceParameter),
+			sends: (parameters) => (parameters.map((deviceParameter) => new DeviceParameter(this.ableton, deviceParameter))),
 		};
 	}
 

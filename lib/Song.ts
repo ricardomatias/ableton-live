@@ -1,6 +1,6 @@
 import { Properties } from './Properties';
 import { AbletonLive } from './index';
-import { Track, RawTrack } from './Track';
+import { Track, RawTrack, TrackType } from './Track';
 import { RawScene, Scene } from './Scene';
 
 
@@ -36,7 +36,6 @@ export interface GettableProperties {
 	record_mode: number;
 	root_note: number;
 	scale_name: number;
-	scenes: number;
 	select_on_launch: number;
 	session_automation_record: number;
 	session_record: number;
@@ -134,7 +133,7 @@ export interface ObservableProperties {
 	re_enable_automation_enabled: number;
 	record_mode: number;
 	// return_tracks: RawTrack[];
-	scenes: number;
+	// scenes: number;
 	session_automation_record: number;
 	session_record: number;
 	session_record_status: number;
@@ -185,7 +184,7 @@ export enum SMPTE {
 	Smpte29 = 5,
 }
 
-const initialProperties = {
+const childrenProperties = {
 	scenes: RawScene,
 	tracks: RawTrack,
 	master_track: RawTrack,
@@ -205,16 +204,41 @@ export class Song extends Properties<
 	static path = 'live_set';
 
 	constructor(ableton: AbletonLive) {
-		super(ableton, 'song', Song.path, initialProperties);
+		super(ableton, 'song', Song.path, childrenProperties);
 
 		this.transformers = {
 			master_track: (track) => new Track(this.ableton, track, 'live_set master_track'),
 			tracks: (tracks) => tracks.map((t) => new Track(this.ableton, t)),
 			scenes: (scenes) => scenes.map((s) => new Scene(this.ableton, s)),
-			// return_tracks: tracks => tracks.map(t => new Track(this.ableton, t)),
-			// visible_tracks: tracks => tracks.map(t => new Track(this.ableton, t)),
+			return_tracks: (tracks) => tracks.map((t) => new Track(this.ableton, t)),
+			visible_tracks: (tracks) => tracks.map((t) => new Track(this.ableton, t)),
 		};
 	}
+
+	// =========================================================================
+	// * Custom API
+	// =========================================================================
+	async findTrackByName(name: string): Promise<Track | undefined > {
+		const tracks = await this.children('tracks');
+
+		return tracks.find((t) => t.name.includes(name));
+	}
+
+	async getAudioTracks(): Promise<Track[] | undefined> {
+		const tracks = await this.children('tracks');
+
+		return tracks.filter((t) => t.type === TrackType.Audio);
+	}
+
+	async getMidiTracks(): Promise<Track[] | undefined> {
+		const tracks = await this.children('tracks');
+
+		return tracks.filter((t) => t.type === TrackType.Midi);
+	}
+
+	// =========================================================================
+	// * Official API
+	// =========================================================================
 
 	/**
 	* Capture the currently playing clips and insert them as a new scene below the selected scene.

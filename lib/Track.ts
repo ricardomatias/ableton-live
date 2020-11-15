@@ -4,6 +4,7 @@ import { RawMixerDevice, MixerDevice } from './MixerDevice';
 import { RawClipSlot, ClipSlot } from './ClipSlot';
 import { DeviceParameter } from './DeviceParameter';
 import { Device, RawDevice } from './Device';
+import { Clip } from './Clip';
 
 export interface GettableProperties {
 	arm: number;
@@ -60,7 +61,7 @@ export interface GettableProperties {
 
 export interface ChildrenProperties {
 	devices: RawDevice[];
-	mixer_device: RawMixerDevice;
+	mixer_device: RawMixerDevice[];
 	clip_slots: RawClipSlot[];
 }
 
@@ -228,10 +229,35 @@ export class Track extends Properties<
 
 		this.transformers = {
 			devices: (devices) => devices.map((device) => new Device(this.ableton, device)),
-			mixer_device: (mixerDevice) => new MixerDevice(this.ableton, mixerDevice),
+			mixer_device: ([ mixerDevice ]) => new MixerDevice(this.ableton, mixerDevice),
 			clip_slots: (clipSlots) => clipSlots.map((c) => new ClipSlot(this.ableton, c)),
 		};
 	}
+
+
+	// =========================================================================
+	// * Custom API
+	// =========================================================================
+
+	/**
+	 * Get all clips in a track
+	 *
+	 * @memberof Track
+	 * @return {(Promise<(Clip | null)[]>)}
+	 */
+	async getClips(): Promise<(Clip | null)[]> {
+		const clipSlots = await this.children('clip_slots');
+
+		return await Promise.all(
+			clipSlots
+				.filter((cs) => cs.hasClip)
+				.map(async (cs) => await cs.clip()),
+		);
+	}
+
+	// =========================================================================
+	// * Official API
+	// =========================================================================
 
 	/**
 	 * The name of the track

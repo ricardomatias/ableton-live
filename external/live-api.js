@@ -3,7 +3,7 @@
 var apis = {};
 var callbackEvents = {};
 
-var debugMode = true;
+var debugMode = false;
 
 inlets = 8;
 outlets = 1;
@@ -153,25 +153,10 @@ function getChildProps(childApi, initialProps, childName) {
 	return childData;
 }
 
-function children(args) {
-	const res = JSON.parse(args);
-
-	// * Request UUID
-	var uuid = res.uuid;
-	// * Live's object ID
-	var objectId = res.objectId;
-	var path = res.path;
-	var child = res.args.child;
-	var initialProps = res.args.initialProps;
-	// var index = res.args.index;
-
-	var nsApi = liveApi(path, objectId);
-	// var count = nsApi.getcount(child);
-
-	// * live returns ["id", 1, "id", 2, ..]
-	var ids = nsApi.get(child);
+function processChildren(ids, initialProps) {
 	var children = [];
 
+	// * live returns ["id", 1, "id", 2, ..]
 	for (var i = 0; i < ids.length; i += 2) {
 		children.push(ids[i + 1]);
 	}
@@ -194,7 +179,7 @@ function children(args) {
 		}
 
 		if (initialProps) {
-			childData = getChildProps(childApi, initialProps);
+			childData = getChildProps(childApi, initialProps || []);
 		}
 
 		if (debugMode) log('childData: ', childData);
@@ -202,9 +187,25 @@ function children(args) {
 		data.push(childData);
 	}
 
-	if (data.length === 1) {
-		data = data[0];
-	}
+	return data;
+}
+
+function children(args) {
+	const res = JSON.parse(args);
+
+	// * Request UUID
+	var uuid = res.uuid;
+	// * Live's object ID
+	var objectId = res.objectId;
+	var path = res.path;
+	var child = res.args.child;
+	var initialProps = res.args.initialProps;
+
+	var nsApi = liveApi(path, objectId);
+
+	var ids = nsApi.get(child);
+
+	const data = processChildren(ids, initialProps);
 
 	return onSuccess(uuid, data);
 };
@@ -298,6 +299,11 @@ function callback(objectPath, property) {
 		if (event && event.listeners.length) {
 			if (debugMode) log('event:', event);
 
+			if (event.initialProps) {
+				result.shift() //* result returns ['tracks', 'id', 123, 'id',..]
+				result = processChildren(result, event.initialProps);
+			}
+
 			const value = handleLiveOutput(property, result, event.type);
 			onCallback(event.listeners, value);
 		}
@@ -315,6 +321,7 @@ function observe(args) {
 	var eventId = res.args.eventId;
 	var property = res.args.property;
 	var objectPath = res.args.objectPath;
+	var initialProps = res.args.initialProps;
 
 	if (objectId !== undefined) {
 		path = 'id ' + objectId;
@@ -334,7 +341,8 @@ function observe(args) {
 	callbackEvents[objectPath] = {
 		listeners: [eventId],
 		type: api.proptype,
-		api: api
+		api: api,
+		initialProps: initialProps
 	};
 
 	onSuccess(uuid, eventId);

@@ -1,4 +1,4 @@
-import { EventEmitter } from './EventEmitter';
+import { EventEmitter, TypedEventEmitter } from './EventEmitter';
 
 // https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
 enum WebSocketCloseCode {
@@ -22,25 +22,27 @@ export interface WebSocketteOptions {
 
 export type WebSocketPayload = string | ArrayBuffer | SharedArrayBuffer | Blob | ArrayBufferView;
 
-interface ConnectionEvents {
-	on(e: 'open', l: (event) => void): void;
-	on(e: 'close', l: (event) => void): void;
-	on(e: 'message', l: (event) => void): void;
-	on(e: 'error', l: (event) => void): void;
-	on(e: 'ping', l: (event) => void): void;
-	on(e: 'pong', l: (event) => void): void;
+interface WebSocketEvents {
+	open: (event: Event) => void,
+	message: (event: MessageEvent) => void,
+	close: (event: Event) => void,
+	error: (event: Event) => void,
+	reconnect: (tries: number) => void,
+	ping: () => void,
+	pong: () => void,
 }
 
-export class WebSockette extends EventEmitter implements ConnectionEvents {
+export class WebSockette extends (EventEmitter as new () => TypedEventEmitter<WebSocketEvents>) {
 	ws: WebSocket;
 	num = 0;
-	timer = 1;
+	timer: number | undefined;
 	timeout: number;
 	maxAttempts: number;
 	private url: string;
 	private protocols: string | string[];
 
 	constructor({ maxAttempts = 20, timeout = 1000 }: WebSocketteOptions = {}) {
+		// eslint-disable-next-line constructor-super
 		super();
 
 		this.maxAttempts = maxAttempts;
@@ -48,12 +50,17 @@ export class WebSockette extends EventEmitter implements ConnectionEvents {
 	}
 
 	open(url: string, protocols: string | string[] = []): void {
-		this.ws = new WebSocket(url, protocols);
+		try {
+			this.ws = new WebSocket(url, protocols);
+		} catch (err) {
+			this.emit('error', new Event('error'));
+			return;
+		}
 
 		this.url = url;
 		this.protocols = protocols;
 
-		this.ws.onmessage = (event) => {
+		this.ws.onmessage = (event: MessageEvent) => {
 			switch (event.data) {
 			case 'ping':
 				this.emit('ping');
@@ -72,29 +79,29 @@ export class WebSockette extends EventEmitter implements ConnectionEvents {
 			this.emit('open', event);
 			this.send('pong');
 			this.num = 0;
+			clearTimeout(this.timer);
 		};
 
 		this.ws.onclose = (event) => {
-			console.log('ON CLOSE', event.code);
 			switch (event.code) {
 			case WebSocketCloseCode.NormalClosure:
 			case WebSocketCloseCode.GoingAway:
 			case WebSocketCloseCode.NoStatusReceived:
 				this.emit('close', event);
+				clearTimeout(this.timer);
 				break;
 			case WebSocketCloseCode.AbnormalClosure:
 			default:
+				if (this.num === 0) {
+					this.emit('close', event);
+				}
+
 				this.reconnect(event);
 			}
 		};
 
 		this.ws.onerror = (event) => {
-			console.log('ON ERROR', event.type);
-			if (event) {
-				// this.reconnect(event);
-			} else {
-				this.emit('error', event);
-			}
+			this.emit('error', event);
 		};
 	}
 
@@ -118,14 +125,12 @@ export class WebSockette extends EventEmitter implements ConnectionEvents {
 	}
 
 	send(payload: WebSocketPayload): void {
-		console.log('send ', payload);
 		this.ws.send(payload);
 	}
 
-	close(code?: number, reason = 'General'): void {
-		console.log('close ', code, reason);
-		console.log('bufferedAmount: ', this.ws.bufferedAmount);
-		this.timer = <any>clearTimeout(this.timer);
+	close(code = WebSocketCloseCode.NormalClosure, reason = 'General'): void {
+		console.log('CLEAR TIMEOUT', this.timer);
+		<any>clearTimeout(this.timer);
 		this.ws.close(code, reason);
 	}
 }

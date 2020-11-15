@@ -2,16 +2,14 @@
 global.WebSocket = require('ws');
 
 const util = require('util');
-const { AbletonLive } = require('../build');
-const { Note } = require('../build/Note');
-const { Track } = require('../build/Track');
+const { AbletonLive } = require('../build/cjs/server');
 // const {
 // 	performance,
 // 	PerformanceObserver,
 // } = require('perf_hooks');
 // const util = require('util');
 
-const live = new AbletonLive({ port: 9001 });
+const live = new AbletonLive({ port: 9002, logRequests: true });
 
 const log = (...args) => console.log(...args);
 
@@ -33,28 +31,29 @@ const test = async () => {
 		// 	console.log('metronome', state);
 		// });
 
-		// const removeTempoObserver = await live.song.observe('tempo', async (state) => {
-		// 	console.log('tempo', state);
+		// await live.song.observe('tracks', async (tracks) => {
+		// 	if (tracks.length) {
+		// 		tracks.forEach((t) => console.log(t.name));
+		// 	}
 		// });
 
+		await live.observe('live_set tracks 1 clip_slots 0 clip', 'playing_position', (pos) => {
+			console.log(pos);
+		});
 		// const id = setInterval(async () => {
 		// 	const bbs = await live.song.getCurrentBeatsSongTime();
 		// 	console.log('bbs', bbs);
-		// }, 100);
+		// }, 250);
 
 
+		// wait(2001, () => (clearInterval(id)));
 		// performance.mark('A');
 
-		const scenes = await live.song.children('scenes');
-		const scene = scenes[0];
+		// const tracks = await live.song.children('tracks');
 
-		await scene.fire();
+		// console.log(tracks.map((track) => `${track}`));
 
-		const tracks = await live.song.children('tracks');
-
-		// console.log(tracks.map((track) => track.name));
-
-		const track = tracks.filter((track) => track.name === 'Node SDK')[0];
+		// const track = tracks.filter((track) => track.name === 'Node SDK')[0];
 
 		// const clipSlots = await track.children('clip_slots');
 		// const devices = await track.children('devices');
@@ -62,10 +61,7 @@ const test = async () => {
 
 		// const eqParams = await channelEq.children('parameters');
 
-		const trackMixer = await track.children('mixer_device');
-
-		console.log(trackMixer.volume);
-		console.log(trackMixer.panning);
+		// const trackMixer = await track.children('mixer_device');
 
 		// const clip = await clipSlots[0].clip();
 

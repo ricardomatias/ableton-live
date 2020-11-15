@@ -23,7 +23,7 @@ export interface GettableProperties {
 }
 
 export interface ChildrenProperties {
-	clip: RawClip;
+	clip: RawClip[];
 }
 
 export interface TransformedProperties {
@@ -46,10 +46,12 @@ export interface ObservableProperties {
 export interface RawClipSlot {
 	id: number;
 	has_clip: boolean;
+	clip: RawClip;
 }
 
 export const RawClipSlot = [
 	'has_clip',
+	{ name: 'clip', initialProps: RawClip },
 ];
 
 const initialProperties = {
@@ -67,15 +69,17 @@ export class ClipSlot extends Properties<
 
 	private _hasClip: boolean;
 	private _playingStatus: PlayingStatus;
+	private _clip: Clip;
 
 	constructor(ableton: AbletonLive, public raw: RawClipSlot, path?: string) {
 		super(ableton, 'clip_slot', path ? path : ClipSlot.path, initialProperties);
 
 		this._id = raw.id;
 		this._hasClip = raw.has_clip;
+		this._clip = new Clip(this.ableton, raw.clip);
 
 		this.transformers = {
-			clip: (clip) => {
+			clip: ([ clip ]) => {
 				if (clip.id === '0') {
 					return null;
 				}
@@ -85,13 +89,24 @@ export class ClipSlot extends Properties<
 	}
 
 	/**
+	 * If it contains a clip
+	 *
+	 * @readonly
+	 * @type {boolean}
+	 * @memberof ClipSlot
+	 */
+	get hasClip(): boolean {
+		return this._hasClip;
+	}
+
+	/**
 	 * Gets the clip or return's null if there's none
 	 * @memberof ClipSlot
 	 *
 	 * @return {Clip | null}
 	 */
 	async clip(): Promise<Clip | null> {
-		return await this.children('clip');
+		return this._clip ? Promise.resolve(this._clip) : await this.children('clip');
 	}
 
 	/**

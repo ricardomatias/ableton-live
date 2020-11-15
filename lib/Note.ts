@@ -31,15 +31,15 @@ export class Note {
 		return Math.min(Math.max(this._pitch, 0), 127);
 	}
 
-	get start(): string {
+	get start(): number {
 		// we convert to strings with decimals to work around a bug in Max
 		// otherwise we get  an invalid syntax error when trying to set notes
-		return this._start.toFixed(4);
+		return this._start;
 	}
 
-	get duration(): string {
-		if (this._duration <= Note.MinDuration) return Note.MinDuration.toFixed(4);
-		return this._duration.toFixed(4); // workaround similar bug as with get start()
+	get duration(): number {
+		if (this._duration <= Note.MinDuration) return Note.MinDuration;
+		return this._duration; // workaround similar bug as with get start()
 	}
 
 	get velocity(): number {
@@ -54,8 +54,8 @@ export class Note {
 		return `${this.pitch}`;
 	}
 
-	toArray(): Array<string | number | boolean> {
-		return [ this.pitch, this.start, this.duration, this.velocity, Number(this.muted) ];
+	serialize(): Array<string | number | boolean> {
+		return [ this.pitch, this.start.toFixed(4), this.duration.toFixed(4), this.velocity, Number(this.muted) ];
 	}
 }
 

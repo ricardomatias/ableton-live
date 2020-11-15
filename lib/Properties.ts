@@ -10,9 +10,13 @@ export class Properties<GP, CP, TP, SP, OP> {
 		protected ableton: AbletonLive,
 		protected ns: string,
 		protected path: string,
-		protected childrenInitialProps?: Partial<{ [T in keyof CP]: string[] | ChildrenInitialProps[] }>,
+		protected childrenInitialProps?: Partial<{ [T in keyof CP]: (string | ChildrenInitialProps)[] }>,
 		protected _id?: number,
 	) {}
+
+	get id(): number | undefined {
+		return this._id;
+	}
 
 	protected transformers: Partial<
 		{ [T in keyof CP]: (val: CP[T]) => any }
@@ -26,14 +30,14 @@ export class Properties<GP, CP, TP, SP, OP> {
 		return result;
 	}
 
-	async children<T extends keyof CP>( child: T, index?: number): Promise<T extends keyof TP ? TP[T] : CP[T]> {
+	async children<T extends keyof CP>( child: T): Promise<T extends keyof TP ? TP[T] : CP[T]> {
 		let initialProps;
 
 		if (this.childrenInitialProps) {
 			initialProps = this.childrenInitialProps[child];
 		}
 
-		const result = await this.ableton.getChildren(this.path, { child, initialProps, index }, this._id);
+		const result = await this.ableton.getChildren(this.path, { child: child as string, initialProps }, this._id);
 
 		const transformer = this.transformers[child];
 
@@ -48,24 +52,45 @@ export class Properties<GP, CP, TP, SP, OP> {
 		return this.ableton.set(this.path, prop as string, value, this._id);
 	}
 
-	async observe<T extends keyof OP>(
+	async observe<T extends keyof OP | keyof CP>(
 		prop: T,
-		listener: (data: T extends keyof CP ? CP[T] : OP[T]) => any,
+		listener: (data: T extends keyof OP ? OP[T] : T extends keyof TP ? TP[T] : any) => any,
 	): Promise<any> {
-		const transformer = this.transformers[(prop as any) as keyof CP];
+		const child = (prop as any) as keyof CP;
+		const transformer = this.transformers[child];
 
-		return this.ableton.observe(
-			this.path,
-			prop as string,
-			(data) => {
-				if (data !== null && transformer) {
-					listener(transformer(data));
-				} else {
-					listener(data);
-				}
-			},
-			this._id,
-		);
+		let initialProps;
+
+		const callback = (data) => {
+			if (data !== null && transformer) {
+				listener(transformer(data));
+			} else {
+				listener(data);
+			}
+		};
+
+		if (this.childrenInitialProps) {
+			initialProps = this.childrenInitialProps[child];
+
+			return this.ableton.observe(
+				this.path,
+				prop as string,
+				callback,
+				{
+					initialProps,
+					liveObjectId: this._id,
+				},
+			);
+		} else {
+			return this.ableton.observe(
+				this.path,
+				prop as string,
+				callback,
+				{
+					liveObjectId: this._id,
+				},
+			);
+		}
 	}
 
 	protected async call(
