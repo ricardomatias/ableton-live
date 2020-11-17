@@ -31,14 +31,20 @@ export interface TransformedProperties {
 export interface SettableProperties {
 	draw_mode: boolean;
 	follow_song: boolean;
+
+	detail_clip: string;
+	highlighted_clip_slot: string;
+	selected_parameter: string;
+	selected_scene: string;
+	selected_track: string;
 }
 
 export interface ObservableProperties {
-	detail_clip: RawClip;
-	highlighted_clip_slot: RawClipSlot;
-	selected_parameter: RawDeviceParameter;
-	selected_scene: RawScene;
-	selected_track: RawTrack;
+	detail_clip: Clip;
+	highlighted_clip_slot: ClipSlot;
+	selected_parameter: DeviceParameter;
+	selected_scene: Scene;
+	selected_track: Track;
 
 	draw_mode: boolean;
 	follow_song: boolean;
@@ -76,7 +82,25 @@ export class SongView extends Properties<
 	// =========================================================================
 	// * Custom API
 	// =========================================================================
+	public async selectTrack(track: Track): Promise<null> {
+		return this.set('selected_track', `id ${track.id}`);
+	}
 
+	public async selectScene(scene: Scene): Promise<null> {
+		return this.set('selected_scene', `id ${scene.id}`);
+	}
+
+	public async selectClip(clip: Clip): Promise<null> {
+		return this.set('detail_clip', `id ${clip.id}`);
+	}
+
+	public async selectParameter(dp: DeviceParameter): Promise<null> {
+		return this.set('selected_parameter', `id ${dp.id}`);
+	}
+
+	public async selectClipSlot(clipSlot: ClipSlot): Promise<null> {
+		return this.set('highlighted_clip_slot', `id ${clipSlot.id}`);
+	}
 
 	// =========================================================================
 	// * Official API
