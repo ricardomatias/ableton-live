@@ -16,9 +16,9 @@ export interface GettableProperties {
 	value_items: string[];
 }
 
-export interface ChildrenProperties { }
+// export interface ChildrenProperties { }
 
-export interface TransformedProperties { }
+// export interface TransformedProperties { }
 
 export interface SettableProperties {
 	value: number;
@@ -58,8 +58,8 @@ export enum ParameterState {
 
 export class DeviceParameter extends Properties<
 	GettableProperties,
-	ChildrenProperties,
-	TransformedProperties,
+	null,
+	null,
 	SettableProperties,
 	ObservableProperties
 	> {

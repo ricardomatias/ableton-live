@@ -1,6 +1,6 @@
 import { Properties } from './Properties';
 import { AbletonLive } from '.';
-import { RawClip, Clip } from './Clip';
+import { RawClipKeys, RawClip, Clip } from './Clip';
 
 export const enum PlayingStatus {
 	STOP = 0,
@@ -49,13 +49,16 @@ export interface RawClipSlot {
 	clip: RawClip;
 }
 
-export const RawClipSlot = [
+/**
+ * @private
+ */
+export const RawClipSlotKeys = [
 	'has_clip',
-	{ name: 'clip', initialProps: RawClip },
+	{ name: 'clip', initialProps: RawClipKeys },
 ];
 
 const initialProperties = {
-	clip: RawClip,
+	clip: RawClipKeys,
 };
 
 export class ClipSlot extends Properties<
@@ -64,13 +67,20 @@ export class ClipSlot extends Properties<
 	TransformedProperties,
 	SettableProperties,
 	ObservableProperties
-	> {
+> {
 	static path = 'live_set tracks $1 clip_slots $2';
 
 	private _hasClip: boolean;
 	private _playingStatus: PlayingStatus;
 	private _clip: Clip;
 
+	/**
+	 * Creates an instance of ClipSlot.
+	 * @param {AbletonLive} ableton
+	 * @param {RawClipSlot} raw
+	 * @param {string} [path]
+	 * @memberof ClipSlot
+	 */
 	constructor(ableton: AbletonLive, public raw: RawClipSlot, path?: string) {
 		super(ableton, 'clip_slot', path ? path : ClipSlot.path, initialProperties);
 

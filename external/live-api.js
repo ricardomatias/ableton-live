@@ -1,9 +1,10 @@
+// @ts-nocheck
 'use strict';
 
 var apis = {};
 var callbackEvents = {};
 
-var debugMode = false;
+var debugMode = true;
 
 inlets = 8;
 outlets = 1;
@@ -24,7 +25,7 @@ function liveApi(path, id) {
 		path = 'id ' + id;
 	}
 
-	if (debugMode) log('path: ', path);
+	if (debugMode) log(new Error().lineNumber, ' path: ', path);
 
 	if (apis[path]) {
 		return apis[path];
@@ -46,7 +47,7 @@ function handleLiveOutput(prop, value, type) {
 		}
 	}
 
-	if (debugMode) log(prop, result);
+	if (debugMode) log(new Error().lineNumber, prop, result);
 
 	switch (type) {
 		case 'bool':
@@ -182,7 +183,7 @@ function processChildren(ids, initialProps) {
 			childData = getChildProps(childApi, initialProps || []);
 		}
 
-		if (debugMode) log('childData: ', childData);
+		if (debugMode) log(new Error().lineNumber, ' childData: ', childData);
 
 		data.push(childData);
 	}
@@ -247,7 +248,9 @@ function call(args) {
 		var api = liveApi(path, objectId);
 		var result = api.call.apply(api, [method].concat(methodArgs));
 
-		if (debugMode) log("call ", method, ":", result);
+		log(methodArgs);
+
+		if (debugMode) log(new Error().lineNumber, " call ", method, ":", result);
 
 		if (isError(result)) {
 			onFailure(uuid, method);
@@ -280,7 +283,7 @@ function callMultiple(args) {
 			const call = calls[index];
 			api.call.apply(api, call);
 
-			if (debugMode) log("call: ", call);
+			if (debugMode) log(new Error().lineNumber, " call multiple: ", call);
 		}
 
 		onSuccess(uuid);
@@ -297,7 +300,7 @@ function callback(objectPath, property) {
 		const event = callbackEvents[objectPath];
 
 		if (event && event.listeners.length) {
-			if (debugMode) log('event:', event);
+			if (debugMode) log(new Error().lineNumber, ' event:', event);
 
 			if (event.initialProps) {
 				result.shift() //* result returns ['tracks', 'id', 123, 'id',..]

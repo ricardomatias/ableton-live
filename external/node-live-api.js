@@ -1,4 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+// @ts-ignore
+
+// TODO: Migrate to uWebsockets.js
+// https://edisonchee.com/writing/intro-to-%C2%B5websockets.js/
 const maxApi = require('max-api');
 const { WebSocket } = require('@clusterws/cws');
 const util = require('util');

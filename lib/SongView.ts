@@ -1,9 +1,9 @@
 import { Properties } from './Properties';
 import { AbletonLive } from './index';
-import { Track, RawTrack, TrackType } from './Track';
-import { RawScene, Scene } from './Scene';
-import { Clip, RawClip } from './Clip';
-import { ClipSlot, RawClipSlot } from './ClipSlot';
+import { Track, RawTrack, TrackType, RawTrackKeys } from './Track';
+import { RawSceneKeys, RawScene, Scene } from './Scene';
+import { Clip, RawClipKeys, RawClip } from './Clip';
+import { ClipSlot, RawClipSlotKeys, RawClipSlot } from './ClipSlot';
 import { DeviceParameter, RawDeviceParameter } from './DeviceParameter';
 
 
@@ -51,11 +51,11 @@ export interface ObservableProperties {
 }
 
 const childrenInitialProps = {
-	detail_clip: RawClip,
-	highlighted_clip_slot: RawClipSlot,
+	detail_clip: RawClipKeys,
+	highlighted_clip_slot: RawClipSlotKeys,
 	selected_parameter: RawDeviceParameter,
-	selected_scene: RawScene,
-	selected_track: RawTrack,
+	selected_scene: RawSceneKeys,
+	selected_track: RawTrackKeys,
 };
 
 export class SongView extends Properties<
@@ -67,6 +67,11 @@ export class SongView extends Properties<
 > {
 	static path = 'live_set view';
 
+	/**
+	 * Creates an instance of SongView.
+	 * @param {AbletonLive} ableton
+	 * @memberof SongView
+	 */
 	constructor(ableton: AbletonLive) {
 		super(ableton, 'song', SongView.path, childrenInitialProps);
 

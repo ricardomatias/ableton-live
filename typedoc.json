@@ -1,0 +1,7 @@
+{
+	"entryPoints": ["lib"],
+	"out": "docs",
+	"exclude": ["lib/index.ts", "lib/helpers/*.ts"],
+	"excludePrivate": true,
+	"excludeProtected": true
+}

@@ -1,7 +1,6 @@
 import { RawDeviceParameter, DeviceParameter } from './DeviceParameter';
 import { Properties } from './Properties';
 import { AbletonLive } from '.';
-
 export interface GettableProperties {
 	can_have_chains: boolean;
 	can_have_drum_pads: boolean;

@@ -2,7 +2,7 @@
 global.WebSocket = require('ws');
 
 const util = require('util');
-const { AbletonLive } = require('../build/cjs/server');
+const { AbletonLive, Note } = require('../build/node');
 // const {
 // 	performance,
 // 	PerformanceObserver,
@@ -36,10 +36,29 @@ const test = async () => {
 		// 		tracks.forEach((t) => console.log(t.name));
 		// 	}
 		// });
+		// const tracks = await live.song.children('tracks');
+		// console.log(tracks);
 
-		await live.observe('live_set tracks 1 clip_slots 0 clip', 'playing_position', (pos) => {
-			console.log(pos);
-		});
+		const track = await live.song.findTrackByName('Bass');
+
+		const clipSlots = await track.children('clip_slots');
+
+		const clip = await clipSlots[1].clip();
+
+		const notes = await clip.getSelectedNotes();
+		console.log(notes);
+
+		// await clip.addNewNotes([
+		// 	new Note(70, 0.0, 0.5, 100),
+		// 	new Note(52, 0.5, 1.0, 64),
+		// 	new Note(84, 1.0, 2.0, 127),
+		// ]);
+
+		// const ids = await clip.getNotesById(notes.slice(0, 3).map(n => n.id));
+
+		// await live.observe('live_set tracks 1 clip_slots 0 clip', 'playing_position', (pos) => {
+		// 	console.log(pos);
+		// });
 		// const id = setInterval(async () => {
 		// 	const bbs = await live.song.getCurrentBeatsSongTime();
 		// 	console.log('bbs', bbs);

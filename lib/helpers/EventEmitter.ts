@@ -1,4 +1,3 @@
-/* eslint-disable import/named */
 import mitt, {
 	Emitter,
 	EventType,

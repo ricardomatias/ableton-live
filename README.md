@@ -1,6 +1,35 @@
 # Ableton Live
 
 
+# TODO:
+## Documentation
+* AbletonLive
+* Clip
+* ClipSlot
+* Device
+* DeviceParameter
+* MixerDevice
+* Note - DONE
+* Properties
+* Scene - DONE
+* Song - DONE
+* SongView
+* Track - DONE
+
+## Test
+* track - group_track
+* track - mixer_device
+* track - observe clip_slots (in general how to observe children)
+
+## Usage
+
+
+## Documentation
+
+
+## Not Implemented
+
+...but accept PR
 
 ## Credits
 

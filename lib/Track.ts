@@ -1,175 +1,347 @@
 import { Properties } from './Properties';
 import { AbletonLive } from '.';
 import { RawMixerDevice, MixerDevice } from './MixerDevice';
-import { RawClipSlot, ClipSlot } from './ClipSlot';
+import { RawClipSlotKeys, RawClipSlot, ClipSlot } from './ClipSlot';
 import { DeviceParameter } from './DeviceParameter';
 import { Device, RawDevice } from './Device';
 import { Clip } from './Clip';
 
-export interface GettableProperties {
-	arm: number;
-	available_input_routing_channels: number;
-	available_input_routing_types: number;
-	available_output_routing_channels: number;
-	available_output_routing_types: number;
-	can_be_armed: number;
-	can_be_frozen: number;
-	can_show_chains: number;
+/**
+ * @interface TrackGetProperties
+ */
+export interface TrackGetProperties {
+	/**
+	 * true = track is armed for recording. [not in return/master tracks]
+	 */
+	arm: boolean;
+	// available_input_routing_channels: dictionary;
+	// available_input_routing_types: dictionary;
+	// available_output_routing_channels: dictionary;
+	// available_output_routing_types: dictionary;
+	/**
+	 * false for return and master tracks.
+	 */
+	can_be_armed: boolean;
+	/**
+	 * true = the track can be frozen, false = otherwise.
+	 */
+	can_be_frozen: boolean;
+	/**
+	 * true = the track contains an Instrument Rack device that can show chains in Session View.
+	 */
+	can_show_chains: boolean;
+	/**
+	 * @inheritdoc SceneGetProperties.color
+	 */
 	color: number;
+	/**
+	 * @inheritdoc SceneGetProperties.color_index
+	 */
 	color_index: number;
-	current_input_routing: number;
-	current_input_sub_routing: number;
-	current_monitoring_state: number;
-	current_output_routing: number;
-	current_output_sub_routing: number;
+	current_monitoring_state: TrackMonitoringState;
+	/**
+	 * Reflects the blinking clip slot.<br/>
+	 * -1 = no slot fired, -2 = Clip Stop Button fired<br/>
+	 * First clip slot has index 0.<br/>
+	 * [not in return/master tracks]
+	 */
 	fired_slot_index: number;
-	fold_state: number;
-	group_track: number;
-	has_audio_input: number;
-	has_audio_output: number;
-	has_midi_input: number;
-	has_midi_output: number;
-	implicit_arm: number;
+	fold_state: TrackFoldState;
+	/**
+	 * true for audio tracks.
+	 */
+	has_audio_input: boolean;
+	/**
+	 * true for audio tracks and MIDI tracks with instruments.
+	 */
+	has_audio_output: boolean;
+	/**
+	 * true for MIDI tracks.
+	 */
+	has_midi_input: boolean;
+	/**
+	 * true for MIDI tracks with no instruments and no audio effects.
+	 */
+	has_midi_output: boolean;
+	/**
+	 * A second arm state, only used by Push so far.
+	 */
+	implicit_arm: boolean;
+	/**
+	 * Smoothed momentary peak value of left channel input meter, 0.0 to 1.0. For tracks with audio output only.
+	 * This value corresponds to the meters shown in Live.</br>
+	 * Please take into account that the left/right audio meters put a significant load onto the GUI part of Live.
+	 */
 	input_meter_left: number;
+	/**
+	 * Hold peak value of input meters of audio and MIDI tracks, 0.0 ... 1.0. For audio tracks it is the maximum of the left and right channels. The hold time is 1 second.
+	 */
 	input_meter_level: number;
+	/**
+	 * Smoothed momentary peak value of right channel input meter, 0.0 to 1.0. For tracks with audio output only. This value corresponds to the meters shown in Live.
+	 */
 	input_meter_right: number;
-	input_routing_channel: number;
-	input_routing_type: number;
-	input_routings: number;
-	input_sub_routings: number;
-	is_foldable: number;
-	is_frozen: number;
-	is_grouped: number;
-	is_part_of_selection: number;
-	is_showing_chains: number;
-	is_visible: number;
-	mixer_device: number;
-	mute: number;
-	muted_via_solo: number;
-	name: number;
+	// input_routing_channel: dictionary;
+	// input_routing_type: dictionary;
+	/**
+	 * true = track can be (un)folded to hide or reveal the contained tracks. This is currently the case for Group Tracks. Instrument and Drum Racks return 0 although they can be opened/closed. This will be fixed in a later release.
+	 */
+	is_foldable: boolean;
+	/**
+	 * true = the track is currently frozen.
+	 */
+	is_frozen: boolean;
+	/**
+	 * true = the track is contained within a Group Track.
+	 */
+	is_grouped: boolean;
+	is_part_of_selection: boolean;
+	/**
+	 * Get or set whether a track with an Instrument Rack device is currently showing its chains in Session View.
+	 */
+	is_showing_chains: boolean;
+	/**
+	 * false = track is hidden in a folded Group Track.
+	 */
+	is_visible: boolean;
+	/**
+	 * [not in master track]
+	 */
+	mute: boolean;
+	/**
+	 * true = the track or chain is muted due to Solo being active on at least one other track.
+	 */
+	muted_via_solo: boolean;
+	/**
+	 * As shown in track header.
+	 */
+	name: string;
+	/**
+	 * Smoothed momentary peak value of left channel output meter, 0.0 to 1.0. For tracks with audio output only.
+	 * This value corresponds to the meters shown in Live.
+	 * Please take into account that the left/right audio meters add a significant load to Live GUI resource usage.
+	 */
 	output_meter_left: number;
+	/**
+	 * Hold peak value of output meters of audio and MIDI tracks, 0.0 to 1.0.
+	 * For audio tracks, it is the maximum of the left and right channels. The hold time is 1 second.
+	 */
 	output_meter_level: number;
+	/**
+	 * Smoothed momentary peak value of right channel output meter, 0.0 to 1.0.
+	 * For tracks with audio output only. This value corresponds to the meters shown in Live.
+	 */
 	output_meter_right: number;
-	output_routing_channel: number;
-	output_routing_type: number;
-	output_routings: number;
-	output_sub_routings: number;
+	// output_routing_channel: dictionary;
+	// output_routing_type: dictionary;
+	/**
+	 * First slot has index 0, -2 = Clip Stop slot fired in Session View, -1 = Arrangement recording with no Session clip playing. [not in return/master tracks]
+	 */
 	playing_slot_index: number;
-	solo: number;
-	view: number;
+	/**
+	 * Remark: when setting this property, the exclusive Solo logic is bypassed, so you have to unsolo the other tracks yourself. [not in master track]
+	 */
+	solo: boolean;
 }
 
-export interface ChildrenProperties {
+/**
+ * @interface TrackChildrenProperties
+ */
+export interface TrackChildrenProperties {
+	/**
+	 * Includes mixer device.
+	 */
 	devices: RawDevice[];
 	mixer_device: RawMixerDevice[];
 	clip_slots: RawClipSlot[];
+	/**
+	 * The Group Track, if the Track is grouped. If it is not, id 0 is returned.
+	 */
+	group_track: RawTrack;
+	/**
+	 * The list of this track's Arrangement View clip IDs
+	 */
+	arrangement_clips: RawClipSlot[];
 }
 
-export interface TransformedProperties {
+/**
+ * @interface TrackTransformedProperties
+ */
+export interface TrackTransformedProperties {
+	/**
+	 * @inheritdoc TrackChildrenProperties.devices
+	 */
 	devices: Device[];
 	mixer_device: MixerDevice;
 	clip_slots: ClipSlot[];
+	/**
+	 * @inheritdoc TrackChildrenProperties.group_track
+	 */
+	group_track: RawTrack;
+	/**
+	 * @inheritdoc TrackChildrenProperties.arrangement_clips
+	 */
+	arrangement_clips: ClipSlot[];
 }
 
-export interface SettableProperties {
+/**
+ * @interface TrackSetProperties
+ */
+export interface TrackSetProperties {
+	/**
+	 * @inheritdoc TrackGetProperties.arm
+	 */
 	arm: number;
-	available_input_routing_channels: number;
-	available_input_routing_types: number;
-	available_output_routing_channels: number;
-	available_output_routing_types: number;
-	can_be_armed: number;
-	can_be_frozen: number;
-	can_show_chains: number;
-	canonical_parent: number;
-	clip_slots: number;
+	// available_input_routing_channels: dictionary;
+	// available_input_routing_types: dictionary;
+	// available_output_routing_channels: dictionary;
+	// available_output_routing_types: dictionary;
+	/**
+	 * @inheritdoc TrackGetProperties.color
+	 */
 	color: number;
+	/**
+	 * @inheritdoc TrackGetProperties.color_index
+	 */
 	color_index: number;
-	current_input_routing: number;
-	current_input_sub_routing: number;
-	current_monitoring_state: number;
-	current_output_routing: number;
-	current_output_sub_routing: number;
-	devices: number;
-	fired_slot_index: number;
-	fold_state: number;
-	group_track: number;
-	has_audio_input: number;
-	has_audio_output: number;
-	has_midi_input: number;
-	has_midi_output: number;
-	implicit_arm: number;
-	input_meter_left: number;
-	input_meter_level: number;
-	input_meter_right: number;
-	input_routing_channel: number;
-	input_routing_type: number;
-	input_routings: number;
-	input_sub_routings: number;
-	is_foldable: number;
-	is_frozen: number;
-	is_grouped: number;
-	is_part_of_selection: number;
-	is_showing_chains: number;
-	is_visible: number;
-	mixer_device: number;
-	mute: number;
-	muted_via_solo: number;
-	name: number;
-	output_meter_left: number;
-	output_meter_level: number;
-	output_meter_right: number;
-	output_routing_channel: number;
-	output_routing_type: number;
-	output_routings: number;
-	output_sub_routings: number;
-	playing_slot_index: number;
-	solo: number;
-	view: number;
+	/**
+	 * @inheritdoc TrackGetProperties.current_monitoring_state
+	 */
+	current_monitoring_state: TrackMonitoringState;
+	/**
+	 * @inheritdoc TrackGetProperties.fold_state
+	 */
+	fold_state: TrackFoldState;
+	/**
+	 * @inheritdoc TrackGetProperties.implicit_arm
+	 */
+	implicit_arm: boolean;
+	// input_routing_channel: dictionary;
+	// input_routing_type: dictionary;
+	/**
+	 * @inheritdoc TrackGetProperties.is_showing_chains
+	 */
+	is_showing_chains: boolean;
+	/**
+	 * @inheritdoc TrackGetProperties.mute
+	 */
+	mute: boolean;
+	/**
+	 * @inheritdoc TrackGetProperties.name
+	 */
+	name: string;
+	// output_routing_channel: dictionary;
+	// output_routing_type: dictionary;
+	/**
+	 * @inheritdoc TrackGetProperties.solo
+	 */
+	solo: boolean;
 }
 
-export interface ObservableProperties {
+/**
+ * @interface TrackObservableProperties
+ */
+export interface TrackObservableProperties {
+	/**
+	 * @inheritdoc TrackGetProperties.arm
+	 */
 	arm: number;
-	available_input_routing_channels: number;
-	available_input_routing_types: number;
-	available_output_routing_channels: number;
-	available_output_routing_types: number;
-	clip_slots: number;
+	// available_input_routing_channels: dictionary;
+	// available_input_routing_types: dictionary;
+	// available_output_routing_channels: dictionary;
+	// available_output_routing_types: dictionary;
+	/**
+	 * @inheritdoc TrackGetProperties.color_index
+	 */
 	color_index: number;
+	/**
+	 * @inheritdoc TrackGetProperties.color
+	 */
 	color: number;
-	current_input_routing: number;
-	current_input_sub_routing: number;
-	current_monitoring_state: number;
-	current_output_routing: number;
-	current_output_sub_routing: number;
-	data: number;
-	devices: number;
+	/**
+	 * @inheritdoc TrackGetProperties.current_monitoring_state
+	 */
+	current_monitoring_state: TrackMonitoringState;
+	/**
+	 * @inheritdoc TrackGetProperties.fired_slot_index
+	 */
 	fired_slot_index: number;
-	has_audio_input: number;
-	has_audio_output: number;
-	has_midi_input: number;
-	has_midi_output: number;
-	implicit_arm: number;
+	/**
+	 * @inheritdoc TrackGetProperties.implicit_arm
+	 */
+	implicit_arm: boolean;
+	/**
+	 * @inheritdoc TrackGetProperties.input_meter_left
+	 */
 	input_meter_left: number;
+	/**
+	 * @inheritdoc TrackGetProperties.input_meter_level
+	 */
 	input_meter_level: number;
+	/**
+	 * @inheritdoc TrackGetProperties.input_meter_right
+	 */
 	input_meter_right: number;
-	input_routing_channel: number;
-	input_routing_type: number;
-	input_routings: number;
-	input_sub_routings: number;
-	is_frozen: number;
-	is_showing_chains: number;
-	mute: number;
-	muted_via_solo: number;
-	name: number;
+	// input_routing_channel: dictionary;
+	// input_routing_type: dictionary;
+	/**
+	 * @inheritdoc TrackGetProperties.is_frozen
+	 */
+	is_frozen: boolean;
+	/**
+	 * @inheritdoc TrackGetProperties.is_showing_chains
+	 */
+	is_showing_chains: boolean;
+	/**
+	 * @inheritdoc TrackGetProperties.mute
+	 */
+	mute: boolean;
+	/**
+	 * @inheritdoc TrackGetProperties.muted_via_solo
+	 */
+	muted_via_solo: boolean;
+	/**
+	 * @inheritdoc TrackGetProperties.name
+	 */
+	name: string;
+	/**
+	 * @inheritdoc TrackGetProperties.output_meter_left
+	 */
 	output_meter_left: number;
+	/**
+	 * @inheritdoc TrackGetProperties.output_meter_level
+	 */
 	output_meter_level: number;
+	/**
+	 * @inheritdoc TrackGetProperties.output_meter_right
+	 */
 	output_meter_right: number;
-	output_routing_channel: number;
-	output_routing_type: number;
-	output_routings: number;
-	output_sub_routings: number;
+	// output_routing_channel: dictionary;
+	// output_routing_type: dictionary;
+	/**
+	 * @inheritdoc TrackGetProperties.playing_slot_index
+	 */
 	playing_slot_index: number;
-	solo: number;
+	/**
+	 * @inheritdoc TrackGetProperties.solo
+	 */
+	solo: boolean;
+}
+
+
+/**
+ * 0 = In, 1 = Auto, 2 = Off [not in return/master tracks]
+ */
+export const enum TrackMonitoringState {
+	In = 0, Auto = 1, Off = 2
+}
+
+/**
+ * 0 = tracks within the Group Track are visible, 1 = Group Track is folded and the tracks within the Group Track are hidden</br>
+ * [only available if is_foldable = 1]
+ */
+export const enum TrackFoldState {
+	Visible = 0, Hidden = 1
 }
 
 export const enum TrackType {
@@ -177,29 +349,45 @@ export const enum TrackType {
 	Audio = 'audio',
 }
 
+/**
+ * @interface RawTrack
+ */
 export interface RawTrack {
 	id: string;
 	name: string;
 	has_audio_input: boolean;
 }
 
-export const RawTrack = [
+/**
+ * @private
+ */
+export const RawTrackKeys = [
 	'name',
 	'has_audio_input',
 ];
 
 const childrenInitialProps = {
 	devices: RawDevice,
-	clip_slots: RawClipSlot,
+	clip_slots: RawClipSlotKeys,
 	mixer_device: RawMixerDevice,
 };
 
+/**
+ * This class represents a track in Live. It can either be an audio track, a MIDI track, a return track or the master track.
+ * The master track and at least one Audio or MIDI track will be always present. Return tracks are optional.</br>
+ *
+ * Not all properties are supported by all types of tracks. The properties are marked accordingly.
+ *
+ * @export
+ * @class Track
+ * @extends {Properties<TrackGetProperties, TrackChildrenProperties, TrackTransformedProperties, TrackSetProperties, TrackObservableProperties>}
+ */
 export class Track extends Properties<
-	GettableProperties,
-	ChildrenProperties,
-	TransformedProperties,
-	SettableProperties,
-	ObservableProperties
+	TrackGetProperties,
+	TrackChildrenProperties,
+	TrackTransformedProperties,
+	TrackSetProperties,
+	TrackObservableProperties
 > {
 	static path = 'live_set tracks $1';
 
@@ -208,11 +396,11 @@ export class Track extends Properties<
 	}
 
 	// TODO: v2
-	// static async get<T extends keyof GettableProperties>(
+	// static async get<T extends keyof TrackGetProperties>(
 	// 	live: AbletonLive,
 	// 	trackNumber: number,
 	// 	prop: T,
-	// ): Promise<GettableProperties[T]> {
+	// ): Promise<TrackGetProperties[T]> {
 	// 	return await live.get(Track.getPath(trackNumber), prop);
 	// }
 
@@ -220,6 +408,13 @@ export class Track extends Properties<
 	private _type: TrackType;
 	private _mixerDevice: MixerDevice;
 
+	/**
+	 * Creates an instance of Track.
+	 * @param {AbletonLive} ableton
+	 * @param {RawTrack} raw
+	 * @param {string} [path]
+	 * @memberof Track
+	 */
 	constructor(ableton: AbletonLive, public raw: RawTrack, path?: string) {
 		super(ableton, 'track', path ? path : Track.path, childrenInitialProps);
 
