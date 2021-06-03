@@ -61,7 +61,6 @@ const main = async () => {
         const notes = await clips[0].getNotes();
 
         notes.forEach(note => console.log(note.pitch));
-        // let first =  tracks[0];
     } catch (error) {
         console.error(error);
     }

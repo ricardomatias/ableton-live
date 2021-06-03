@@ -2,3 +2,4 @@ external/LiveAPI\ Project
 node_modules
 .DS_Store
 build
+*.tgz
