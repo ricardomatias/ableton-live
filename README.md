@@ -71,6 +71,8 @@ main();
 
 ## Documentation
 
+Found at [https://ricardomatias.net/ableton-live/](https://ricardomatias.net/ableton-live/)
+
 ## Credits
 
 A loose fork of [ableton-js](github-link), which was a great source of inspiration on how to approach handling Live's Object Model.
