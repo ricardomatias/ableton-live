@@ -54,8 +54,6 @@ const main = async () => {
     try {
         await live.connect();
 
-		await live.connect();
-
         const tracks = await live.song.children('tracks');
         const clips = await tracks[0].getClips();
         const notes = await clips[0].getNotes();
