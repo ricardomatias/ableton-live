@@ -1,6 +1,6 @@
 {
 	"name": "ableton-live",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"browser": "./build/esm/index.js",
 	"main": "./build/cjs/index.js",
 	"module": "./build/esm/index.js",
