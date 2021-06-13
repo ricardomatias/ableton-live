@@ -61,15 +61,28 @@
 				<a href="#ableton-live" id="ableton-live" style="color: inherit; text-decoration: none;">
 					<h1>Ableton Live</h1>
 				</a>
-				<p>A library for communicating with Live via WebSockets, works both in Node and in the Browser.</p>
-				<blockquote>
-					<p><em>Requires Max 4 Live to work</em></p>
-				</blockquote>
-				<a href="#install" id="install" style="color: inherit; text-decoration: none;">
-					<h2>Install</h2>
+				<p>A library for communicating with Ableton Live via WebSockets, works both in Node and in the Browser.</p>
+				<a href="#requirements" id="requirements" style="color: inherit; text-decoration: none;">
+					<h2>Requirements</h2>
 				</a>
+				<ul>
+					<li>Ableton Live 11</li>
+					<li>Max 4 Live</li>
+				</ul>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<ol>
+					<li>Install package</li>
+				</ol>
 				<pre><code class="language-bash"><span style="color: #000000">npm install --save ableton-live</span>
 </code></pre>
+				<ol start="2">
+					<li><p>Drag and drop <code>external/LiveAPI.amxd</code> to any track in Ableton Live (f.ex, Master Track)</p>
+					</li>
+					<li><p>Done!</p>
+					</li>
+				</ol>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h2>Usage</h2>
 				</a>
@@ -101,18 +114,11 @@
 <span style="color: #000000">    </span><span style="color: #AF00DB">try</span><span style="color: #000000"> {</span>
 <span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">live</span><span style="color: #000000">.</span><span style="color: #795E26">connect</span><span style="color: #000000">();</span>
 
-<span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">live</span><span style="color: #000000">.</span><span style="color: #795E26">connect</span><span style="color: #000000">();</span>
-
 <span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tracks</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">live</span><span style="color: #000000">.</span><span style="color: #001080">song</span><span style="color: #000000">.</span><span style="color: #795E26">children</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;tracks&#039;</span><span style="color: #000000">);</span>
 <span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">clips</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">tracks</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">].</span><span style="color: #795E26">getClips</span><span style="color: #000000">();</span>
 <span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">notes</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">clips</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">].</span><span style="color: #795E26">getNotes</span><span style="color: #000000">();</span>
 
-<span style="color: #000000">        </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">notes</span><span style="color: #000000">);</span>
-
-<span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">live</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;live_set tracks 0 clip_slots 0 clip&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;playing_position&#039;</span><span style="color: #000000">, (</span><span style="color: #001080">pos</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">            </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">pos</span><span style="color: #000000">);</span>
-<span style="color: #000000">        });</span>
-<span style="color: #000000">        </span><span style="color: #008000">// let first =  tracks[0];</span>
+<span style="color: #000000">        </span><span style="color: #001080">notes</span><span style="color: #000000">.</span><span style="color: #795E26">forEach</span><span style="color: #000000">(</span><span style="color: #001080">note</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">note</span><span style="color: #000000">.</span><span style="color: #001080">pitch</span><span style="color: #000000">));</span>
 <span style="color: #000000">    } </span><span style="color: #AF00DB">catch</span><span style="color: #000000"> (</span><span style="color: #001080">error</span><span style="color: #000000">) {</span>
 <span style="color: #000000">        </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
 <span style="color: #000000">    }</span>
@@ -123,14 +129,7 @@
 				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
 					<h2>Documentation</h2>
 				</a>
-				<a href="#test" id="test" style="color: inherit; text-decoration: none;">
-					<h2>Test</h2>
-				</a>
-				<ul>
-					<li>track - group_track</li>
-					<li>track - mixer_device</li>
-					<li>track - observe clip_slots (in general how to observe children)</li>
-				</ul>
+				<p>Found at <a href="https://ricardomatias.net/ableton-live/">https://ricardomatias.net/ableton-live/</a></p>
 				<a href="#credits" id="credits" style="color: inherit; text-decoration: none;">
 					<h2>Credits</h2>
 				</a>

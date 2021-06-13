@@ -25,7 +25,7 @@
 		"prepare": "npm run build",
 		"cleanup": "rm -rf ./build",
 		"types": "tsc --emitDeclarationOnly --outDir build/types",
-		"docs": "typedoc --watch"
+		"docs": "typedoc"
 	},
 	"files": [
 		"external/LiveAPI.amxd",

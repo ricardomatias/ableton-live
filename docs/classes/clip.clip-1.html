@@ -96,7 +96,8 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="clip.clip-1.html#raw" class="tsd-kind-icon">raw</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="clip.clip-1.html#path" class="tsd-kind-icon">path</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="clip.clip-1.html#arrangementpath" class="tsd-kind-icon">arrangement<wbr>Path</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="clip.clip-1.html#sessionpath" class="tsd-kind-icon">session<wbr>Path</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -138,7 +139,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="clip.clip-1.html#setfirebuttonstate" class="tsd-kind-icon">set<wbr>Fire<wbr>Button<wbr>State</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="clip.clip-1.html#stop" class="tsd-kind-icon">stop</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="clip.clip-1.html#stopscrub" class="tsd-kind-icon">stop<wbr>Scrub</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="clip.clip-1.html#getpath" class="tsd-kind-icon">get<wbr>Path</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="clip.clip-1.html#getarrangementpath" class="tsd-kind-icon">get<wbr>Arrangement<wbr>Path</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="clip.clip-1.html#getsessionpath" class="tsd-kind-icon">get<wbr>Session<wbr>Path</a></li>
 							</ul>
 						</section>
 					</div>
@@ -154,12 +156,22 @@
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
-					<a name="path" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> path</h3>
-					<div class="tsd-signature tsd-kind-icon">path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#x27;live_set tracks $1 clip_slots $2 clip&#x27;</span></div>
+					<a name="arrangementpath" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> arrangement<wbr>Path</h3>
+					<div class="tsd-signature tsd-kind-icon">arrangement<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#x27;live_set tracks $1 arrangement_clips $2 clip&#x27;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L470">Clip.ts:470</a></li>
+							<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L471">Clip.ts:471</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="sessionpath" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> session<wbr>Path</h3>
+					<div class="tsd-signature tsd-kind-icon">session<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#x27;live_set tracks $1 clip_slots $2 clip&#x27;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L470">Clip.ts:470</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -176,7 +188,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Properties.ts#L17">Properties.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Properties.ts#L17">Properties.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h4>
@@ -193,7 +205,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L551">Clip.ts:551</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L556">Clip.ts:556</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -222,7 +234,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L529">Clip.ts:529</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L534">Clip.ts:534</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -251,7 +263,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L540">Clip.ts:540</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L545">Clip.ts:545</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -283,7 +295,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L563">Clip.ts:563</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L568">Clip.ts:568</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -316,7 +328,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L575">Clip.ts:575</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L580">Clip.ts:580</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -353,7 +365,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Properties.children</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Properties.ts#L33">Properties.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Properties.ts#L33">Properties.ts:33</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -382,7 +394,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L585">Clip.ts:585</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L590">Clip.ts:590</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -409,7 +421,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L596">Clip.ts:596</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L601">Clip.ts:601</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -442,7 +454,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L607">Clip.ts:607</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L612">Clip.ts:612</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -470,7 +482,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L618">Clip.ts:618</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L623">Clip.ts:623</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -498,7 +510,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L630">Clip.ts:630</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L635">Clip.ts:635</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -527,7 +539,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L651">Clip.ts:651</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L656">Clip.ts:656</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -579,7 +591,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L667">Clip.ts:667</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L672">Clip.ts:672</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -607,7 +619,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Properties.get</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Properties.ts#L25">Properties.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Properties.ts#L25">Properties.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -636,7 +648,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L682">Clip.ts:682</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L687">Clip.ts:687</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -678,7 +690,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L696">Clip.ts:696</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L701">Clip.ts:701</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -714,7 +726,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L707">Clip.ts:707</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L712">Clip.ts:712</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -741,7 +753,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L720">Clip.ts:720</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L725">Clip.ts:725</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -779,7 +791,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Properties.observe</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Properties.ts#L55">Properties.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Properties.ts#L55">Properties.ts:55</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -829,7 +841,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L733">Clip.ts:733</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L738">Clip.ts:738</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -867,7 +879,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L747">Clip.ts:747</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L752">Clip.ts:752</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -908,7 +920,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L762">Clip.ts:762</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L767">Clip.ts:767</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -950,7 +962,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L774">Clip.ts:774</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L779">Clip.ts:779</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -986,7 +998,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L510">Clip.ts:510</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L515">Clip.ts:515</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1019,7 +1031,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L788">Clip.ts:788</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L793">Clip.ts:793</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1056,7 +1068,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L798">Clip.ts:798</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L803">Clip.ts:803</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1084,7 +1096,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Properties.set</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Properties.ts#L51">Properties.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Properties.ts#L51">Properties.ts:51</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1116,7 +1128,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L811">Clip.ts:811</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L816">Clip.ts:816</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1152,7 +1164,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L822">Clip.ts:822</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L827">Clip.ts:827</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1180,7 +1192,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L832">Clip.ts:832</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L837">Clip.ts:837</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1198,16 +1210,42 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="getpath" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Path</h3>
+					<a name="getarrangementpath" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Arrangement<wbr>Path</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Path<span class="tsd-signature-symbol">(</span>trackNumber<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, clipSlotNumber<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Arrangement<wbr>Path<span class="tsd-signature-symbol">(</span>trackNumber<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, clipSlotNumber<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/0fe5413/lib/Clip.ts#L472">Clip.ts:472</a></li>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L477">Clip.ts:477</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>trackNumber: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>clipSlotNumber: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="getsessionpath" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Session<wbr>Path</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Session<wbr>Path<span class="tsd-signature-symbol">(</span>trackNumber<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, clipSlotNumber<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ricardomatias/ableton-live/blob/583113b/lib/Clip.ts#L473">Clip.ts:473</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1289,7 +1327,10 @@
 								<a href="clip.clip-1.html#raw" class="tsd-kind-icon">raw</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
-								<a href="clip.clip-1.html#path" class="tsd-kind-icon">path</a>
+								<a href="clip.clip-1.html#arrangementpath" class="tsd-kind-icon">arrangement<wbr>Path</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="clip.clip-1.html#sessionpath" class="tsd-kind-icon">session<wbr>Path</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="clip.clip-1.html#id" class="tsd-kind-icon">id</a>
@@ -1385,7 +1426,10 @@
 								<a href="clip.clip-1.html#stopscrub" class="tsd-kind-icon">stop<wbr>Scrub</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="clip.clip-1.html#getpath" class="tsd-kind-icon">get<wbr>Path</a>
+								<a href="clip.clip-1.html#getarrangementpath" class="tsd-kind-icon">get<wbr>Arrangement<wbr>Path</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="clip.clip-1.html#getsessionpath" class="tsd-kind-icon">get<wbr>Session<wbr>Path</a>
 							</li>
 						</ul>
 					</li>
