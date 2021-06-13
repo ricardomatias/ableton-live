@@ -3,13 +3,13 @@
 	"version": "0.0.4",
 	"type": "module",
 	"main": "./build/esm/node.mjs",
-	"module": "./build/esm/node.mjs",
+	"module": "./build/esm/index.mjs",
 	"browser": "./build/esm/index.mjs",
 	"exports": {
 		".": {
 			"require": "./build/cjs/index.cjs",
-			"default": "./build/esm/index.mjs",
-			"node": "./build/esm/node.mjs"
+			"node": "./build/esm/node.mjs",
+			"default": "./build/esm/index.mjs"
 		}
 	},
 	"types": "./build/types/index.d.ts",
