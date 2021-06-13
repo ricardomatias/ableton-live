@@ -9,7 +9,7 @@ const { AbletonLive, Note } = require('../build/cjs');
 // } = require('perf_hooks');
 // const util = require('util');
 
-const live = new AbletonLive({ port: 9002, logRequests: true });
+const live = new AbletonLive({ port: 9001, logRequests: true });
 
 const log = (...args) => console.log(...args);
 
@@ -43,10 +43,13 @@ const test = async () => {
 
 		const clipSlots = await track.children('clip_slots');
 
-		const clip = await clipSlots[1].clip();
+		const clipSlot = clipSlots[2];
 
-		const notes = await clip.getSelectedNotes();
-		console.log(notes);
+		await clipSlot.deleteClip();
+		await clipSlot.createClip(3);
+
+		// const notes = await clip.getSelectedNotes();
+		// console.log(notes);
 
 		// await clip.addNewNotes([
 		// 	new Note(70, 0.0, 0.5, 100),

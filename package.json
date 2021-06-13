@@ -1,14 +1,15 @@
 {
 	"name": "ableton-live",
 	"version": "0.0.3",
-	"browser": "./build/esm/index.js",
-	"main": "./build/cjs/index.js",
-	"module": "./build/esm/index.js",
+	"type": "module",
+	"main": "./build/esm/node.mjs",
+	"module": "./build/esm/node.mjs",
+	"browser": "./build/esm/index.mjs",
 	"exports": {
 		".": {
-			"require": "./build/cjs/index.js",
-			"import": "./build/esm/index.js",
-			"default": "./build/esm/index.js"
+			"require": "./build/cjs/index.cjs",
+			"default": "./build/esm/index.mjs",
+			"node": "./build/esm/node.mjs"
 		}
 	},
 	"types": "./build/types/index.d.ts",
@@ -16,8 +17,8 @@
 	"scripts": {
 		"start": "rollup -c rollup.config.browser.js --watch",
 		"build": "npm run cleanup && npm run build:node && npm run build:browser && npm run types",
-		"build:browser": "node esbuild.config.esm.js",
-		"build:node": "node esbuild.config.cjs.js",
+		"build:browser": "node esbuild.config.browser.js",
+		"build:node": "node esbuild.config.node.js",
 		"comments": "leasot -x -i 'node_modules/**/*','**/*.json' --tags '>' **/*.js **/*.ts",
 		"lint": "eslint lib",
 		"lint:quiet": "eslint lib  --quiet",

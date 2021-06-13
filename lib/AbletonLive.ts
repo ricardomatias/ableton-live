@@ -41,7 +41,7 @@ export interface AbletonLiveOptions {
 	 */
 	host?: string;
 	/**
-	 * @default 9000
+	 * @default 9001
 	 */
 	port?: number;
 	/**
@@ -80,7 +80,7 @@ export class AbletonLive extends (EventEmitter as new () => TypedEventEmitter<Co
 	 * @param {AbletonLiveOptions} [{ host = '127.0.0.1', port = 9000, logRequests = false }={}]
 	 * @memberof AbletonLive
 	 */
-	constructor({ host = '127.0.0.1', port = 9000, logRequests = false }: AbletonLiveOptions = {}) {
+	constructor({ host = '127.0.0.1', port = 9001, logRequests = false }: AbletonLiveOptions = {}) {
 		// eslint-disable-next-line constructor-super
 		super();
 
