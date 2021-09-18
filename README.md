@@ -46,7 +46,7 @@ const { AbletonLive } = require('ableton-live');
 ## Example
 
 ```js
-import { AbletonLive } from 'playa';
+import { AbletonLive } from 'ableton-live';
 
 const live = new AbletonLive();
 
