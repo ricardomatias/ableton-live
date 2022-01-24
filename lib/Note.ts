@@ -82,14 +82,14 @@ export class Note {
 	}
 
 	/**
-	 * The MIDI note number, 0...127, 60 is C3.
+	 * The MIDI note number, 0...128, 60 is C3.
 	 *
 	 * @readonly
 	 * @type {number}
 	 * @memberof Note
 	 */
 	get pitch(): number {
-		return Math.min(Math.max(this._pitch, 0), 127);
+		return Math.min(Math.max(this._pitch, 0), 128);
 	}
 
 	/**
