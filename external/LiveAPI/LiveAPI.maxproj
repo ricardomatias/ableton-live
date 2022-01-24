@@ -2,8 +2,8 @@
 	"name" : "LiveAPI",
 	"version" : 1,
 	"creationdate" : 3705557956,
-	"modificationdate" : 3705563712,
-	"viewrect" : [ 304.0, 212.0, 300.0, 500.0 ],
+	"modificationdate" : 3719933540,
+	"viewrect" : [ 158.0, 146.0, 300.0, 500.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 0,
 	"showdependencies" : 1,
@@ -34,15 +34,6 @@
 ,
 	"searchpath" : 	{
 		"0" : 		{
-			"bootpath" : "~/Projects/ableton-live/external/LiveAPI/client-content",
-			"projectrelativepath" : "./client-content",
-			"label" : "",
-			"recursive" : 1,
-			"enabled" : 1,
-			"includeincollective" : 1
-		}
-,
-		"1" : 		{
 			"bootpath" : "~/Projects/ableton-live/external/LiveAPI/node-content",
 			"projectrelativepath" : "./node-content",
 			"label" : "",

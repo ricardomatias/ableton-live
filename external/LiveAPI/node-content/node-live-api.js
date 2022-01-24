@@ -4,103 +4,118 @@
 // TODO: Migrate to uWebsockets.js
 // https://edisonchee.com/writing/intro-to-%C2%B5websockets.js/
 const maxApi = require('max-api');
-const { WebSocket } = require('@clusterws/cws');
-const util = require('util');
+const uWS = require('uWebSockets.js');
+const { nanoid } = require('nanoid');
 
-const HEARTBEAT_INTERVAL = 5000;
+let SOCKETS = [];
 
-let wss;
+let uws;
 
 const State = {
 	Disconnected: 0,
-	Connected: 1
+	Connected: 1,
 };
 
-const args = process.argv.slice(2);
+/* We store the listen socket here, so that we can shut it down later */
+let listenSocket;
 
 maxApi.addHandler('port', async (port) => {
-	if (wss) {
-		console.log('Attempting to close server..');
+	try {
+		if (uws) {
+			console.log('Attempting to close server..');
 
-		const closeServer = util.promisify(wss.close.bind(wss));
+			if (listenSocket) uWS.us_listen_socket_close(listenSocket);
+		}
 
-		await closeServer();
-	}
-	console.log('Creating server..');
+		console.log('Creating server..');
 
-	wss = new WebSocket.Server({ port }, () => {
-		console.log(`[WebSockette] Server is running on port ${port}`);
+		uws = uWS.App().ws('/ableton-live', {
+			idleTimeout: 12,
+			// maxPayloadLength: 16 * 1024 * 1024,
+			// maxBackpressure: 1024,
 
-		maxApi.outlet('online', State.Connected);
-	});
+			open: (ws) => {
+				ws.id = nanoid();
 
-	wss.on('connection', (ws, req) => {
-		console.log('[WebSockette] Client connected');
+				console.log(`[uWebSockets] Client <${ws.id}> connected`);
 
-		maxApi.outlet('connection', State.Connected);
+				maxApi.outlet('connection', State.Connected);
 
-		const responseHandler = (response) => {
-			ws.send(response);
-		};
+				const responseHandler = (response) => {
+					ws.send(response);
+				};
 
-		maxApi.addHandler('response', responseHandler);
+				ws.maxResponseHandler = responseHandler;
+				ws.isAlive = true;
 
-		ws.isAlive = true;
+				maxApi.addHandler('response', responseHandler);
 
-		ws.on('close', () => {
-			maxApi.outlet('close');
-			maxApi.outlet('connection', State.Disconnected);
-			maxApi.removeHandler('response', responseHandler);
-			console.log('[WebSockette] Client disconnected');
+				ws.ping();
+
+				SOCKETS.push(ws);
+			},
+			close: (ws, code) => {
+				maxApi.outlet('close');
+				maxApi.outlet('connection', State.Disconnected);
+
+				const socket = SOCKETS.find((socket) => {
+					return socket && socket.id === ws.id;
+				});
+
+				maxApi.removeHandler('response', socket.maxResponseHandler);
+
+				SOCKETS.splice(SOCKETS.indexOf(socket), 1);
+
+				console.log('[uWebSockets] Client disconnected');
+			},
+			message: (ws, message, isBinary) => {
+				/* Ok is false if backpressure was built up, wait for drain */
+				try {
+					const msg = Buffer.from(message).toString();
+
+					if (msg === 'pong') {
+						ws.isAlive = true;
+					} else {
+						const payload = JSON.parse(msg);
+
+						maxApi.outlet('message', payload);
+
+						maxApi.outlet(payload.action, msg);
+					}
+				} catch (error) {
+					console.error(error);
+				}
+			},
 		});
 
-		ws.on('message', (msg) => {
-			try {
-				if (msg === 'pong') {
-					ws.isAlive = true;
-				} else {
-					const payload = JSON.parse(msg);
+		uws.listen(port, (token) => {
+			/* Save the listen socket for later shut down */
+			listenSocket = token;
 
-					maxApi.outlet('message', payload);
+			/* Did we even manage to listen? */
+			if (token) {
+				console.log(`[uWebSockets] Server is running on port ${port}`);
 
-					maxApi.outlet(payload.action, msg);
-				}
-			} catch (error) {
-				console.error(error);
+				maxApi.outlet('online', State.Connected);
+			} else {
+				console.log('[uWebSockets] Failed to listen to port ' + port);
 			}
 		});
-	});
-
-	const interval = setInterval(function ping() {
-		wss.clients.forEach(function each(ws) {
-			if (ws.isAlive === false) {
-				console.log('[WebSockette] Client terminated')
-				return ws.terminate();
-			};
-
-			ws.isAlive = false;
-			ws.send('ping');
-		});
-	}, HEARTBEAT_INTERVAL);
-
-	wss.on('close', function close() {
-		console.log('[WebSockette] Server closed');
-		clearInterval(interval);
-	});
-
-	wss.on('error', function error(err) {
-		if (err.message.includes('EADDRINUSE')) {
-			maxApi.outlet('error');
-			clearInterval(interval);
-		}
-		console.log('[WebSockette] Server Error', err.message);
-	});
+	} catch (err) {
+		console.log('[uWebSockets] Generic Error');
+		console.error(err);
+	}
 });
 
-maxApi.registerShutdownHook(() => {
+maxApi.registerShutdownHook((signal) => {
 	maxApi.outlet('online', State.Disconnected);
 	maxApi.post('Exiting with code: ', signal);
-	if (wss) wss.close();
+
+	if (uws && listenSocket) {
+		/* This function is provided directly by µSockets */
+		uWS.us_listen_socket_close(listenSocket);
+		listenSocket = null;
+	}
 });
 
 const handlers = {
@@ -108,7 +123,7 @@ const handlers = {
 		if (!handled) {
 			console.log('Not handled: ', args);
 		}
-	}
+	},
 };
 
 maxApi.addHandlers(handlers);

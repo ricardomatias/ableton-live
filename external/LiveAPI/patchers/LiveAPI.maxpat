@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 1,
-			"revision" : 11,
+			"minor" : 2,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 237.0, 114.0, 765.0, 732.0 ],
+		"rect" : [ 586.0, 87.0, 765.0, 732.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -41,13 +41,25 @@
 		"title" : "Live API",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-37",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 303.0, 548.0, 75.0, 20.0 ],
+					"text" : "script reboot"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-26",
 					"linecount" : 2,
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "int", "int" ],
-					"patching_rect" : [ 464.25, 136.0, 61.0, 36.0 ],
+					"patching_rect" : [ 464.25, 136.0, 57.0, 32.0 ],
 					"text" : "change 0"
 				}
 
@@ -59,7 +71,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 74.0, 608.0, 139.0, 22.0 ],
+					"patching_rect" : [ 74.0, 608.0, 139.0, 20.0 ],
 					"text" : "script npm install"
 				}
 
@@ -72,7 +84,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 337.0, 186.0, 114.0, 36.0 ],
+					"patching_rect" : [ 337.0, 186.0, 82.0, 32.0 ],
 					"text" : "title \"Live API\""
 				}
 
@@ -84,7 +96,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 337.0, 234.0, 90.0, 22.0 ],
+					"patching_rect" : [ 337.0, 234.0, 90.0, 20.0 ],
 					"save" : [ "#N", "thispatcher", ";", "#Q", "end", ";" ],
 					"text" : "thispatcher"
 				}
@@ -132,7 +144,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 125.0, 716.0, 29.5, 22.0 ],
+					"patching_rect" : [ 125.0, 716.0, 29.5, 20.0 ],
 					"text" : "0"
 				}
 
@@ -145,7 +157,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 125.0, 674.0, 81.0, 36.0 ],
+					"patching_rect" : [ 125.0, 674.0, 65.0, 32.0 ],
 					"text" : "select stop"
 				}
 
@@ -204,7 +216,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 404.0, 706.0, 91.0, 22.0 ],
+					"patching_rect" : [ 404.0, 706.0, 91.0, 20.0 ],
 					"text" : "print error"
 				}
 
@@ -216,7 +228,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 364.5, 479.0, 135.0, 22.0 ],
+					"patching_rect" : [ 364.5, 479.0, 135.0, 20.0 ],
 					"text" : "prepend response"
 				}
 
@@ -229,7 +241,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 364.5, 404.5, 135.0, 22.0 ],
+					"patching_rect" : [ 364.5, 404.5, 135.0, 20.0 ],
 					"text" : "r ---api-callback"
 				}
 
@@ -241,7 +253,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 739.0, 686.0, 88.0, 36.0 ],
+					"patching_rect" : [ 739.0, 686.0, 64.0, 32.0 ],
 					"text" : "print stderr"
 				}
 
@@ -253,7 +265,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 377.0, 1110.0, 121.0, 36.0 ],
+					"patching_rect" : [ 377.0, 1110.0, 91.0, 32.0 ],
 					"text" : "s ---api-callback"
 				}
 
@@ -266,7 +278,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 229.0, 479.0, 61.0, 36.0 ],
+					"patching_rect" : [ 229.0, 479.0, 49.0, 32.0 ],
 					"text" : "select 1"
 				}
 
@@ -315,7 +327,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 121.5, 400.0, 102.0, 22.0 ],
+					"patching_rect" : [ 121.5, 400.0, 102.0, 20.0 ],
 					"text" : "r ---node-rdy"
 				}
 
@@ -326,7 +338,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 516.0, 686.0, 106.0, 22.0 ],
+					"patching_rect" : [ 516.0, 686.0, 106.0, 20.0 ],
 					"text" : "s ---node-rdy"
 				}
 
@@ -338,7 +350,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 516.0, 641.0, 95.0, 22.0 ],
+					"patching_rect" : [ 516.0, 641.0, 95.0, 20.0 ],
 					"text" : "route start"
 				}
 
@@ -359,10 +371,26 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
 					"parameter_enable" : 1,
-					"patching_rect" : [ 301.0, 448.0, 44.0, 15.0 ],
+					"patching_rect" : [ 303.0, 448.0, 44.0, 15.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 24.337748289108276, 130.536254291942697, 135.0, 23.0 ],
 					"saved_attribute_attributes" : 					{
+						"lcdcolor" : 						{
+							"expression" : ""
+						}
+,
+						"inactivelcdcolor" : 						{
+							"expression" : ""
+						}
+,
+						"focusbordercolor" : 						{
+							"expression" : ""
+						}
+,
+						"lcdbgcolor" : 						{
+							"expression" : ""
+						}
+,
 						"valueof" : 						{
 							"parameter_enum" : [ "val1", "val2" ],
 							"parameter_longname" : "live.text",
@@ -477,7 +505,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 606.0, 543.0, 141.0, 36.0 ],
+					"patching_rect" : [ 606.0, 543.0, 115.0, 32.0 ],
 					"text" : "script processStatus"
 				}
 
@@ -490,7 +518,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 229.0, 400.0, 66.0, 22.0 ],
+					"patching_rect" : [ 229.0, 400.0, 66.0, 20.0 ],
 					"text" : "r ---rdy"
 				}
 
@@ -504,6 +532,7 @@
 					"enablevscroll" : 0,
 					"id" : "obj-14",
 					"lockeddragscroll" : 0,
+					"lockedsize" : 0,
 					"maxclass" : "bpatcher",
 					"name" : "n4m.monitor.maxpat",
 					"numinlets" : 1,
@@ -523,7 +552,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 498.5, 543.0, 95.0, 36.0 ],
+					"patching_rect" : [ 498.5, 543.0, 71.0, 32.0 ],
 					"text" : "script status"
 				}
 
@@ -535,7 +564,7 @@
 					"numinlets" : 5,
 					"numoutlets" : 5,
 					"outlettype" : [ "", "", "", "", "" ],
-					"patching_rect" : [ 229.0, 674.0, 280.0, 22.0 ],
+					"patching_rect" : [ 229.0, 674.0, 280.0, 20.0 ],
 					"text" : "route online connection message error"
 				}
 
@@ -557,7 +586,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 640.0, 686.0, 88.0, 36.0 ],
+					"patching_rect" : [ 640.0, 686.0, 66.0, 32.0 ],
 					"text" : "print stdout"
 				}
 
@@ -570,7 +599,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 336.0, 543.0, 81.0, 36.0 ],
+					"patching_rect" : [ 390.0, 543.0, 61.0, 32.0 ],
 					"text" : "script stop"
 				}
 
@@ -583,7 +612,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 229.0, 543.0, 88.0, 36.0 ],
+					"patching_rect" : [ 229.0, 543.0, 62.0, 32.0 ],
 					"text" : "script start"
 				}
 
@@ -596,7 +625,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 640.0, 641.0, 134.0, 36.0 ],
+					"patching_rect" : [ 640.0, 641.0, 104.0, 32.0 ],
 					"text" : "route stdout stderr"
 				}
 
@@ -609,12 +638,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 229.0, 608.0, 280.0, 36.0 ],
+					"patching_rect" : [ 229.0, 608.0, 222.0, 32.0 ],
 					"saved_object_attributes" : 					{
 						"autostart" : 1,
 						"defer" : 0,
-						"node_bin_path" : "",
-						"npm_bin_path" : "",
 						"watch" : 0
 					}
 ,
@@ -630,7 +657,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 121.5, 543.0, 88.0, 36.0 ],
+					"patching_rect" : [ 121.5, 543.0, 76.0, 32.0 ],
 					"text" : "prepend port"
 				}
 
@@ -643,7 +670,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 889.0, 978.0, 71.0, 22.0 ],
+					"patching_rect" : [ 889.0, 978.0, 71.0, 20.0 ],
 					"text" : "r ---rdy"
 				}
 
@@ -656,7 +683,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 464.25, 186.0, 61.0, 36.0 ],
+					"patching_rect" : [ 464.25, 186.0, 45.0, 32.0 ],
 					"text" : "s ---rdy"
 				}
 
@@ -668,7 +695,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "bang", "int", "int" ],
-					"patching_rect" : [ 464.25, 31.0, 118.0, 22.0 ],
+					"patching_rect" : [ 464.25, 31.0, 118.0, 20.0 ],
 					"text" : "live.thisdevice"
 				}
 
@@ -681,7 +708,7 @@
 					"numinlets" : 9,
 					"numoutlets" : 9,
 					"outlettype" : [ "", "", "", "", "", "", "", "", "" ],
-					"patching_rect" : [ 377.0, 978.0, 492.0, 36.0 ],
+					"patching_rect" : [ 377.0, 978.0, 398.0, 32.0 ],
 					"text" : "routepass get children set call callMultiple observe removeObserver close"
 				}
 
@@ -693,7 +720,7 @@
 					"numinlets" : 8,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 377.0, 1057.699951000000056, 432.874999999999773, 22.0 ],
+					"patching_rect" : [ 377.0, 1057.699951000000056, 432.874999999999773, 20.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "live-api.js",
 						"parameter_enable" : 1
@@ -712,7 +739,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "signal" ],
-					"patching_rect" : [ 595.0, 74.0, 66.0, 22.0 ],
+					"patching_rect" : [ 595.0, 74.0, 66.0, 20.0 ],
 					"style" : "PLAYA",
 					"text" : "plugout~"
 				}
@@ -725,7 +752,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "signal" ],
-					"patching_rect" : [ 595.0, 31.0, 66.0, 22.0 ],
+					"patching_rect" : [ 595.0, 31.0, 66.0, 20.0 ],
 					"style" : "PLAYA",
 					"text" : "plugin~"
 				}
@@ -738,7 +765,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 889.0, 1017.699951000000056, 88.0, 22.0 ],
+					"patching_rect" : [ 889.0, 1017.699951000000056, 88.0, 20.0 ],
 					"style" : "PLAYA",
 					"text" : "autowatch 1"
 				}
@@ -1015,6 +1042,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-37", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-58", 0 ],
 					"source" : [ "obj-38", 0 ]
 				}
@@ -1154,7 +1188,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-29", 0 ],
+					"destination" : [ "obj-37", 0 ],
 					"source" : [ "obj-75", 0 ]
 				}
 
@@ -1180,8 +1214,8 @@
 ,
 		"dependency_cache" : [ 			{
 				"name" : "live-api.js",
-				"bootpath" : "~/Projects/ableton-live/external/LiveAPI/client-content",
-				"patcherrelativepath" : "../client-content",
+				"bootpath" : "~/Projects/ableton-live/external/LiveAPI/code",
+				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
@@ -1225,16 +1259,7 @@
 		"styles" : [ 			{
 				"name" : "PLAYA",
 				"default" : 				{
-					"selectioncolor" : [ 0.180392156862745, 0.980392156862745, 0.380392156862745, 1.0 ],
-					"textcolor" : [ 0.968626976013184, 0.968626976013184, 0.968626976013184, 1.0 ],
-					"fontsize" : [ 12.0 ],
-					"textjustification" : [ 1 ],
-					"accentcolor" : [ 0.847058823529412, 0.4, 0.654901960784314, 1.0 ],
-					"locked_bgcolor" : [ 0.32156862745098, 0.341176470588235, 0.423529411764706, 1.0 ],
-					"elementcolor" : [ 0.345098039215686, 0.364705882352941, 0.458823529411765, 1.0 ],
-					"bgcolor" : [ 0.16078431372549, 0.168627450980392, 0.215686274509804, 1.0 ],
 					"stripecolor" : [ 0.12156862745098, 0.67843137254902, 0.262745098039216, 1.0 ],
-					"fontname" : [ "Hack Regular Nerd Font Complete" ],
 					"patchlinecolor" : [ 0.149019607843137, 0.827450980392157, 0.32156862745098, 1.0 ],
 					"clearcolor" : [ 0.964705882352941, 0.964705882352941, 0.964705882352941, 0.0 ],
 					"bgfillcolor" : 					{
@@ -1249,7 +1274,16 @@
 						"pt2" : [ 0.5, 0.95 ]
 					}
 ,
-					"color" : [ 1.0, 0.474509803921569, 0.776470588235294, 1.0 ]
+					"textcolor" : [ 0.968626976013184, 0.968626976013184, 0.968626976013184, 1.0 ],
+					"selectioncolor" : [ 0.180392156862745, 0.980392156862745, 0.380392156862745, 1.0 ],
+					"accentcolor" : [ 0.847058823529412, 0.4, 0.654901960784314, 1.0 ],
+					"locked_bgcolor" : [ 0.32156862745098, 0.341176470588235, 0.423529411764706, 1.0 ],
+					"fontsize" : [ 12.0 ],
+					"color" : [ 1.0, 0.474509803921569, 0.776470588235294, 1.0 ],
+					"bgcolor" : [ 0.16078431372549, 0.168627450980392, 0.215686274509804, 1.0 ],
+					"textjustification" : [ 1 ],
+					"elementcolor" : [ 0.345098039215686, 0.364705882352941, 0.458823529411765, 1.0 ],
+					"fontname" : [ "Hack Regular Nerd Font Complete" ]
 				}
 ,
 				"parentstyle" : "",
