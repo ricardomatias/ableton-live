@@ -498,7 +498,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 		this._type = raw.is_audio_clip ? ClipType.Midi : ClipType.Audio;
 		this._length = raw.length;
 
-		this.transformers = {};
+		this.childrenTransformers = {};
 	}
 
 	// =========================================================================

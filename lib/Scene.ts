@@ -147,7 +147,7 @@ export class Scene extends Properties<
 		this._name = raw.name;
 		this._isEmpty = raw.isEmpty;
 
-		this.transformers = {
+		this.childrenTransformers = {
 			clip_slots: (clipSlots) => clipSlots.map((c) => new ClipSlot(this.ableton, c)),
 		};
 	}

@@ -627,7 +627,7 @@ export class Song extends Properties<
 	constructor(ableton: AbletonLive) {
 		super(ableton, 'song', Song.path, SongChildrenProperties);
 
-		this.transformers = {
+		this.childrenTransformers = {
 			master_track: (track) => new Track(this.ableton, track, 'live_set master_track'),
 			tracks: (tracks) => tracks.map((t) => new Track(this.ableton, t)),
 			scenes: (scenes) => scenes.map((s) => new Scene(this.ableton, s)),

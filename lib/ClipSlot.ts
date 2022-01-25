@@ -149,7 +149,7 @@ export class ClipSlot extends Properties<
 		this._hasClip = raw.has_clip;
 		this._clip = new Clip(this.ableton, raw.clip);
 
-		this.transformers = {
+		this.childrenTransformers = {
 			clip: ([ clip ]) => {
 				if (clip.id === '0') {
 					return null;

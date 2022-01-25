@@ -120,7 +120,7 @@ export class Device extends Properties<
 		this._className = raw.class_name;
 		this._classDisplayName = raw.class_display_name;
 
-		this.transformers = {
+		this.childrenTransformers = {
 			parameters: (parameters) => parameters.map((parameter) => new DeviceParameter(this.ableton, parameter)),
 		};
 	}

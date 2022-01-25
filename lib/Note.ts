@@ -166,6 +166,23 @@ export class Note {
 	}
 
 	/**
+	 * Clones this Note
+	 *
+	 * @function clone
+	 * @memberof Note
+	 * @returns {Note}
+	 */
+	clone() {
+		return new Note(this._pitch, this._start, this._duration, this._velocity, {
+			id: undefined,
+			muted: this._muted,
+			probability: this._probability,
+			velocityDeviation: this._velocity,
+			releaseVelocity: this._releaseVelocity,
+		});
+	}
+
+	/**
 	 * @private
 	 * @readonly
 	 * @type {string}

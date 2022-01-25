@@ -3,6 +3,7 @@ import { WebSockette } from './helpers/WebSockette';
 import { nanoid } from 'nanoid';
 import { Song } from './Song';
 
+
 import { SongView } from './SongView';
 
 interface Command {
@@ -67,13 +68,10 @@ export class AbletonLive extends (EventEmitter as new () => TypedEventEmitter<Co
 	private _host: string;
 	private _port: number;
 	private _logRequests: boolean;
-	private _heartbeat: () => void;
 
 	public song = new Song(this);
 	public songView = new SongView(this);
 
-	private _heartbeatTimeout: number;
-	private _heartbeatInterval: number;
 	private _isBrowser: boolean;
 
 	/**
@@ -97,13 +95,6 @@ export class AbletonLive extends (EventEmitter as new () => TypedEventEmitter<Co
 		this.client = new WebSockette();
 
 		this.handleIncoming = this.handleIncoming.bind(this);
-		this._heartbeatInterval = 5000 + 500;
-
-		this._heartbeat = () => {
-			clearTimeout(this._heartbeatTimeout);
-
-			this._heartbeatTimeout = <any>setTimeout(() => this.client.close(), this._heartbeatInterval);
-		};
 	}
 
 	/**
@@ -117,16 +108,12 @@ export class AbletonLive extends (EventEmitter as new () => TypedEventEmitter<Co
 			this.client.on('open', () => {
 				this._isConnected = true;
 
-				console.log(`[AbletonLive] Listening on ${this._host}:${this._port}`);
-
-				this._heartbeat();
+				console.log(`[AbletonLive] Listening on ${this._host}/ableton-live:${this._port}`);
 
 				this.emit('connect');
 
 				resolve();
 			});
-
-			this.client.on('ping', this._heartbeat.bind(this));
 
 			this.client.on('error', (err) => {
 				// this.close();
@@ -145,7 +132,7 @@ export class AbletonLive extends (EventEmitter as new () => TypedEventEmitter<Co
 
 			this.client.on('message', this.handleIncoming);
 
-			this.client.open(`ws://${this._host}:${this._port}`);
+			this.client.open(`ws://${this._host}:${this._port}/ableton-live`);
 
 			if (this._isBrowser) {
 				window.addEventListener('beforeunload', () => {
@@ -170,7 +157,6 @@ export class AbletonLive extends (EventEmitter as new () => TypedEventEmitter<Co
 
 	private closeClient(): void {
 		this._isConnected = false;
-		clearTimeout(this._heartbeatTimeout);
 
 		this.client.close();
 
@@ -188,7 +174,6 @@ export class AbletonLive extends (EventEmitter as new () => TypedEventEmitter<Co
 
 		this._isConnected = false;
 
-		clearInterval(this._heartbeatTimeout);
 		this.client.close();
 
 		this.emit('disconnect');
@@ -236,7 +221,7 @@ export class AbletonLive extends (EventEmitter as new () => TypedEventEmitter<Co
 				this.close();
 				return;
 			}
-		} catch (err) {
+		} catch (err: any) {
 			console.log(`[AbletonLive] ${err.stack}`);
 		}
 	}

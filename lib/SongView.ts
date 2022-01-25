@@ -147,7 +147,7 @@ export class SongView extends Properties<
 	constructor(ableton: AbletonLive) {
 		super(ableton, 'song', SongView.path, childrenInitialProps);
 
-		this.transformers = {
+		this.childrenTransformers = {
 			selected_track: (t) => new Track(this.ableton, Array.isArray(t) ? t[0] : t),
 			selected_scene: (s) => new Scene(this.ableton, Array.isArray(s) ? s[0] : s),
 			selected_parameter: (dp) => new DeviceParameter(this.ableton, Array.isArray(dp) ? dp[0] : dp),

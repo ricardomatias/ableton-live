@@ -7,10 +7,6 @@ import { Device, RawDevice } from './Device';
 import { Clip } from './Clip';
 
 // TODO Missing properties
-// > available_input_routing_channels: dictionary
-// > available_input_routing_types: dictionary
-// > available_output_routing_channels: dictionary
-// > available_output_routing_types: dictionary
 // > input_routing_channel: dictionary;
 // > input_routing_type: dictionary;
 // > output_routing_channel: dictionary;
@@ -24,10 +20,26 @@ export interface TrackGetProperties {
 	 * true = track is armed for recording. [not in return/master tracks]
 	 */
 	arm: boolean;
-	// available_input_routing_channels: dictionary;
-	// available_input_routing_types: dictionary;
-	// available_output_routing_channels: dictionary;
-	// available_output_routing_types: dictionary;
+	/**
+	 * The list of available source channels for the track's input routing.
+	 * Only available on MIDI and audio tracks.
+	 */
+	available_input_routing_channels: string | number;
+	/**
+	 * The list of available source types for the track's input routing
+	 * Only available on MIDI and audio tracks.
+	 */
+	available_input_routing_types: string | number;
+	/**
+	 * The list of available source channels for the track's ouput routing.
+	 * Only available on MIDI and audio tracks.
+	 */
+	available_output_routing_channels: string | number;
+	/**
+	 * The list of available source types for the track's ouput routing.
+	 * Only available on MIDI and audio tracks.
+	 */
+	available_output_routing_types: string | number;
 	/**
 	 * false for return and master tracks.
 	 */
@@ -178,6 +190,10 @@ export interface TrackChildrenProperties {
  * @interface TrackTransformedProperties
  */
 export interface TrackTransformedProperties {
+	available_input_routing_channels: TrackRoutingType[] | number;
+	available_input_routing_types: TrackRoutingType[] | number;
+	available_output_routing_channels: TrackRoutingType[] | number;
+	available_output_routing_types: TrackRoutingType[] | number;
 	/**
 	 * @inheritdoc TrackChildrenProperties.devices
 	 */
@@ -202,10 +218,22 @@ export interface TrackSetProperties {
 	 * @inheritdoc TrackGetProperties.arm
 	 */
 	arm: number;
-	// available_input_routing_channels: dictionary;
-	// available_input_routing_types: dictionary;
-	// available_output_routing_channels: dictionary;
-	// available_output_routing_types: dictionary;
+	/**
+	 * @inheritdoc TrackGetProperties.available_input_routing_channels
+	 */
+	available_input_routing_channels: string | number;
+	/**
+	 * @inheritdoc TrackGetProperties.available_input_routing_types
+	 */
+	available_input_routing_types: string | number;
+	/**
+	 * @inheritdoc TrackGetProperties.available_output_routing_channels
+	 */
+	available_output_routing_channels: string | number;
+	/**
+	 * @inheritdoc TrackGetProperties.available_output_routing_types
+	 */
+	available_output_routing_types: string | number;
 	/**
 	 * @inheritdoc TrackGetProperties.color
 	 */
@@ -338,12 +366,13 @@ export interface TrackObservableProperties {
 	solo: boolean;
 }
 
-
 /**
  * 0 = In, 1 = Auto, 2 = Off [not in return/master tracks]
  */
 export const enum TrackMonitoringState {
-	In = 0, Auto = 1, Off = 2
+	In = 0,
+	Auto = 1,
+	Off = 2,
 }
 
 /**
@@ -351,13 +380,16 @@ export const enum TrackMonitoringState {
  * [only available if is_foldable = 1]
  */
 export const enum TrackFoldState {
-	Visible = 0, Hidden = 1
+	Visible = 0,
+	Hidden = 1,
 }
 
 export const enum TrackType {
 	Midi = 'midi',
 	Audio = 'audio',
 }
+
+export type TrackRoutingType = { display_name: string; identifier: number };
 
 /**
  * @interface RawTrack
@@ -371,16 +403,20 @@ export interface RawTrack {
 /**
  * @private
  */
-export const RawTrackKeys = [
-	'name',
-	'has_audio_input',
-];
+export const RawTrackKeys = ['name', 'has_audio_input'];
 
 const childrenInitialProps = {
 	devices: RawDevice,
 	clip_slots: RawClipSlotKeys,
 	mixer_device: RawMixerDeviceKeys,
 };
+
+function routingGetter<T extends keyof TrackTransformedProperties>(prop: T) {
+	return (details): TrackTransformedProperties[T] => {
+		if (typeof details === 'number') return details as TrackTransformedProperties[T];
+		return JSON.parse(details)[prop];
+	};
+}
 
 /**
  * This class represents a track in Live. It can either be an audio track, a MIDI track, a return track or the master track.
@@ -431,13 +467,19 @@ export class Track extends Properties<
 		this._name = raw.name;
 		this._type = raw.has_audio_input ? TrackType.Audio : TrackType.Midi;
 
-		this.transformers = {
+		this.getterTransformers = {
+			available_input_routing_channels: routingGetter('available_input_routing_channels'),
+			available_input_routing_types: routingGetter('available_input_routing_types'),
+			available_output_routing_channels: routingGetter('available_output_routing_channels'),
+			available_output_routing_types: routingGetter('available_output_routing_types'),
+		};
+
+		this.childrenTransformers = {
 			devices: (devices) => devices.map((device) => new Device(this.ableton, device)),
-			mixer_device: ([ mixerDevice ]) => new MixerDevice(this.ableton, mixerDevice),
+			mixer_device: ([mixerDevice]) => new MixerDevice(this.ableton, mixerDevice),
 			clip_slots: (clipSlots) => clipSlots.map((c) => new ClipSlot(this.ableton, c)),
 		};
 	}
-
 
 	// =========================================================================
 	// * Custom API
@@ -452,11 +494,18 @@ export class Track extends Properties<
 	async getClips(): Promise<(Clip | null)[]> {
 		const clipSlots = await this.children('clip_slots');
 
-		return await Promise.all(
-			clipSlots
-				.filter((cs) => cs.hasClip)
-				.map(async (cs) => await cs.clip()),
-		);
+		return await Promise.all(clipSlots.filter((cs) => cs.hasClip).map(async (cs) => await cs.clip()));
+	}
+
+	/**
+	 * Is the track a group track
+	 *
+	 * @memberof Track
+	 * @return {(Promise<boolean>)}
+	 */
+	async isGroupTrack(): Promise<boolean> {
+		const groupTrackId = await this.get('available_input_routing_channels');
+		return typeof groupTrackId === 'number';
 	}
 
 	// =========================================================================
@@ -486,57 +535,57 @@ export class Track extends Properties<
 	}
 
 	/**
-	* Get the volume of the track
-	* @memberof Track
-	*
-	* @return {Promise<DeviceParameter>}
-	*/
+	 * Get the volume of the track
+	 * @memberof Track
+	 *
+	 * @return {Promise<DeviceParameter>}
+	 */
 	async volume(): Promise<DeviceParameter> {
-		const mixerDevice = this._mixerDevice = await this.children('mixer_device');
+		const mixerDevice = (this._mixerDevice = await this.children('mixer_device'));
 
 		return mixerDevice.volume;
 	}
 
 	/**
-	* Get the panning of the track
-	* @memberof Track
-	*
-	* @return {Promise<DeviceParameter>}
-	*/
+	 * Get the panning of the track
+	 * @memberof Track
+	 *
+	 * @return {Promise<DeviceParameter>}
+	 */
 	async panning(): Promise<DeviceParameter> {
-		const mixerDevice = this._mixerDevice = await this.children('mixer_device');
+		const mixerDevice = (this._mixerDevice = await this.children('mixer_device'));
 
 		return mixerDevice.panning;
 	}
 
 	/**
-	* Delete the device at the given index.
-	* @memberof Track
-	*
-	* @param {number} index
-	* @return {null}
-	*/
+	 * Delete the device at the given index.
+	 * @memberof Track
+	 *
+	 * @param {number} index
+	 * @return {null}
+	 */
 	public async deleteDevice(index: number): Promise<void> {
-		return this.call('delete_device', [ index ]);
+		return this.call('delete_device', [index]);
 	}
 
 	/**
-	* Works like 'Duplicate' in a clip's context menu.
-	* @memberof Track
-	*
-	* @param {number} index
-	* @return {null}
-	*/
+	 * Works like 'Duplicate' in a clip's context menu.
+	 * @memberof Track
+	 *
+	 * @param {number} index
+	 * @return {null}
+	 */
 	public async duplicateClipSlot(index: number): Promise<void> {
-		return this.call('duplicate_clip_slot', [ index ]);
+		return this.call('duplicate_clip_slot', [index]);
 	}
 
 	/**
-	* Stops all playing and fired clips in this track.
-	* @memberof Track
-	*
-	* @return {null}
-	*/
+	 * Stops all playing and fired clips in this track.
+	 * @memberof Track
+	 *
+	 * @return {null}
+	 */
 	public async stopAllClips(): Promise<void> {
 		return this.call('stop_all_clips');
 	}

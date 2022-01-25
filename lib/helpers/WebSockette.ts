@@ -60,29 +60,17 @@ export class WebSockette extends (EventEmitter as new () => TypedEventEmitter<We
 		this.url = url;
 		this.protocols = protocols;
 
-		this.ws.onmessage = (event: MessageEvent) => {
-			switch (event.data) {
-				case 'ping':
-					this.emit('ping');
-					this.send('pong');
-					break;
-				case 'pong':
-					this.emit('pong');
-					this.send('ping');
-					break;
-				default:
-					this.emit('message', event);
-			}
-		};
+		this.ws.addEventListener('message', (event: MessageEvent) => {
+			this.emit('message', event);
+		});
 
-		this.ws.onopen = (event) => {
+		this.ws.addEventListener('open', (event) => {
 			this.emit('open', event);
-			this.send('pong');
 			this.num = 0;
 			clearTimeout(this.timer);
-		};
+		});
 
-		this.ws.onclose = (event) => {
+		this.ws.addEventListener('close', (event) => {
 			switch (event.code) {
 				case WebSocketCloseCode.NormalClosure:
 				case WebSocketCloseCode.GoingAway:
@@ -98,11 +86,11 @@ export class WebSockette extends (EventEmitter as new () => TypedEventEmitter<We
 
 					this.reconnect(event);
 			}
-		};
+		});
 
-		this.ws.onerror = (event) => {
+		this.ws.addEventListener('error', (event) => {
 			this.emit('error', event);
-		};
+		});
 	}
 
 	get state(): WebSocketState {
@@ -129,10 +117,12 @@ export class WebSockette extends (EventEmitter as new () => TypedEventEmitter<We
 	}
 
 	close(code = WebSocketCloseCode.NormalClosure, reason = 'General'): void {
+		console.log('[AbletonLive] Closing Connection');
+
 		if (this.timer) {
-			console.log('CLEAR TIMEOUT', this.timer);
 			clearTimeout(this.timer);
 		}
+
 		this.ws.close(code, reason);
 	}
 }

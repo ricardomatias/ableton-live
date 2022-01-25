@@ -2,7 +2,6 @@ import mitt, {
 	Emitter,
 	EventType,
 	Handler,
-	WildcardHandler,
 	EventHandlerMap,
 } from 'mitt';
 
@@ -16,26 +15,26 @@ export interface TypedEventEmitter<Events> {
 	emit<E extends keyof Events>(event: E, ...args: Arguments<Events[E]>): void
 }
 
-export class EventEmitter {
-	private mitt: Emitter;
+export class EventEmitter<Events extends Record<EventType, unknown>> {
+	private mitt: Emitter<Events>;
 
-	constructor(e?: EventHandlerMap) {
+	constructor(e?: EventHandlerMap<Events>) {
 		this.mitt = mitt(e);
 	}
 
-	get all(): EventHandlerMap {
+	get all(): EventHandlerMap<Events> {
 		return this.mitt.all;
 	}
 
-	on<T>(type: EventType, handler: Handler<T>): void {
+	on<Key extends keyof Events>(type: Key, handler: Handler<Events[Key]>): void {
 		this.mitt.on(type, handler);
 	}
-	off<T = any>(type: EventType, handler: Handler<T>): void
-	off(type: '*', handler: WildcardHandler): void {
+
+	off<Key extends keyof Events>(type: Key, handler?: Handler<Events[Key]>): void {
 		this.mitt.off(type, handler);
 	}
 
-	emit<T>(type: EventType, event?: T): void
+	emit<T>(type: EventType, event?: T): void;
 	emit(type: '*', event?: any): void {
 		this.mitt.emit(type, event);
 	}

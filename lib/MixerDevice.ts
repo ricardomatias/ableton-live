@@ -127,7 +127,7 @@ export class MixerDevice extends Properties<
 		this._volume = new DeviceParameter(this.ableton, raw.volume);
 		this._panning = new DeviceParameter(this.ableton, raw.panning);
 
-		this.transformers = {
+		this.childrenTransformers = {
 			sends: (parameters) => (parameters.map((deviceParameter) => new DeviceParameter(this.ableton, deviceParameter))),
 		};
 	}
