@@ -23,7 +23,7 @@
 		"lint": "eslint lib",
 		"lint:quiet": "eslint lib  --quiet",
 		"prepare": "npm run build",
-		"cleanup": "rm -rf ./build",
+		"cleanup": "rimraf ./build",
 		"types": "tsc --emitDeclarationOnly --outDir build/types",
 		"docs": "typedoc"
 	},
