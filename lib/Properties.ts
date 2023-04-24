@@ -50,7 +50,7 @@ export class Properties<GP, CP, TP, SP, OP> {
 		return value;
 	}
 
-	async children<T extends keyof CP>(child: T, childProps?: string[]): Promise<T extends keyof TP ? TP[T] : CP[T]> {
+	async children<TName extends keyof CP>(child: TName, childProps?: InitialProps<TName,CP, TP>[]): Promise<PropertyType<TName,TP,CP>> {
 		let initialProps;
 
 		if (this.childrenInitialProps) {
@@ -118,3 +118,42 @@ export class Properties<GP, CP, TP, SP, OP> {
 		return this.ableton.callMultiple(this.path, calls, this._id, timeout);
 	}
 }
+
+type InitialProps<TName extends keyof CP, CP, TP> =
+	| ChildProps<TName, CP, TP>
+	| ChildChildren<TName, CP, TP>;
+
+type ChildProps<TName extends keyof CP, CP, TP> = FlatPropertyType<
+	TName,
+	TP,
+	CP
+> extends Properties<infer GP, any, any, any, any>
+	? keyof GP
+	: never;
+
+type ChildChildren<TName extends keyof CP, CP, TP> = FlatPropertyType<
+	TName,
+	TP,
+	CP
+> extends Properties<any, infer _CP, infer _TP, any, any>
+	? ChildChildrenDescriptor<_CP, _TP, keyof _CP>
+	: FlatPropertyType<
+		TName,
+		TP,
+		CP
+	>;
+
+type ChildChildrenDescriptor<_CP, _TP, TName extends keyof _CP = any> = {
+	name: TName;
+	initialProps: InitialProps<TName, _CP, _TP>[];
+};
+
+type PropertyType<TName extends keyof CP, TP, CP> = TName extends keyof TP
+	? TP[TName]
+	: CP[TName];
+	
+type FlatPropertyType<TName extends keyof CP, TP, CP> = TName extends keyof TP
+	? Flatten<TP[TName]>
+	: Flatten<CP[TName]>;
+
+type Flatten<T> = T extends Array<infer U> ? Flatten<U> : T;
