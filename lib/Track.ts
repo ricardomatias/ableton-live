@@ -396,6 +396,7 @@ export type TrackRoutingType = { display_name: string; identifier: number };
  */
 export interface RawTrack {
 	id: string;
+	path:string;
 	name: string;
 	has_audio_input: boolean;
 }
@@ -461,7 +462,7 @@ export class Track extends Properties<
 	 * @memberof Track
 	 */
 	constructor(ableton: AbletonLive, public raw: RawTrack, path?: string) {
-		super(ableton, 'track', path ? path : Track.path, childrenInitialProps);
+		super(ableton, 'track', path ?? raw.path, childrenInitialProps);
 
 		this._id = parseInt(raw.id, 10);
 		this._name = raw.name;

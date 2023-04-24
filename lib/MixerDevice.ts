@@ -86,6 +86,7 @@ export interface MixerDeviceObservableProperties {
 
 export interface RawMixerDevice {
 	id: number;
+	path:string;
 	volume: RawDeviceParameter;
 	panning: RawDeviceParameter;
 }
@@ -121,7 +122,7 @@ export class MixerDevice extends Properties<
 	private _panning: DeviceParameter;
 
 	constructor(ableton: AbletonLive, public raw: RawMixerDevice, path?: string) {
-		super(ableton, 'mixer_device', path ? path : MixerDevice.path, childrenInitialProps);
+		super(ableton, 'mixer_device', path ?? raw.path, childrenInitialProps);
 
 		this._id = raw.id;
 		this._volume = new DeviceParameter(this.ableton, raw.volume);

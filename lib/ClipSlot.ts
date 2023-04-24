@@ -109,6 +109,7 @@ export interface ObservableProperties {
 
 export interface RawClipSlot {
 	id: number;
+	path: string;
 	has_clip: boolean;
 	clip: RawClip;
 }
@@ -143,7 +144,7 @@ export class ClipSlot extends Properties<
 	 * @memberof ClipSlot
 	 */
 	constructor(ableton: AbletonLive, public raw: RawClipSlot, path?: string) {
-		super(ableton, 'clip_slot', path ? path : ClipSlot.path, initialProperties);
+		super(ableton, 'clip_slot', path ?? raw.path, initialProperties);
 
 		this._id = raw.id;
 		this._hasClip = raw.has_clip;

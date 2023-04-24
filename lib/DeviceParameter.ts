@@ -106,6 +106,7 @@ export interface DeviceParameterObservableProperties {
 
 export interface RawDeviceParameter {
 	id: number;
+	path:string;
 	name: string;
 	value: number;
 	is_quantized: boolean;
@@ -140,7 +141,7 @@ export class DeviceParameter extends Properties<
 	 * @memberof DeviceParameter
 	 */
 	constructor(ableton: AbletonLive, public raw: RawDeviceParameter, path?: string) {
-		super(ableton, 'device_parameter', path ? path : DeviceParameter.path);
+		super(ableton, 'device_parameter', path ?? raw.path);
 
 		this._id = raw.id;
 

@@ -12,13 +12,17 @@ export class Properties<GP, CP, TP, SP, OP> {
 	constructor(
 		protected ableton: AbletonLive,
 		protected ns: string,
-		protected path: string,
+		protected _path: string,
 		protected childrenInitialProps?: Partial<{ [T in keyof CP]: (string | ChildrenInitialProps)[] }>,
 		protected _id?: number
 	) {}
 
 	get id(): number | undefined {
 		return this._id;
+	}
+
+	get path():string {
+		return this._path;
 	}
 
 	/**

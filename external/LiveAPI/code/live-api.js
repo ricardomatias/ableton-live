@@ -139,6 +139,7 @@ function getChildProps(childApi, initialProps, childName) {
 
 	const childData = {
 		id: childApi.id,
+        path: childApi.path.replace(/"/g, ""),
 	};
 
 	initialProps.reduce(function(obj, elem) {
@@ -171,6 +172,7 @@ function processChildren(ids, initialProps) {
 
 		var childData = {
 			id: childApi.id,
+            path: childApi.path.replace(/"/g, ""),
 		};
 
 		if (childApi.id === '0') {

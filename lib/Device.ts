@@ -80,6 +80,7 @@ export interface DeviceObservableProperties {
 
 export interface RawDevice {
 	id: string;
+	path:string;
 	name: string;
 	type: DeviceType;
 	class_name: string;
@@ -112,7 +113,7 @@ export class Device extends Properties<
 	private _classDisplayName: string;
 
 	constructor(ableton: AbletonLive, public raw: RawDevice, path?: string) {
-		super(ableton, 'device', path ? path : Device.path, initialProps);
+		super(ableton, 'device', path ?? raw.path, initialProps);
 
 		this._id = parseInt(raw.id, 10);
 		this._name = raw.name;
