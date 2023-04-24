@@ -72,7 +72,7 @@ export class Properties<GP, CP, TP, SP, OP> {
 		}
 	}
 
-	async child<TName extends OnlyKeysWithArrayValues<CP>>(child: TName, index:number, childProps?: string[]): Promise<FlatPropertyType<TName, TP, CP>> {
+	async child<TName extends OnlyKeysWithArrayValues<CP>>(child: TName, index:number, childProps?: string[]): Promise<FlatPropertyType<TName, TP, CP> | undefined> {
 		const result = await this.children(child, childProps, index);
 		return (result??[])[0];
 	}
