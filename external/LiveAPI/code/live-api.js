@@ -204,7 +204,15 @@ function children(args) {
 
 	var nsApi = liveApi(path, objectId);
 
-	var ids = nsApi.get(child);
+    var childId;
+    if (index) {
+        var childPath =
+            nsApi.path.replace(/"/g, "") + " " + child + " " + index;
+        var childApi = liveApi(childPath);
+        childId = ["id", childApi.id];
+    }
+
+    var ids = childId ? childId : nsApi.get(child);
 
 	const data = processChildren(ids, initialProps);
 

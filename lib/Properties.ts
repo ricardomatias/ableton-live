@@ -50,7 +50,7 @@ export class Properties<GP, CP, TP, SP, OP> {
 		return value;
 	}
 
-	async children<T extends keyof CP>(child: T, childProps?: string[]): Promise<T extends keyof TP ? TP[T] : CP[T]> {
+	async children<TName extends keyof CP>(child: TName, childProps?: string[], index?:number): Promise<PropertyType<TName, TP, CP>> {
 		let initialProps;
 
 		if (this.childrenInitialProps) {
@@ -61,7 +61,7 @@ export class Properties<GP, CP, TP, SP, OP> {
 			initialProps = initialProps.concat(childProps);
 		}
 
-		const result = await this.ableton.getChildren(this.path, { child: child as string, initialProps }, this._id);
+		const result = await this.ableton.getChildren(this.path, { child: child as string, initialProps, index }, this._id);
 
 		const transformer = this.childrenTransformers[child];
 
@@ -70,6 +70,11 @@ export class Properties<GP, CP, TP, SP, OP> {
 		} else {
 			return result;
 		}
+	}
+
+	async child<TName extends OnlyKeysWithArrayValues<CP>>(child: TName, index:number, childProps?: string[]): Promise<FlatPropertyType<TName, TP, CP>> {
+		const result = await this.children(child, childProps, index);
+		return (result??[])[0];
 	}
 
 	async set<T extends keyof SP>(prop: T, value: SP[T]): Promise<null> {
@@ -118,3 +123,17 @@ export class Properties<GP, CP, TP, SP, OP> {
 		return this.ableton.callMultiple(this.path, calls, this._id, timeout);
 	}
 }
+
+type PropertyType<TName extends keyof CP, TP, CP> = TName extends keyof TP
+	? TP[TName]
+	: CP[TName];
+	
+type FlatPropertyType<TName extends keyof CP, TP, CP> = TName extends keyof TP
+	? Flatten<TP[TName]>
+	: Flatten<CP[TName]>;
+
+type Flatten<T> = T extends Array<infer U> ? Flatten<U> : T;
+
+type OnlyKeysWithArrayValues<T> = {
+	[K in keyof T]: T[K] extends Array<any> ? K : never;
+}[keyof T];
