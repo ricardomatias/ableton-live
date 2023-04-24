@@ -72,7 +72,7 @@ export class Properties<GP, CP, TP, SP, OP> {
 		}
 	}
 
-	async child<TName extends OnlyKeysWithArrayValues<CP>>(child: TName, index:number, childProps?: string[]): Promise<FlatPropertyType<TName, TP, CP> | undefined> {
+	async child<TName extends OnlyKeysWithArrayValues<CP,TP>>(child: TName, index:number, childProps?: string[]): Promise<FlatPropertyType<TName, TP, CP>> {
 		const result = await this.children(child, childProps, index);
 		return (result??[])[0];
 	}
@@ -134,6 +134,12 @@ type FlatPropertyType<TName extends keyof CP, TP, CP> = TName extends keyof TP
 
 type Flatten<T> = T extends Array<infer U> ? Flatten<U> : T;
 
-type OnlyKeysWithArrayValues<T> = {
-	[K in keyof T]: T[K] extends Array<any> ? K : never;
+type OnlyKeysWithArrayValues<T, TLookUp> = {
+    [K in keyof T]: K extends keyof TLookUp
+        ? TLookUp[K] extends Array<any>
+            ? K
+            : never
+        : T[K] extends Array<any>
+        ? K
+        : never;
 }[keyof T];
