@@ -210,11 +210,20 @@ function children(args) {
 	var objectId = res.objectId;
 	var path = res.path;
 	var child = res.args.child;
+	var index = res.args.index;
 	var initialProps = res.args.initialProps;
 
 	var nsApi = liveApi(path, objectId);
 
-	var ids = nsApi.get(child);
+    var childId;
+    if (index) {
+        var childPath =
+            nsApi.path.replace(/"/g, "") + " " + child + " " + index;
+        var childApi = liveApi(childPath);
+        childId = ["id", childApi.id];
+    }
+
+    var ids = childId ? childId : nsApi.get(child);
 
 	const data = processChildren(ids, initialProps);
 
