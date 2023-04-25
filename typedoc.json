@@ -6,5 +6,8 @@
 	"hideGenerator": true,
 	"exclude": ["lib/index.ts", "lib/helpers/*.ts", "lib/Properties.ts"],
 	"excludePrivate": true,
-	"excludeProtected": true
+	"excludeProtected": true,
+	"excludeNotDocumented": false,
+	"excludeExternals": true,
+	"kindSortOrder": ["Class", "Interface", "Enum", "TypeLiteral", "TypeAlias"],
 }

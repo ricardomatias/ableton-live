@@ -391,9 +391,6 @@ export const enum TrackType {
 
 export type TrackRoutingType = { display_name: string; identifier: number };
 
-/**
- * @interface RawTrack
- */
 export interface RawTrack {
 	id: string;
 	name: string;
@@ -590,6 +587,7 @@ export class Track extends Properties<
 		return this.call('stop_all_clips');
 	}
 
+	/** @ignore */
 	get [Symbol.toStringTag](): string {
 		return `Track <${this.name}>`;
 	}
