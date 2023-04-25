@@ -108,6 +108,16 @@ function onFailure(id, data) {
 	outlet(0, JSON.stringify(response));
 }
 
+
+// Name for callback to ensure it's fully unique
+function callbackName(path, id) {
+	if(id) {
+		return path + '-' + id;
+	}
+	return path;
+}
+
+
 // **** GET
 function get(args) {
 	const res = JSON.parse(args);
@@ -295,9 +305,9 @@ function callMultiple(args) {
 };
 
 
-function callback(objectPath, property) {
+function callback(objectPath, objectId, property) {
 	return function(result) {
-		const event = callbackEvents[objectPath];
+		const event = callbackEvents[callbackName(objectPath, objectId)];
 
 		if (event && event.listeners.length) {
 			if (debugMode) log(new Error().lineNumber, ' event:', event);
@@ -329,19 +339,21 @@ function observe(args) {
 	if (objectId !== undefined) {
 		path = 'id ' + objectId;
 	}
+	
+	var cbName = callbackName(objectPath, objectId)
 
-	if (callbackEvents[objectPath] !== undefined) {
-		callbackEvents[objectPath].listeners.push(eventId);
+	if (callbackEvents[cbName] !== undefined) {
+		callbackEvents[cbName].listeners.push(eventId);
 
 		onSuccess(uuid, eventId);
 
 		return;
 	}
 
-	var api = new LiveAPI(callback(objectPath, property), path);
+	var api = new LiveAPI(callback(objectPath, objectId, property), path);
 	api.property = property;
 
-	callbackEvents[objectPath] = {
+	callbackEvents[cbName] = {
 		listeners: [eventId],
 		type: api.proptype,
 		api: api,
@@ -356,17 +368,20 @@ function removeObserver(args) {
 
 	// * Request UUID
 	var uuid = res.uuid;
+	var objectId = res.objectId;
 	var eventId = res.args.eventId;
 	var objectPath = res.args.objectPath;
+	
+	var cbName = callbackName(objectPath, objectId)
 
-	if (callbackEvents[objectPath] !== undefined) {
+	if (callbackEvents[cbName] !== undefined) {
 		var listeners = callbackEvents[objectPath].listeners;
 		var idx = listeners.indexOf(eventId);
 
 		listeners.splice(idx, 1);
 
 		if (!listeners.length) {
-			const api = callbackEvents[objectPath].api;
+			const api = callbackEvents[cbName].api;
 			api.id = 0;
 			delete callbackEvents[objectPath];
 		}
@@ -415,4 +430,3 @@ function log() {
 	}
 	post('\n');
 }
-
