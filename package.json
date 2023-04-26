@@ -1,6 +1,6 @@
 {
 	"name": "ableton-live",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"type": "module",
 	"main": "./build/esm/node.mjs",
 	"module": "./build/esm/index.mjs",
