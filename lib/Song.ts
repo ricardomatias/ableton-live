@@ -676,6 +676,19 @@ export class Song extends Properties<
 		return tracks.filter((t) => t.type === TrackType.Midi);
 	}
 
+	/**
+	 * Start playing a specific scene
+	 *
+	 * @returns {void}
+	 * @memberof Song
+	 */
+	async playScene(scene: number) {
+		const scenes = await this.children('scenes');
+		const sn = scenes[scene - 1];
+
+		if (sn) await sn.fire();
+	}
+
 	// =========================================================================
 	// * Official API
 	// =========================================================================
@@ -700,7 +713,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async captureMidi(destination = 0): Promise<void> {
-		return this.call('capture_midi', [ destination ]);
+		return this.call('capture_midi', [destination]);
 	}
 
 	/**
@@ -722,7 +735,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async createAudioTrack(index = -1): Promise<void> {
-		return this.call('create_audio_track', [ index ]);
+		return this.call('create_audio_track', [index]);
 	}
 
 	/**
@@ -734,7 +747,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async createMidiTrack(index = -1): Promise<void> {
-		return this.call('create_midi_track', [ index ]);
+		return this.call('create_midi_track', [index]);
 	}
 
 	/**
@@ -756,7 +769,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async createScene(index = -1): Promise<void> {
-		return this.call('create_scene', [ index ]);
+		return this.call('create_scene', [index]);
 	}
 
 	/**
@@ -767,7 +780,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async deleteReturnTrack(index: number): Promise<void> {
-		return this.call('delete_return_track', [ index ]);
+		return this.call('delete_return_track', [index]);
 	}
 
 	/**
@@ -778,7 +791,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async deleteScene(index: number): Promise<void> {
-		return this.call('delete_scene', [ index ]);
+		return this.call('delete_scene', [index]);
 	}
 
 	/**
@@ -789,7 +802,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async deleteTrack(index: number): Promise<void> {
-		return this.call('delete_track', [ index ]);
+		return this.call('delete_track', [index]);
 	}
 
 	/**
@@ -800,7 +813,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async duplicateScene(index: number): Promise<void> {
-		return this.call('duplicate_scene', [ index ]);
+		return this.call('duplicate_scene', [index]);
 	}
 
 	/**
@@ -811,7 +824,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async duplicateTrack(index: number): Promise<void> {
-		return this.call('duplicate_track', [ index ]);
+		return this.call('duplicate_track', [index]);
 	}
 
 	/**
@@ -862,7 +875,7 @@ export class Song extends Properties<
 	 * @return {void} hours:min:sec:frames
 	 */
 	public async getCurrentSmpteSongTime(format: SMPTE): Promise<void> {
-		return this.call('get_current_smpte_song_time', [ format ]);
+		return this.call('get_current_smpte_song_time', [format]);
 	}
 
 	/**
@@ -883,7 +896,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async jumpBy(amount: number): Promise<void> {
-		return this.call('jump_by', [ amount ]);
+		return this.call('jump_by', [amount]);
 	}
 
 	/**
@@ -944,7 +957,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async scrubBy(amount: number): Promise<void> {
-		return this.call('scrub_by', [ amount ]);
+		return this.call('scrub_by', [amount]);
 	}
 
 	/**
@@ -975,7 +988,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async stopAllClips(quantized = true): Promise<void> {
-		return this.call('stop_all_clips', [ quantized ]);
+		return this.call('stop_all_clips', [quantized]);
 	}
 
 	/**
@@ -1010,7 +1023,7 @@ export class Song extends Properties<
 	 * @return {void}
 	 */
 	public async triggerSessionRecord(recordLength?: number): Promise<void> {
-		return this.call('trigger_session_record', recordLength ? [ recordLength ] : undefined);
+		return this.call('trigger_session_record', recordLength ? [recordLength] : undefined);
 	}
 
 	/**
