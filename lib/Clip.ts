@@ -1,7 +1,7 @@
 import { Properties } from './Properties';
 import { AbletonLive } from '.';
 import { Note, SerializedNote } from './Note';
-
+import { ClipView } from './ClipView';
 
 // TODO Missing properties
 // > groove
@@ -10,7 +10,6 @@ import { Note, SerializedNote } from './Note';
 // > notes (bang)
 // > warp_markers (bang)
 // > playing_status (bang)
-
 
 export const enum WarpMode {
 	Beats = 0,
@@ -214,6 +213,26 @@ export interface ClipGetProperties {
 	 * true = Warp switch is on.
 	 */
 	warping: boolean;
+}
+
+/**
+ * @interface ClipChildrenProperties
+ */
+export interface ClipChildrenProperties {
+	/**
+	 * Includes mixer device.
+	 */
+	clipView: null;
+}
+
+/**
+ * @interface ClipTransformedProperties
+ */
+export interface ClipTransformedProperties {
+	/**
+	 * Includes mixer device.
+	 */
+	clipView: ClipView;
 }
 
 /**
@@ -454,7 +473,7 @@ export interface RawClip {
 /**
  * @private
  */
-export const RawClipKeys = [ 'name', 'is_audio_clip', 'length' ];
+export const RawClipKeys = ['name', 'is_audio_clip', 'length'];
 
 type NotesResponse = {
 	notes: SerializedNote[];
@@ -464,9 +483,15 @@ type NotesResponse = {
  * This class represents a clip in Live. It can be either an audio clip or a MIDI clip in the Arrangement or Session View, depending on the track / slot it lives in.
  *
  * @class Clip
- * @extends {Properties<ClipGetProperties, unknown, unknown, ClipSetProperties, ClipObservableProperties>}
+ * @extends {Properties<ClipGetProperties, ClipChildrenProperties, ClipTransformedProperties, ClipSetProperties, ClipObservableProperties>}
  */
-export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSetProperties, ClipObservableProperties> {
+export class Clip extends Properties<
+	ClipGetProperties,
+	ClipChildrenProperties,
+	ClipTransformedProperties,
+	ClipSetProperties,
+	ClipObservableProperties
+> {
 	static sessionPath = 'live_set tracks $1 clip_slots $2 clip';
 	static arrangementPath = 'live_set tracks $1 arrangement_clips $2 clip';
 
@@ -474,7 +499,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 		return Clip.sessionPath.replace('$1', `${trackNumber}`).replace('$2', `${clipSlotNumber}`);
 	}
 
-	static getArrangementPath(trackNumber: number, clipSlotNumber: number, ): string {
+	static getArrangementPath(trackNumber: number, clipSlotNumber: number): string {
 		return Clip.arrangementPath.replace('$1', `${trackNumber}`).replace('$2', `${clipSlotNumber}`);
 	}
 
@@ -498,7 +523,9 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 		this._type = raw.is_audio_clip ? ClipType.Midi : ClipType.Audio;
 		this._length = raw.length;
 
-		this.childrenTransformers = {};
+		this.childrenTransformers = {
+			clipView: () => new ClipView(this.ableton),
+		};
 	}
 
 	// =========================================================================
@@ -566,7 +593,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async addNewNotes(notes: Note[]): Promise<void> {
-		return this.call('add_new_notes', [ this.prepareNotes(notes) ]);
+		return this.call('add_new_notes', [this.prepareNotes(notes)]);
 	}
 
 	/**
@@ -578,7 +605,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async applyNoteModifications(notes: Note[]): Promise<void> {
-		return this.call('apply_note_modifications', [ this.prepareNotes(notes) ]);
+		return this.call('apply_note_modifications', [this.prepareNotes(notes)]);
 	}
 
 	/**
@@ -599,7 +626,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async clearEnvelope(deviceParameterId: number): Promise<void> {
-		return this.call('clear_envelope', [ deviceParameterId ]);
+		return this.call('clear_envelope', [deviceParameterId]);
 	}
 
 	/**
@@ -660,7 +687,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 		pitch = -1,
 		transpositionAmount = 0
 	): Promise<void> {
-		return this.call('duplicate_region', [ regionStart, regionLength, destinationTime, pitch, transpositionAmount ]);
+		return this.call('duplicate_region', [regionStart, regionLength, destinationTime, pitch, transpositionAmount]);
 	}
 
 	/**
@@ -685,7 +712,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async getNotes(startTime = 0, timeRange = 256, startPitch = 0, pitchRange = 127): Promise<Note[]> {
-		return this.call('get_notes_extended', [ startPitch, pitchRange, startTime.toFixed(3), timeRange.toFixed(3) ]).then(
+		return this.call('get_notes_extended', [startPitch, pitchRange, startTime.toFixed(3), timeRange.toFixed(3)]).then(
 			this.parseNotes.bind(this)
 		);
 	}
@@ -699,7 +726,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async getNotesById(ids: number[]): Promise<Note[]> {
-		return this.call('get_notes_by_id', [ ...ids ]).then(this.parseNotes.bind(this));
+		return this.call('get_notes_by_id', [...ids]).then(this.parseNotes.bind(this));
 	}
 
 	/**
@@ -723,7 +750,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async movePlayingPos(beats: number): Promise<void> {
-		return this.call('move_playing_pos', [ beats ]);
+		return this.call('move_playing_pos', [beats]);
 	}
 
 	/**
@@ -736,7 +763,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async quantize(quantizationGrid: number, amount: number): Promise<void> {
-		return this.call('quantize', [ quantizationGrid, amount ]);
+		return this.call('quantize', [quantizationGrid, amount]);
 	}
 
 	/**
@@ -750,7 +777,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async quantizePitch(pitch: number, quantizationGrid: number, amount: number): Promise<void> {
-		return this.call('quantize_pitch', [ pitch, quantizationGrid, amount ]);
+		return this.call('quantize_pitch', [pitch, quantizationGrid, amount]);
 	}
 
 	/**
@@ -765,7 +792,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async removeNotes(startTime = 0, timeRange = 256, startPitch = 0, pitchRange = 127): Promise<void> {
-		return this.call('remove_notes_extended', [ startPitch, pitchRange, startTime.toFixed(4), timeRange.toFixed(4) ]);
+		return this.call('remove_notes_extended', [startPitch, pitchRange, startTime.toFixed(4), timeRange.toFixed(4)]);
 	}
 
 	/**
@@ -777,7 +804,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async removeNotesById(ids: number[]): Promise<void> {
-		return this.call('remove_notes_by_id', [ ...ids ]);
+		return this.call('remove_notes_by_id', [...ids]);
 	}
 
 	/**
@@ -791,7 +818,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async scrub(beatTime: number): Promise<void> {
-		return this.call('scrub', [ beatTime ]);
+		return this.call('scrub', [beatTime]);
 	}
 
 	/**
@@ -814,7 +841,7 @@ export class Clip extends Properties<ClipGetProperties, unknown, unknown, ClipSe
 	 * @return {void}
 	 */
 	public async setFireButtonState(state: boolean): Promise<void> {
-		return this.call('set_fire_button_state', [ state ]);
+		return this.call('set_fire_button_state', [state]);
 	}
 
 	/**
