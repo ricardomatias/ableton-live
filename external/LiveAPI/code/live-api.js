@@ -111,7 +111,7 @@ function onFailure(id, data) {
 
 // Name for callback to ensure it's fully unique
 function callbackName(path, id) {
-	if(id) {
+	if (id) {
 		return path + '-' + id;
 	}
 	return path;
@@ -348,7 +348,7 @@ function observe(args) {
 	if (objectId !== undefined) {
 		path = 'id ' + objectId;
 	}
-	
+
 	var cbName = callbackName(objectPath, objectId)
 
 	if (callbackEvents[cbName] !== undefined) {
@@ -380,11 +380,11 @@ function removeObserver(args) {
 	var objectId = res.objectId;
 	var eventId = res.args.eventId;
 	var objectPath = res.args.objectPath;
-	
+
 	var cbName = callbackName(objectPath, objectId)
 
 	if (callbackEvents[cbName] !== undefined) {
-		var listeners = callbackEvents[objectPath].listeners;
+		var listeners = callbackEvents[cbName].listeners;
 		var idx = listeners.indexOf(eventId);
 
 		listeners.splice(idx, 1);
@@ -392,12 +392,13 @@ function removeObserver(args) {
 		if (!listeners.length) {
 			const api = callbackEvents[cbName].api;
 			api.id = 0;
-			delete callbackEvents[objectPath];
+			delete callbackEvents[cbName];
 		}
 	}
 
 	onSuccess(uuid);
 }
+
 
 function close() {
 	const paths = Object.keys(callbackEvents);
