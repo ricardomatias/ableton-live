@@ -2,9 +2,9 @@
 	"name" : "LiveAPI",
 	"version" : 1,
 	"creationdate" : 3705557956,
-	"modificationdate" : 3719933540,
+	"modificationdate" : 3747470712,
 	"viewrect" : [ 158.0, 146.0, 300.0, 500.0 ],
-	"autoorganize" : 0,
+	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
 	"showdependencies" : 1,
 	"autolocalize" : 0,
@@ -19,10 +19,33 @@
 		}
 ,
 		"media" : 		{
+			"logo.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1
+			}
 
 		}
 ,
 		"code" : 		{
+			"fit_jweb_to_bounds.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"live-api.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"resize_n4m_monitor_patcher.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"node-live-api.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
 
 		}
 

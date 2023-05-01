@@ -1,37 +1,43 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // @ts-ignore
 
-// TODO: Migrate to uWebsockets.js
 // https://edisonchee.com/writing/intro-to-%C2%B5websockets.js/
 const maxApi = require('max-api');
 const uWS = require('uWebSockets.js');
 const { nanoid } = require('nanoid');
-
-let SOCKETS = [];
-
-let uws;
 
 const State = {
 	Disconnected: 0,
 	Connected: 1,
 };
 
+let uws;
 /* We store the listen socket here, so that we can shut it down later */
 let listenSocket;
+let SOCKETS = [];
+
+const shutdown = () => {
+	console.log('Attempting to close server..');
+
+	if (listenSocket) uWS.us_listen_socket_close(listenSocket);
+
+	listenSocket = null;
+
+	SOCKETS.forEach((ws, i) => ws.end());
+	SOCKETS.splice(0, SOCKETS.length);
+};
 
 maxApi.addHandler('port', async (port) => {
 	try {
 		if (uws) {
-			console.log('Attempting to close server..');
-
-			if (listenSocket) uWS.us_listen_socket_close(listenSocket);
+			shutdown();
 		}
 
 		console.log('Creating server..');
 
 		uws = uWS.App().ws('/ableton-live', {
 			idleTimeout: 12,
-			// maxPayloadLength: 16 * 1024 * 1024,
+			maxPayloadLength: 16 * 1024 * 1024,
 			// maxBackpressure: 1024,
 
 			open: (ws) => {
@@ -49,8 +55,6 @@ maxApi.addHandler('port', async (port) => {
 				ws.isAlive = true;
 
 				maxApi.addHandler('response', responseHandler);
-
-				ws.ping();
 
 				SOCKETS.push(ws);
 			},
@@ -86,6 +90,9 @@ maxApi.addHandler('port', async (port) => {
 					console.error(error);
 				}
 			},
+			drain: (ws) => {
+				console.log('[uWebSockets] Backpressure: ' + ws.getBufferedAmount());
+			},
 		});
 
 		uws.listen(port, (token) => {
@@ -113,8 +120,7 @@ maxApi.registerShutdownHook((signal) => {
 
 	if (uws && listenSocket) {
 		/* This function is provided directly by µSockets */
-		uWS.us_listen_socket_close(listenSocket);
-		listenSocket = null;
+		shutdown();
 	}
 });
 
