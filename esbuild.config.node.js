@@ -1,6 +1,6 @@
-import { buildSync } from 'esbuild';
+import { build } from 'esbuild';
 
-buildSync({
+await build({
 	entryPoints: ['lib/index.ts'],
 	outfile: 'build/cjs/index.cjs',
 	bundle: true,
@@ -11,7 +11,7 @@ buildSync({
 	external: ['crypto'],
 });
 
-buildSync({
+await build({
 	entryPoints: ['lib/index.ts'],
 	outfile: 'build/esm/node.mjs',
 	bundle: true,

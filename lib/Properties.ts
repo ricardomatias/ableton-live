@@ -6,19 +6,22 @@ interface ChildrenInitialProps {
 }
 
 export class Properties<GP, CP, TP, SP, OP> {
-
 	protected _state = new Map();
 
 	constructor(
 		protected ableton: AbletonLive,
 		protected ns: string,
-		protected path: string,
+		protected _path: string,
 		protected childrenInitialProps?: Partial<{ [T in keyof CP]: (string | ChildrenInitialProps)[] }>,
 		protected _id?: number
 	) {}
 
 	get id(): number | undefined {
 		return this._id;
+	}
+
+	get path(): string {
+		return this._path;
 	}
 
 	/**
@@ -50,7 +53,11 @@ export class Properties<GP, CP, TP, SP, OP> {
 		return value;
 	}
 
-	async children<TName extends keyof CP>(child: TName, childProps?: string[], index?:number): Promise<PropertyType<TName, TP, CP>> {
+	async children<TName extends keyof CP>(
+		child: TName,
+		childProps?: string[],
+		index?: number
+	): Promise<PropertyType<TName, TP, CP>> {
 		let initialProps;
 
 		if (this.childrenInitialProps) {
@@ -72,9 +79,13 @@ export class Properties<GP, CP, TP, SP, OP> {
 		}
 	}
 
-	async child<TName extends OnlyKeysWithArrayValues<CP,TP>>(child: TName, index:number, childProps?: string[]): Promise<FlatPropertyType<TName, TP, CP>> {
+	async child<TName extends OnlyKeysWithArrayValues<CP, TP>>(
+		child: TName,
+		index: number,
+		childProps?: string[]
+	): Promise<FlatPropertyType<TName, TP, CP>> {
 		const result = await this.children(child, childProps, index);
-		return (result??[])[0];
+		return (result ?? [])[0];
 	}
 
 	async set<T extends keyof SP>(prop: T, value: SP[T]): Promise<null> {
@@ -127,7 +138,7 @@ export class Properties<GP, CP, TP, SP, OP> {
 type PropertyType<TName extends keyof CP, TP, CP> = TName extends keyof TP
 	? TP[TName]
 	: CP[TName];
-	
+
 type FlatPropertyType<TName extends keyof CP, TP, CP> = TName extends keyof TP
 	? Flatten<TP[TName]>
 	: Flatten<CP[TName]>;

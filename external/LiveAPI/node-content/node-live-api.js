@@ -3,7 +3,7 @@
 
 // https://edisonchee.com/writing/intro-to-%C2%B5websockets.js/
 const maxApi = require('max-api');
-const uWS = require('uWebSockets.js');
+const uWebSockets = require('uWebSockets.js');
 const { nanoid } = require('nanoid');
 
 const State = {
@@ -14,12 +14,12 @@ const State = {
 let uws;
 /* We store the listen socket here, so that we can shut it down later */
 let listenSocket;
-let SOCKETS = [];
+const SOCKETS = [];
 
 const shutdown = () => {
 	console.log('Attempting to close server..');
 
-	if (listenSocket) uWS.us_listen_socket_close(listenSocket);
+	if (listenSocket) uWebSockets.us_listen_socket_close(listenSocket);
 
 	listenSocket = null;
 
@@ -35,7 +35,7 @@ maxApi.addHandler('port', async (port) => {
 
 		console.log('Creating server..');
 
-		uws = uWS.App().ws('/ableton-live', {
+		uws = uWebSockets.App().ws('/ableton-live', {
 			idleTimeout: 12,
 			maxPayloadLength: 16 * 1024 * 1024,
 			// maxBackpressure: 1024,

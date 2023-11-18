@@ -466,6 +466,7 @@ export const enum ClipType {
 export interface RawClip {
 	id: string;
 	name: string;
+	path: string;
 	length: number;
 	is_audio_clip: boolean;
 }
@@ -516,7 +517,7 @@ export class Clip extends Properties<
 	 * @memberof Clip
 	 */
 	constructor(ableton: AbletonLive, public raw: RawClip, path?: string) {
-		super(ableton, 'clip', path ? path : Clip.sessionPath);
+		super(ableton, 'clip', path ?? raw.path);
 
 		this._id = parseInt(raw.id, 10);
 		this._name = raw.name;

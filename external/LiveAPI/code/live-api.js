@@ -6,7 +6,7 @@ var callbackEvents = {};
 
 var debugMode = true;
 
-inlets = 8;
+inlets = 9;
 outlets = 1;
 
 setinletassist(0, 'get');
@@ -14,10 +14,15 @@ setinletassist(1, 'children');
 setinletassist(2, 'set');
 setinletassist(3, 'call');
 setinletassist(4, 'callMultiple');
-setinletassist(5, 'observe');
-setinletassist(6, 'removeObserver');
-setinletassist(7, 'close');
+setinletassist(5, 'getThenCall');
+setinletassist(6, 'observe');
+setinletassist(7, 'removeObserver');
+setinletassist(8, 'close');
 
+
+function sample_callback(args) {
+	// do nothing
+}
 
 function liveApi(path, id) {
 	// * preference for id
@@ -31,7 +36,7 @@ function liveApi(path, id) {
 		return apis[path];
 	}
 
-	apis[path] = new LiveAPI(path);
+	apis[path] = new LiveAPI(undefined, path);
 	return apis[path];
 }
 
@@ -149,6 +154,7 @@ function getChildProps(childApi, initialProps, childName) {
 
 	const childData = {
 		id: childApi.id,
+		path: childApi.path.replace(/"/g, "")
 	};
 
 	initialProps.reduce(function(obj, elem) {
@@ -181,6 +187,7 @@ function processChildren(ids, initialProps) {
 
 		var childData = {
 			id: childApi.id,
+			path: childApi.path.replace(/"/g, "")
 		};
 
 		if (childApi.id === '0') {
@@ -312,7 +319,6 @@ function callMultiple(args) {
 		onFailure(uuid, err)
 	}
 };
-
 
 function callback(objectPath, objectId, property) {
 	return function(result) {

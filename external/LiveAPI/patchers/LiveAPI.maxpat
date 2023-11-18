@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 4,
+			"revision" : 6,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 703.0, 185.0, 692.0, 698.0 ],
+		"rect" : [ 385.0, 318.0, 848.0, 765.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -898,8 +898,6 @@
 					"saved_object_attributes" : 					{
 						"autostart" : 1,
 						"defer" : 0,
-						"node_bin_path" : "",
-						"npm_bin_path" : "",
 						"watch" : 0
 					}
 ,
@@ -961,13 +959,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-32",
-					"linecount" : 2,
 					"maxclass" : "newobj",
-					"numinlets" : 9,
-					"numoutlets" : 9,
-					"outlettype" : [ "", "", "", "", "", "", "", "", "" ],
-					"patching_rect" : [ 498.5, 1226.0, 398.0, 32.0 ],
-					"text" : "routepass get children set call callMultiple observe removeObserver close"
+					"numinlets" : 10,
+					"numoutlets" : 10,
+					"outlettype" : [ "", "", "", "", "", "", "", "", "", "" ],
+					"patching_rect" : [ 498.5, 1226.0, 468.0, 20.0 ],
+					"text" : "routepass get children set call callMultiple getThenCall observe removeObserver close"
 				}
 
 			}
@@ -975,7 +972,7 @@
 				"box" : 				{
 					"id" : "obj-4",
 					"maxclass" : "newobj",
-					"numinlets" : 8,
+					"numinlets" : 9,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 498.5, 1305.699951000000056, 432.874999999999773, 20.0 ],
@@ -1209,6 +1206,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-4", 8 ],
+					"source" : [ "obj-32", 8 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-4", 7 ],
 					"source" : [ "obj-32", 7 ]
 				}
@@ -1260,6 +1264,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-4", 0 ],
 					"source" : [ "obj-32", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"midpoints" : [ 957.0, 1337.5, 508.0, 1337.5 ],
+					"source" : [ "obj-32", 9 ]
 				}
 
 			}
@@ -1650,42 +1662,42 @@
 ,
 		"dependency_cache" : [ 			{
 				"name" : "fit_jweb_to_bounds.js",
-				"bootpath" : "~/Projects/ableton-live/external/LiveAPI/code",
+				"bootpath" : "~/Projects/js/audio/ableton-live/external/LiveAPI/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "live-api.js",
-				"bootpath" : "~/Projects/ableton-live/external/LiveAPI/code",
+				"bootpath" : "~/Projects/js/audio/ableton-live/external/LiveAPI/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "logo.png",
-				"bootpath" : "~/Projects/ableton-live/external/LiveAPI/media",
+				"bootpath" : "~/Projects/js/audio/ableton-live/external/LiveAPI/media",
 				"patcherrelativepath" : "../media",
 				"type" : "PNG",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "n4m.monitor.maxpat",
-				"bootpath" : "~/Projects/ableton-live/external/LiveAPI/patchers",
+				"bootpath" : "~/Projects/js/audio/ableton-live/external/LiveAPI/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "node-live-api.js",
-				"bootpath" : "~/Projects/ableton-live/external/LiveAPI/node-content",
+				"bootpath" : "~/Projects/js/audio/ableton-live/external/LiveAPI/node-content",
 				"patcherrelativepath" : "../node-content",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "resize_n4m_monitor_patcher.js",
-				"bootpath" : "~/Projects/ableton-live/external/LiveAPI/code",
+				"bootpath" : "~/Projects/js/audio/ableton-live/external/LiveAPI/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1

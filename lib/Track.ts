@@ -394,6 +394,7 @@ export type TrackRoutingType = { display_name: string; identifier: number };
 export interface RawTrack {
 	id: string;
 	name: string;
+	path: string;
 	has_audio_input: boolean;
 }
 
@@ -457,8 +458,12 @@ export class Track extends Properties<
 	 * @param {string} [path]
 	 * @memberof Track
 	 */
-	constructor(ableton: AbletonLive, public raw: RawTrack, path?: string) {
-		super(ableton, 'track', path ? path : Track.path, childrenInitialProps);
+	constructor(
+		ableton: AbletonLive,
+		public raw: RawTrack,
+		path?: string
+	) {
+		super(ableton, 'track', path ?? raw.path, childrenInitialProps);
 
 		this._id = parseInt(raw.id, 10);
 		this._name = raw.name;
@@ -514,12 +519,14 @@ export class Track extends Properties<
 	 * Get a specific clip based on Scene number and creates one if there's none
 	 *
 	 * @memberof Track
-	 * @param {number} scene
+	 * @param {number} scene - 1 based
 	 * @param {number} [length=4]
 	 * @return {(Promise<Clip>)}
 	 */
 	async getOrCreateClip(scene: number, length: number = 4): Promise<Clip> {
 		const clipSlots = await this.children('clip_slots');
+
+		console.log(scene, clipSlots.length);
 
 		if (scene < 1 || scene > clipSlots.length) return Promise.reject(null);
 
@@ -621,6 +628,46 @@ export class Track extends Properties<
 	 */
 	public async stopAllClips(): Promise<void> {
 		return this.call('stop_all_clips');
+	}
+
+	/**
+	 * @ignore
+	 * @private
+	 *
+	 * Deletes a clip from this track.
+	 * @memberof Track
+	 *
+	 * @param {Clip} clip
+	 * @return {null}
+	 */
+	public async deleteClip(clip: Clip): Promise<void> {
+		return this.call('delete_clip', [`id ${clip.id}`]);
+	}
+
+	/**
+	 * @ignore
+	 * @private
+	 *
+	 * Duplicates a clip to the arrangement.
+	 * @memberof Track
+	 *
+	 * @param {Clip} clip
+	 * @param {number} destinationTime in beats
+	 * @return {null}
+	 */
+	public async duplicateClipToArrangement(clip: Clip, destinationTime: number): Promise<void> {
+		return this.call('duplicate_clip_to_arrangement', [`id ${clip.id}`, destinationTime]);
+	}
+
+	/**
+	 * Jumps to a running session clip in this track.
+	 * @memberof Track
+	 *
+	 * @param {number} beats
+	 * @return {null}
+	 */
+	public async jumpInRunningSessionClip(beats: number): Promise<void> {
+		return this.call('jump_in_running_session_clip', [beats]);
 	}
 
 	/** @ignore */

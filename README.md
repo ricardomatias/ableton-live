@@ -73,7 +73,7 @@ Found at [https://ricardomatias.net/ableton-live/](https://ricardomatias.net/abl
 
 ## Credits
 
-A loose fork of [ableton-js](github-link), which was a great source of inspiration on how to approach handling Live's Object Model.
+A loose fork of ableton-js, which was a great source of inspiration on how to approach handling Live's Object Model.
 
 ## Development
 When not receiving try running `sudo lsof -i :send_port_number` and make sure only **Max** is using it.

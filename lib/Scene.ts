@@ -99,6 +99,7 @@ export interface SceneObservableProperties {
 export interface RawScene {
 	id: string;
 	name: string;
+	path: string;
 	isEmpty: boolean;
 }
 
@@ -141,7 +142,7 @@ export class Scene extends Properties<
 	 * @memberof Scene
 	 */
 	constructor(ableton: AbletonLive, public raw: RawScene, path?: string) {
-		super(ableton, 'scene', path ? path : Scene.path, childrenInitialProps);
+		super(ableton, 'scene', path ?? raw.path, childrenInitialProps);
 
 		this._id = parseInt(raw.id, 10);
 		this._name = raw.name;

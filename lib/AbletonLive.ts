@@ -3,7 +3,6 @@ import { WebSockette } from './helpers/WebSockette';
 import { nanoid } from 'nanoid';
 import { Song } from './Song';
 
-
 import { SongView } from './SongView';
 
 interface Command {
@@ -177,6 +176,10 @@ export class AbletonLive extends (EventEmitter as new () => TypedEventEmitter<Co
 		this.client.close();
 
 		this.emit('disconnect');
+	}
+
+	disconnect(): void {
+		this.close();
 	}
 
 	protected sendRaw<T>(msg: T): void {
