@@ -36,7 +36,7 @@ function liveApi(path, id) {
 		return apis[path];
 	}
 
-	apis[path] = new LiveAPI(undefined, path);
+	apis[path] = new LiveAPI(null, path);
 	return apis[path];
 }
 
