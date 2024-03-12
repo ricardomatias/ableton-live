@@ -13,7 +13,7 @@
 		"node": ">14.4.0"
 	},
 	"dependencies": {
-		"nanoid": "^3.2.0",
-		"uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.10.0"
+		"nanoid": "^3.3.7",
+		"uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.42.0"
 	}
 }
