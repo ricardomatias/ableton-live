@@ -521,7 +521,7 @@ export class Clip extends Properties<
 
 		this._id = parseInt(raw.id, 10);
 		this._name = raw.name;
-		this._type = raw.is_audio_clip ? ClipType.Midi : ClipType.Audio;
+		this._type = raw.is_audio_clip ? ClipType.Audio : ClipType.Midi;
 		this._length = raw.length;
 
 		this.childrenTransformers = {
