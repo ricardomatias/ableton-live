@@ -1,10 +1,10 @@
 import { Properties } from './Properties';
-import { AbletonLive } from './index';
 import { Track, RawTrack, RawTrackKeys } from './Track';
 import { RawSceneKeys, RawScene, Scene } from './Scene';
 import { Clip, RawClipKeys, RawClip } from './Clip';
 import { ClipSlot, RawClipSlotKeys, RawClipSlot } from './ClipSlot';
 import { DeviceParameter, RawDeviceParameterKeys, RawDeviceParameter } from './DeviceParameter';
+import AbletonLiveBase from './AbletonLiveBase';
 
 
 // TODO Missing properties
@@ -144,7 +144,7 @@ export class SongView extends Properties<
 	 * @param {AbletonLive} ableton
 	 * @memberof SongView
 	 */
-	constructor(ableton: AbletonLive) {
+	constructor(ableton: AbletonLiveBase) {
 		super(ableton, 'song', SongView.path, childrenInitialProps);
 
 		this.childrenTransformers = {

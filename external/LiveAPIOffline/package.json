@@ -1,0 +1,21 @@
+{
+    "name": "MIDIEffectTemplate",
+    "version": "1.0.0",
+    "main": "index.js",
+    "private": true,
+    "scripts": {
+        "build": "esbuild example-node.ts --platform=node --bundle '--external:max-api' --format=cjs --outfile=./example-node.js && npm run copy:liveapi",
+        "dev": "esbuild example-node.ts --watch --platform=node --bundle '--external:max-api' --format=cjs --outfile=./example-node.js",
+        "copy:liveapi": "cp ../../live-api.js ./live-api-release.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "ableton-live": "^0.12.0"
+    },
+    "devDependencies": {
+        "esbuild": "^0.20.1"
+    },
+    "description": ""
+}

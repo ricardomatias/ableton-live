@@ -1,3 +1,4 @@
+import AbletonLiveBase from './AbletonLiveBase';
 import { AbletonLive } from './index';
 
 interface ChildrenInitialProps {
@@ -9,7 +10,7 @@ export class Properties<GP, CP, TP, SP, OP> {
 	protected _state = new Map();
 
 	constructor(
-		protected ableton: AbletonLive,
+		protected ableton: AbletonLiveBase,
 		protected ns: string,
 		protected _path: string,
 		protected childrenInitialProps?: Partial<{ [T in keyof CP]: (string | ChildrenInitialProps)[] }>,

@@ -1,6 +1,6 @@
 import { Properties } from './Properties';
-import { AbletonLive } from '.';
 import { RawClipKeys, RawClip, Clip } from './Clip';
+import AbletonLiveBase from './AbletonLiveBase';
 
 /**
  * Equals 0 if this is not a clip slot of a Group Track.
@@ -143,7 +143,7 @@ export class ClipSlot extends Properties<
 	 * @param {string} [path]
 	 * @memberof ClipSlot
 	 */
-	constructor(ableton: AbletonLive, public raw: RawClipSlot, path?: string) {
+	constructor(ableton: AbletonLiveBase, public raw: RawClipSlot, path?: string) {
 		super(ableton, 'clip_slot', path ?? raw.path, initialProperties);
 
 		this._id = raw.id;

@@ -1,5 +1,5 @@
 import { Properties } from './Properties';
-import { AbletonLive } from '.';
+import AbletonLiveBase from './AbletonLiveBase';
 
 /**
  * @interface ClipViewGetProperties
@@ -40,7 +40,7 @@ export class ClipView extends Properties<ClipViewGetProperties, unknown, unknown
 	 * @param {AbletonLive} ableton
 	 * @memberof Clip
 	 */
-	constructor(ableton: AbletonLive) {
+	constructor(ableton: AbletonLiveBase) {
 		super(ableton, 'clip view', ClipView.path);
 	}
 

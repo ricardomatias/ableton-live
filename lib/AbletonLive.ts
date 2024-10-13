@@ -1,9 +1,9 @@
-import { EventEmitter, TypedEventEmitter } from './helpers/EventEmitter';
 import { WebSockette } from './helpers/WebSockette';
 import { nanoid } from 'nanoid';
 import { Song } from './Song';
 
 import { SongView } from './SongView';
+import AbletonLiveBase from './AbletonLiveBase';
 
 interface Command {
 	path: string;
@@ -32,6 +32,7 @@ interface ConnectionEvents {
 	disconnect: () => void;
 }
 
+
 type Listener = (data: any) => any;
 type Callback = (err: Error | null, data?: any) => any;
 
@@ -58,7 +59,7 @@ export interface AbletonLiveOptions {
  * @class AbletonLive
  * @extends {EventEmitter}
  */
-export class AbletonLive extends (EventEmitter as new () => TypedEventEmitter<ConnectionEvents>) {
+export class AbletonLive extends AbletonLiveBase {
 	private client: WebSockette;
 	private messageBus = new Map<string, Callback>();
 	private eventListeners = new Map<string, Listener>();

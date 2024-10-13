@@ -1,4 +1,5 @@
 import { AbletonLive } from '.';
+import AbletonLiveBase from './AbletonLiveBase';
 import { Properties } from './Properties';
 
 export enum AutomationState {
@@ -139,7 +140,7 @@ export class DeviceParameter extends Properties<
 	 * @param {string} [path]
 	 * @memberof DeviceParameter
 	 */
-	constructor(ableton: AbletonLive, public raw: RawDeviceParameter, path?: string) {
+	constructor(ableton: AbletonLiveBase, public raw: RawDeviceParameter, path?: string) {
 		super(ableton, 'device_parameter', path ? path : DeviceParameter.path);
 
 		this._id = raw.id;

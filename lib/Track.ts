@@ -1,10 +1,10 @@
 import { Properties } from './Properties';
-import { AbletonLive } from '.';
 import { RawMixerDeviceKeys, MixerDevice, RawMixerDevice } from './MixerDevice';
 import { RawClipSlotKeys, RawClipSlot, ClipSlot } from './ClipSlot';
 import { DeviceParameter } from './DeviceParameter';
 import { Device, RawDevice } from './Device';
 import { Clip } from './Clip';
+import AbletonLiveBase from './AbletonLiveBase';
 
 // TODO Missing properties
 // > input_routing_channel: dictionary;
@@ -459,7 +459,7 @@ export class Track extends Properties<
 	 * @memberof Track
 	 */
 	constructor(
-		ableton: AbletonLive,
+		ableton: AbletonLiveBase,
 		public raw: RawTrack,
 		path?: string
 	) {

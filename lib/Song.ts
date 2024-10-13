@@ -1,7 +1,8 @@
 import { Properties } from './Properties';
-import { AbletonLive } from './index';
 import { Track, RawTrackKeys, RawTrack, TrackType } from './Track';
 import { RawSceneKeys, RawScene, Scene } from './Scene';
+import AbletonLiveBase from './AbletonLiveBase';
+import { CuePoint, RawCuePoint, RawCuePointKeys } from './CuePoint';
 
 export interface SongGetProperties {
 	/**
@@ -185,6 +186,7 @@ export interface SongChildrenProperties {
 	 * A track is visible if it's not part of a folded group. If a track is scrolled out of view it's still considered visible.
 	 */
 	visible_tracks: RawTrack[];
+	cue_points: RawCuePoint[];
 	// groove_pool: RawGroovePool;
 }
 
@@ -198,6 +200,7 @@ export interface SongTransformedProperties {
 	 * @inheritdoc SongChildrenProperties.visible_tracks
 	 */
 	visible_tracks: Track[];
+	cue_points: CuePoint[];
 }
 
 export interface SongSetProperties {
@@ -602,6 +605,7 @@ const SongChildrenProperties = {
 	return_track: RawTrackKeys,
 	visible_tracks: RawTrackKeys,
 	visible_track: RawTrackKeys,
+	cue_points: RawCuePointKeys,
 };
 
 /**
@@ -624,7 +628,7 @@ export class Song extends Properties<
 	 * @param {AbletonLive} ableton
 	 * @memberof Song
 	 */
-	constructor(ableton: AbletonLive) {
+	constructor(ableton: AbletonLiveBase) {
 		super(ableton, 'song', Song.path, SongChildrenProperties);
 
 		this.childrenTransformers = {
@@ -633,6 +637,7 @@ export class Song extends Properties<
 			scenes: (scenes) => scenes.map((s) => new Scene(this.ableton, s)),
 			return_tracks: (tracks) => tracks.map((t) => new Track(this.ableton, t)),
 			visible_tracks: (tracks) => tracks.map((t) => new Track(this.ableton, t)),
+			cue_points: (cuePoints) => cuePoints.map((c) => new CuePoint(this.ableton, c)),
 		};
 	}
 

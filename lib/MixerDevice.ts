@@ -1,6 +1,7 @@
 import { DeviceParameter, RawDeviceParameter, RawDeviceParameterKeys } from './DeviceParameter';
 import { Properties } from './Properties';
 import { AbletonLive } from '.';
+import AbletonLiveBase from './AbletonLiveBase';
 
 // TODO Missing properties
 // > cue_volume
@@ -120,7 +121,7 @@ export class MixerDevice extends Properties<
 	private _volume: DeviceParameter;
 	private _panning: DeviceParameter;
 
-	constructor(ableton: AbletonLive, public raw: RawMixerDevice, path?: string) {
+	constructor(ableton: AbletonLiveBase, public raw: RawMixerDevice, path?: string) {
 		super(ableton, 'mixer_device', path ? path : MixerDevice.path, childrenInitialProps);
 
 		this._id = raw.id;

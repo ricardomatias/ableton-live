@@ -1,6 +1,6 @@
 import { Properties } from './Properties';
-import { AbletonLive } from '.';
 import { RawClipSlotKeys, ClipSlot, RawClipSlot } from './ClipSlot';
+import AbletonLiveBase from './AbletonLiveBase';
 
 /**
  * @interface SceneGetProperties
@@ -141,7 +141,7 @@ export class Scene extends Properties<
 	 * @param {string} [path]
 	 * @memberof Scene
 	 */
-	constructor(ableton: AbletonLive, public raw: RawScene, path?: string) {
+	constructor(ableton: AbletonLiveBase, public raw: RawScene, path?: string) {
 		super(ableton, 'scene', path ?? raw.path, childrenInitialProps);
 
 		this._id = parseInt(raw.id, 10);

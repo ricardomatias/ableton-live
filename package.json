@@ -16,9 +16,11 @@
 	"description": "A library for communicating with Ableton Live via WebSockets, works both in Node and in the Browser.",
 	"scripts": {
 		"start": "rollup -c rollup.config.browser.js --watch",
-		"build": "npm run cleanup && npm run build:node && npm run build:browser && npm run types",
+		"build": "npm run cleanup && npm run build:node && npm run build:browser && npm run types && npm run copy:liveapi && npm run copy:liveapioffline",
 		"build:browser": "node esbuild.config.browser.js",
 		"build:node": "node esbuild.config.node.js",
+		"copy:liveapi": "cp ./external/live-api.js ./external/LiveAPI/code/live-api-release.js",
+		"copy:liveapioffline": "cp ./external/live-api.js ./external/LiveAPIOffline/live-api-release.js",
 		"dev": "nodemon --watch 'lib/**' --ext 'ts' --exec 'npm run build'",
 		"comments": "leasot -x -i 'node_modules/**/*','**/*.json' --tags '>' **/*.js **/*.ts",
 		"lint": "eslint lib",
@@ -56,23 +58,24 @@
 	],
 	"dependencies": {
 		"mitt": "^3.0.1",
-		"nanoid": "^5.0.3"
+		"nanoid": "^5.0.6"
 	},
 	"devDependencies": {
-		"@types/node": "^20.9.0",
-		"@typescript-eslint/eslint-plugin": "^6.11.0",
-		"@typescript-eslint/parser": "^6.11.0",
-		"esbuild": "^0.19.5",
-		"eslint": "^8.53.0",
+		"@sisense/typedoc-plugin-markdown": "^4.0.0-next.46",
+		"@types/node": "^20.11.26",
+		"@typescript-eslint/eslint-plugin": "^6.21.0",
+		"@typescript-eslint/parser": "^6.21.0",
+		"esbuild": "^0.19.12",
+		"eslint": "^8.57.0",
 		"eslint-config-google": "^0.14.0",
-		"eslint-config-prettier": "^9.0.0",
-		"eslint-plugin-import": "^2.29.0",
-		"husky": "^8.0.3",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-import": "^2.29.1",
+		"husky": "^9.0.11",
 		"leasot": "^13.3.0",
-		"nodemon": "^3.0.1",
-		"prettier": "^3.1.0",
+		"nodemon": "^3.1.0",
+		"prettier": "^3.2.5",
 		"rimraf": "^5.0.5",
-		"typedoc": "^0.25.3",
-		"typescript": "^5.2.2"
+		"typedoc": "^0.25.12",
+		"typescript": "^5.4.2"
 	}
 }
