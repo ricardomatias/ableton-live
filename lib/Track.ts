@@ -5,6 +5,7 @@ import { DeviceParameter } from './DeviceParameter';
 import { Device, RawDevice } from './Device';
 import { Clip } from './Clip';
 import { AbletonLiveBase } from './AbletonLiveBase';
+import { AbletonLive } from './AbletonLive';
 
 // TODO Missing properties
 // > input_routing_channel: dictionary;
@@ -395,6 +396,7 @@ export interface RawTrack {
 	id: string;
 	name: string;
 	path: string;
+	index: number;
 	has_audio_input: boolean;
 }
 
@@ -403,11 +405,7 @@ export interface RawTrack {
  */
 export const RawTrackKeys = ['name', 'has_audio_input'];
 
-const childrenInitialProps = {
-	devices: RawDevice,
-	clip_slots: RawClipSlotKeys,
-	mixer_device: RawMixerDeviceKeys,
-};
+
 
 function routingGetter<T extends keyof TrackTransformedProperties>(prop: T) {
 	return (details): TrackTransformedProperties[T] => {
@@ -439,15 +437,22 @@ export class Track extends Properties<
 	}
 
 	// TODO: v2
-	// static async get<T extends keyof TrackGetProperties>(
-	// 	live: AbletonLive,
-	// 	trackNumber: number,
-	// 	prop: T,
-	// ): Promise<TrackGetProperties[T]> {
-	// 	return await live.get(Track.getPath(trackNumber), prop);
-	// }
+	static async get<T extends keyof TrackGetProperties>(
+		live: AbletonLive,
+		trackNumber: number,
+		prop: T,
+	): Promise<TrackGetProperties[T]> {
+		return await live.get(Track.getPath(trackNumber), prop);
+	}
+
+	static ChildrenInitialProps = {
+		devices: RawDevice,
+		clip_slots: RawClipSlotKeys,
+		mixer_device: RawMixerDeviceKeys,
+	};
 
 	private _name: string;
+	private _index: number;
 	private _type: TrackType;
 	private _mixerDevice: MixerDevice;
 
@@ -463,10 +468,11 @@ export class Track extends Properties<
 		public raw: RawTrack,
 		path?: string
 	) {
-		super(ableton, 'track', path ?? raw.path, childrenInitialProps);
+		super(ableton, 'track', path ?? raw.path, Track.ChildrenInitialProps);
 
-		this._id = parseInt(raw.id, 10);
+		this._id = raw.id;
 		this._name = raw.name;
+		this._index = raw.index;
 		this._type = raw.has_audio_input ? TrackType.Audio : TrackType.Midi;
 
 		this.getterTransformers = {
@@ -570,6 +576,17 @@ export class Track extends Properties<
 	 */
 	get type(): TrackType {
 		return this._type;
+	}
+
+	/**
+	 * The index of the track
+	 *
+	 * @readonly
+	 * @type {number}
+	 * @memberof Track
+	 */
+	get index(): number {
+		return this._index;
 	}
 
 	/**

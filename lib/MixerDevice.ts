@@ -85,7 +85,7 @@ export interface MixerDeviceObservableProperties {
 }
 
 export interface RawMixerDevice {
-	id: number;
+	id: string;
 	volume: RawDeviceParameter;
 	panning: RawDeviceParameter;
 }

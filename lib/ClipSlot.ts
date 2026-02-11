@@ -108,7 +108,7 @@ export interface ObservableProperties {
 }
 
 export interface RawClipSlot {
-	id: number;
+	id: string;
 	path: string;
 	has_clip: boolean;
 	clip: RawClip;

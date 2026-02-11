@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { Song } from './Song';
 
 import { SongView } from './SongView';
-import {AbletonLiveBase} from './AbletonLiveBase';
+import { AbletonLiveBase } from './AbletonLiveBase';
 
 interface Command {
 	path: string;
@@ -32,7 +32,6 @@ interface ConnectionEvents {
 	disconnect: () => void;
 }
 
-
 type Listener = (data: any) => any;
 type Callback = (err: Error | null, data?: any) => any;
 
@@ -51,6 +50,14 @@ export interface AbletonLiveOptions {
 	 * @default false
 	 */
 	logRequests?: boolean;
+	/**
+	 * @default 20
+	 */
+	maxAttempts?: number;
+	/**
+	 * @default 1000
+	 */
+	timeout?: number;
 }
 
 /**
@@ -69,8 +76,8 @@ export class AbletonLive extends AbletonLiveBase {
 	private _port: number;
 	private _logRequests: boolean;
 
-	public song = new Song(this);
-	public songView = new SongView(this);
+	public song: Song;
+	public songView: SongView;
 
 	private _isBrowser: boolean;
 
@@ -78,7 +85,13 @@ export class AbletonLive extends AbletonLiveBase {
 	 * @param {AbletonLiveOptions} [{ host = '127.0.0.1', port = 9000, logRequests = false }={}]
 	 * @memberof AbletonLive
 	 */
-	constructor({ host = '127.0.0.1', port = 9001, logRequests = false }: AbletonLiveOptions = {}) {
+	constructor({
+		host = '127.0.0.1',
+		port = 9001,
+		maxAttempts = 20,
+		timeout = 1000,
+		logRequests = false,
+	}: AbletonLiveOptions = {}) {
 		// eslint-disable-next-line constructor-super
 		super();
 
@@ -86,13 +99,16 @@ export class AbletonLive extends AbletonLiveBase {
 		this._port = port;
 		this._logRequests = logRequests;
 
+		this.song = new Song(this);
+		this.songView = new SongView(this);
+
 		this._isBrowser = typeof window !== 'undefined';
 
 		if ((!this._isBrowser || window.WebSocket === undefined) && global.WebSocket === undefined) {
 			throw new Error('[AbletonLive]: WebSocket implementation not available');
 		}
 
-		this.client = new WebSockette();
+		this.client = new WebSockette({ maxAttempts, timeout });
 
 		this.handleIncoming = this.handleIncoming.bind(this);
 	}
@@ -233,7 +249,7 @@ export class AbletonLive extends AbletonLiveBase {
 	private async sendCommand(
 		action: string,
 		path: string,
-		objectId?: number,
+		objectId?: string,
 		args: { [k: string]: any } = {},
 		timeout = 2000
 	): Promise<any> {
@@ -271,19 +287,19 @@ export class AbletonLive extends AbletonLiveBase {
 		});
 	}
 
-	async get(path: string, prop: string, liveObjectId?: number): Promise<any> {
+	async get(path: string, prop: string, liveObjectId?: string): Promise<any> {
 		return this.sendCommand('get', path, liveObjectId, { prop });
 	}
 
 	async getChildren(
 		path: string,
 		args: { child: string; initialProps: any; index?: number },
-		liveObjectId?: number
+		liveObjectId?: string
 	): Promise<any> {
 		return this.sendCommand('children', path, liveObjectId, args);
 	}
 
-	async set(path: string, prop: string, value: any, liveObjectId?: number): Promise<any> {
+	async set(path: string, prop: string, value: any, liveObjectId?: string): Promise<any> {
 		return this.sendCommand('set', path, liveObjectId, { prop, value });
 	}
 
@@ -291,7 +307,7 @@ export class AbletonLive extends AbletonLiveBase {
 		path: string,
 		property: string,
 		listener: (data: any) => any,
-		{ initialProps, liveObjectId }: { initialProps?: any; liveObjectId?: number } = {}
+		{ initialProps, liveObjectId }: { initialProps?: any; liveObjectId?: string } = {}
 	): Promise<any> {
 		const eventId = nanoid();
 		const objectPath = `${path} ${property}`;
@@ -312,17 +328,17 @@ export class AbletonLive extends AbletonLiveBase {
 	async call(
 		path: string,
 		callDescription: { method: string; parameters: any },
-		liveObjectId?: number,
+		liveObjectId?: string,
 		timeout?: number
 	): Promise<any> {
 		return this.sendCommand('call', path, liveObjectId, callDescription, timeout);
 	}
 
-	async callMultiple(path: string, calls: any[][], liveObjectId?: number, timeout?: number): Promise<any> {
+	async callMultiple(path: string, calls: any[][], liveObjectId?: string, timeout?: number): Promise<any> {
 		return this.sendCommand('callMultiple', path, liveObjectId, { calls }, timeout);
 	}
 
-	private async removeObserser(path: string, property: string, eventId: string, liveObjectId?: number): Promise<void> {
+	private async removeObserser(path: string, property: string, eventId: string, liveObjectId?: string): Promise<void> {
 		await this.sendCommand('removeObserver', path, liveObjectId, {
 			eventId,
 			objectPath: `${path} ${property}`,

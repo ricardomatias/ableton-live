@@ -105,7 +105,7 @@ export interface DeviceParameterObservableProperties {
 }
 
 export interface RawDeviceParameter {
-	id: number;
+	id: string;
 	name: string;
 	value: number;
 	is_quantized: boolean;
@@ -147,7 +147,6 @@ export class DeviceParameter extends Properties<
 		super(ableton, 'device_parameter', path ? path : DeviceParameter.path);
 
 		this._id = raw.id;
-
 		this._name = raw.name;
 		this._value = raw.value;
 		this._isQuantized = raw.is_quantized;

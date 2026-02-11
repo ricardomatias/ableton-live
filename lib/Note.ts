@@ -92,6 +92,10 @@ export class Note {
 		return Math.min(Math.max(this._pitch, 0), 128);
 	}
 
+	set pitch(value: number) {
+		this._pitch = Math.min(Math.max(value, 0), 128);
+	}
+
 	/**
 	 * The note start time in beats of absolute clip time.
 	 *
@@ -103,6 +107,10 @@ export class Note {
 		// we convert to strings with decimals to work around a bug in Max
 		// otherwise we get  an invalid syntax error when trying to set notes
 		return this._start;
+	}
+
+	set start(value: number) {
+		this._start = value;
 	}
 
 	/**
@@ -117,6 +125,10 @@ export class Note {
 		return this._duration; // workaround similar bug as with get start()
 	}
 
+	set duration(value: number) {
+		this._duration = value;
+	}
+
 	/**
 	 * The note velocity, 1 ... 127.
 	 *
@@ -128,20 +140,40 @@ export class Note {
 		return Math.min(Math.max(this._velocity, 0), 128);
 	}
 
+	set velocity(value: number) {
+		this._velocity = Math.min(Math.max(value, 0), 128);
+	}
+
 	get muted(): boolean {
 		return !!this._muted;
+	}
+
+	set muted(value: boolean) {
+		this._muted = value;
 	}
 
 	get probability(): number {
 		return this._probability;
 	}
 
+	set probability(value: number) {
+		this._probability = value;
+	}
+
 	get velocityDeviation(): number {
 		return this._velocityDeviation;
 	}
 
+	set velocityDeviation(value: number) {
+		this._velocityDeviation = value;
+	}
+
 	get releaseVelocity(): number {
 		return this._releaseVelocity;
+	}
+
+	set releaseVelocity(value: number) {
+		this._releaseVelocity = value;
 	}
 
 	/**
@@ -181,6 +213,7 @@ export class Note {
 			releaseVelocity: this._releaseVelocity,
 		});
 	}
+
 
 	/**
 	 * @private

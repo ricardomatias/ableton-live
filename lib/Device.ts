@@ -118,7 +118,7 @@ export class Device extends Properties<
 	) {
 		super(ableton, 'device', path ? path : Device.path, initialProps);
 
-		this._id = parseInt(raw.id, 10);
+		this._id = raw.id;
 		this._name = raw.name;
 		this._type = raw.type;
 		this._className = raw.class_name;

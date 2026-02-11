@@ -523,7 +523,7 @@ export class Clip extends Properties<
 	) {
 		super(ableton, 'clip', path ?? raw.path);
 
-		this._id = parseInt(raw.id, 10);
+		this._id = raw.id;
 		this._name = raw.name;
 		this._type = raw.is_audio_clip ? ClipType.Audio : ClipType.Midi;
 		this._length = raw.length;
@@ -597,7 +597,7 @@ export class Clip extends Properties<
 	 * @param {Array<Note>} notes
 	 * @return {void}
 	 */
-	public async addNewNotes(notes: Note[]): Promise<void> {
+	public async addNewNotes(notes: Note[]): Promise<number[]> {
 		return this.call('add_new_notes', [this.prepareNotes(notes)]);
 	}
 
@@ -834,6 +834,16 @@ export class Clip extends Properties<
 	 */
 	public async selectAllNotes(): Promise<void> {
 		return this.call('select_all_notes');
+	}
+
+	/**
+	 * Selects all notes associated with the provided IDs.
+	 * @memberof Clip
+	 *
+	 * @return {void}
+	 */
+	public async selectNotesById(ids: number[]): Promise<void> {
+		return this.call('select_notes_by_id', [...ids]);
 	}
 
 	/**

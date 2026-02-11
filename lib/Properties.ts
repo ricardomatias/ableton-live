@@ -13,10 +13,10 @@ export class Properties<GP, CP, TP, SP, OP> {
 		protected ns: string,
 		protected _path: string,
 		protected childrenInitialProps?: Partial<{ [T in keyof CP]: (string | ChildrenInitialProps)[] }>,
-		protected _id?: number
+		protected _id?: string
 	) {}
 
-	get id(): number | undefined {
+	get id(): string | undefined {
 		return this._id;
 	}
 

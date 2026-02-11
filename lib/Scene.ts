@@ -100,6 +100,7 @@ export interface RawScene {
 	id: string;
 	name: string;
 	path: string;
+	index: number;
 	isEmpty: boolean;
 }
 
@@ -126,6 +127,7 @@ export class Scene extends Properties<
 	SceneObservableProperties
 > {
 	static path = 'live_set scenes $1';
+	private _index: number;
 
 	static getPath(sceneNumber: number): string {
 		return Scene.path.replace('$1', `${sceneNumber}`);
@@ -148,9 +150,10 @@ export class Scene extends Properties<
 	) {
 		super(ableton, 'scene', path ?? raw.path, childrenInitialProps);
 
-		this._id = parseInt(raw.id, 10);
+		this._id = raw.id;
 		this._name = raw.name;
 		this._isEmpty = raw.isEmpty;
+		this._index = raw.index;
 
 		this.childrenTransformers = {
 			clip_slots: (clipSlots) => clipSlots.map((c) => new ClipSlot(this.ableton, c)),

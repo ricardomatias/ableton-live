@@ -36,30 +36,30 @@ export abstract class AbletonLiveBase extends (EventEmitter as new () => TypedEv
 	abstract song: Song;
 	abstract songView: SongView;
 
-	abstract get(path: string, prop: string, liveObjectId?: number): Promise<any>;
+	abstract get(path: string, prop: string, liveObjectId?: string): Promise<any>;
 
 	abstract getChildren(
 		path: string,
 		args: { child: string; initialProps: any; index?: number },
-		liveObjectId?: number
+		liveObjectId?: string
 	): Promise<any>;
 
-	abstract set(path: string, prop: string, value: any, liveObjectId?: number): Promise<any>;
+	abstract set(path: string, prop: string, value: any, liveObjectId?: string): Promise<any>;
 
 	abstract observe(
 		path: string,
 		property: string,
 		listener: (data: any) => any,
-		{ initialProps, liveObjectId }: { initialProps?: any; liveObjectId?: number }
+		{ initialProps, liveObjectId }: { initialProps?: any; liveObjectId?: string }
 	): Promise<any>;
 
 	abstract call(
 		path: string,
 		callDescription: { method: string; parameters: any },
-		liveObjectId?: number,
+		liveObjectId?: string,
 		timeout?: number
 	): Promise<any>;
 
-	abstract callMultiple(path: string, calls: any[][], liveObjectId?: number, timeout?: number): Promise<any>;
+	abstract callMultiple(path: string, calls: any[][], liveObjectId?: string, timeout?: number): Promise<any>;
 }
 

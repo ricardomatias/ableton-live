@@ -97,7 +97,7 @@ export class AbletonLiveOffline extends AbletonLiveBase {
 	private async sendCommand(
 		action: string,
 		path: string,
-		objectId?: number,
+		objectId?: string,
 		args: { [k: string]: any } = {},
 		timeout = 2000
 	): Promise<any> {
@@ -128,19 +128,19 @@ export class AbletonLiveOffline extends AbletonLiveBase {
 		});
 	}
 
-	async get(path: string, prop: string, liveObjectId?: number): Promise<any> {
+	async get(path: string, prop: string, liveObjectId?: string): Promise<any> {
 		return this.sendCommand('get', path, liveObjectId, { prop });
 	}
 
 	async getChildren(
 		path: string,
 		args: { child: string; initialProps: any; index?: number },
-		liveObjectId?: number
+		liveObjectId?: string
 	): Promise<any> {
 		return this.sendCommand('children', path, liveObjectId, args);
 	}
 
-	async set(path: string, prop: string, value: any, liveObjectId?: number): Promise<any> {
+	async set(path: string, prop: string, value: any, liveObjectId?: string): Promise<any> {
 		return this.sendCommand('set', path, liveObjectId, { prop, value });
 	}
 
@@ -148,7 +148,7 @@ export class AbletonLiveOffline extends AbletonLiveBase {
 		path: string,
 		property: string,
 		listener: (data: any) => any,
-		{ initialProps, liveObjectId }: { initialProps?: any; liveObjectId?: number } = {}
+		{ initialProps, liveObjectId }: { initialProps?: any; liveObjectId?: string } = {}
 	): Promise<any> {
 		const eventId = nanoid();
 		const objectPath = `${path} ${property}`;
@@ -169,17 +169,17 @@ export class AbletonLiveOffline extends AbletonLiveBase {
 	async call(
 		path: string,
 		callDescription: { method: string; parameters: any },
-		liveObjectId?: number,
+		liveObjectId?: string,
 		timeout?: number
 	): Promise<any> {
 		return this.sendCommand('call', path, liveObjectId, callDescription, timeout);
 	}
 
-	async callMultiple(path: string, calls: any[][], liveObjectId?: number, timeout?: number): Promise<any> {
+	async callMultiple(path: string, calls: any[][], liveObjectId?: string, timeout?: number): Promise<any> {
 		return this.sendCommand('callMultiple', path, liveObjectId, { calls }, timeout);
 	}
 
-	private async removeObserser(path: string, property: string, eventId: string, liveObjectId?: number): Promise<void> {
+	private async removeObserser(path: string, property: string, eventId: string, liveObjectId?: string): Promise<void> {
 		await this.sendCommand('removeObserver', path, liveObjectId, {
 			eventId,
 			objectPath: `${path} ${property}`,
