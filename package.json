@@ -2,11 +2,16 @@
 	"name": "ableton-live",
 	"version": "12.1.1",
 	"type": "module",
-	"main": "./build/esm/node.mjs",
+	"main": "./build/esm/index.mjs",
 	"module": "./build/esm/index.mjs",
 	"typings": "./build/types/index.d.ts",
 	"exports": {
 		".": {
+			"browser": {
+				"types": "./build/types/index.d.ts",
+				"import": "./build/esm/index.mjs",
+				"default": "./build/esm/index.mjs"
+			},
 			"import": {
 				"types": "./build/types/index.d.ts",
 				"default": "./build/esm/node.mjs"
@@ -63,7 +68,7 @@
 	],
 	"dependencies": {
 		"mitt": "^3.0.1",
-		"nanoid": "^5.0.6"
+		"nanoid": "^5.1.5"
 	},
 	"devDependencies": {
 		"@sisense/typedoc-plugin-markdown": "^4.0.0-next.46",
@@ -82,5 +87,8 @@
 		"rimraf": "^5.0.5",
 		"typedoc": "^0.25.12",
 		"typescript": "^5.4.2"
+	},
+	"volta": {
+		"node": "24.12.0"
 	}
 }
