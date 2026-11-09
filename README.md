@@ -4,7 +4,7 @@ A library for communicating with Ableton Live via WebSockets, works both in Node
 
 ## Requirements
 
-* Ableton Live 11
+* Ableton Live 12
 * Max 4 Live
 
 

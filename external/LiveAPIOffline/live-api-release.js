@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use strict';
 
-// * version 0.12.1
+// * version 0.12.4
 
 var apis = {};
 var callbackEvents = {};
