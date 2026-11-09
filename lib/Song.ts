@@ -3,6 +3,7 @@ import { Track, RawTrackKeys, RawTrack, TrackType } from './Track';
 import { RawSceneKeys, RawScene, Scene } from './Scene';
 import { AbletonLiveBase } from './AbletonLiveBase';
 import { CuePoint, RawCuePoint, RawCuePointKeys } from './CuePoint';
+import { TuningSystem, RawTuningSystem, RawTuningSystemKeys } from './TuningSystem';
 
 export interface SongGetProperties {
     /**
@@ -190,6 +191,12 @@ export interface SongChildrenProperties {
      */
     visible_tracks: RawTrack[];
     cue_points: RawCuePoint[];
+    /**
+     * The Live Set's tuning system.
+     *
+     * Available since Live 12.1.
+     */
+    tuning_system: RawTuningSystem[];
     // groove_pool: RawGroovePool;
 }
 
@@ -204,6 +211,10 @@ export interface SongTransformedProperties {
      */
     visible_tracks: Track[];
     cue_points: CuePoint[];
+    /**
+     * @inheritdoc SongChildrenProperties.tuning_system
+     */
+    tuning_system: TuningSystem;
 }
 
 export interface SongSetProperties {
@@ -621,6 +632,7 @@ const SongChildrenProperties = {
     visible_tracks: RawTrackKeys,
     visible_track: RawTrackKeys,
     cue_points: RawCuePointKeys,
+    tuning_system: RawTuningSystemKeys,
 };
 
 /**
@@ -653,6 +665,7 @@ export class Song extends Properties<
             return_tracks: (tracks) => tracks.map((t, i) => new Track(this.ableton, { ...t, index: i })),
             visible_tracks: (tracks) => tracks.map((t, i) => new Track(this.ableton, { ...t, index: i })),
             cue_points: (cuePoints) => cuePoints.map((c) => new CuePoint(this.ableton, c)),
+            tuning_system: ([tuningSystem]) => new TuningSystem(this.ableton, tuningSystem),
         };
     }
 

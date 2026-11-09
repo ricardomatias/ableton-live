@@ -3,6 +3,8 @@ import { RawMixerDeviceKeys, MixerDevice, RawMixerDevice } from './MixerDevice';
 import { RawClipSlotKeys, RawClipSlot, ClipSlot } from './ClipSlot';
 import { DeviceParameter } from './DeviceParameter';
 import { Device, RawDevice } from './Device';
+import { createDevice } from './createDevice';
+import { TakeLane, RawTakeLane, RawTakeLaneKeys } from './TakeLane';
 import { Clip } from './Clip';
 import { AbletonLiveBase } from './AbletonLiveBase';
 import { AbletonLive } from './AbletonLive';
@@ -185,6 +187,12 @@ export interface TrackChildrenProperties {
 	 * The list of this track's Arrangement View clip IDs
 	 */
 	arrangement_clips: RawClipSlot[];
+	/**
+	 * The track's take lanes.
+	 *
+	 * Available since Live 12.2.
+	 */
+	take_lanes: RawTakeLane[];
 }
 
 /**
@@ -209,6 +217,10 @@ export interface TrackTransformedProperties {
 	 * @inheritdoc TrackChildrenProperties.arrangement_clips
 	 */
 	arrangement_clips: ClipSlot[];
+	/**
+	 * @inheritdoc TrackChildrenProperties.take_lanes
+	 */
+	take_lanes: TakeLane[];
 }
 
 /**
@@ -447,6 +459,7 @@ export class Track extends Properties<
 		devices: RawDevice,
 		clip_slots: RawClipSlotKeys,
 		mixer_device: RawMixerDeviceKeys,
+		take_lanes: RawTakeLaneKeys,
 	};
 
 	private _name: string;
@@ -481,9 +494,10 @@ export class Track extends Properties<
 		};
 
 		this.childrenTransformers = {
-			devices: (devices) => devices.map((device) => new Device(this.ableton, device)),
+			devices: (devices) => devices.map((device) => createDevice(this.ableton, device)),
 			mixer_device: ([mixerDevice]) => new MixerDevice(this.ableton, mixerDevice),
 			clip_slots: (clipSlots) => clipSlots.map((c) => new ClipSlot(this.ableton, c)),
+			take_lanes: (takeLanes) => takeLanes.map((t) => new TakeLane(this.ableton, t)),
 		};
 	}
 
@@ -681,6 +695,62 @@ export class Track extends Properties<
 	 */
 	public async jumpInRunningSessionClip(beats: number): Promise<void> {
 		return this.call('jump_in_running_session_clip', [beats]);
+	}
+
+	/**
+	 * Creates an empty MIDI clip in the Arrangement.
+	 *
+	 * Available since Live 12.1.10.
+	 *
+	 * @memberof Track
+	 * @param {number} startTime position in the Arrangement, in beats
+	 * @param {number} length length of the clip, in beats
+	 * @return {Promise<void>}
+	 */
+	public async createMidiClip(startTime: number, length: number): Promise<void> {
+		return this.call('create_midi_clip', [startTime, length]);
+	}
+
+	/**
+	 * Creates an audio clip in the Arrangement.
+	 * @memberof Track
+	 *
+	 * @param {string} filePath absolute path to a valid audio file
+	 * @param {number} position position in the Arrangement, in beats
+	 * @return {Promise<void>}
+	 */
+	public async createAudioClip(filePath: string, position: number): Promise<void> {
+		return this.call('create_audio_clip', [filePath, position]);
+	}
+
+	/**
+	 * Creates a new take lane in this track.
+	 *
+	 * Available since Live 12.2.
+	 *
+	 * @memberof Track
+	 * @return {Promise<void>}
+	 */
+	public async createTakeLane(): Promise<void> {
+		return this.call('create_take_lane');
+	}
+
+	/**
+	 * Inserts a native Live device into this track, by the name shown in Live's browser.
+	 * Max for Live devices and plug-ins are not supported.
+	 *
+	 * Available since Live 12.3.
+	 *
+	 * @memberof Track
+	 * @param {string} deviceName f.ex. `Reverb`, `Operator`
+	 * @param {number} [targetIndex] position in the device chain; appended at the end when omitted
+	 * @return {Promise<void>}
+	 */
+	public async insertDevice(deviceName: string, targetIndex?: number): Promise<void> {
+		const parameters: (string | number)[] = [deviceName];
+		if (targetIndex !== undefined) parameters.push(targetIndex);
+
+		return this.call('insert_device', parameters);
 	}
 
 	/** @ignore */
