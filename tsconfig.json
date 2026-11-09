@@ -1,9 +1,11 @@
 {
 	"compilerOptions": {
 		"outDir": "./build",
+		"rootDir": "./lib",
 		"target": "ES6",
 		"module": "ES6",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
+		"types": ["node"],
 		"strict": true,
 		"declaration": true,
 		"esModuleInterop": true,

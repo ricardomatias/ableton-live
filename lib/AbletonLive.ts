@@ -191,6 +191,7 @@ export class AbletonLive extends AbletonLiveBase {
 		this._isConnected = false;
 
 		this.client.close();
+		this.client.removeAllListeners();
 
 		this.emit('disconnect');
 	}

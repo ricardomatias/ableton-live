@@ -20,7 +20,7 @@ export interface WebSocketteOptions {
 	maxAttempts?: number;
 }
 
-export type WebSocketPayload = string | ArrayBuffer | SharedArrayBuffer | Blob | ArrayBufferView;
+export type WebSocketPayload = Parameters<WebSocket['send']>[0];
 
 interface WebSocketEvents {
 	open: (event: Event) => void;
@@ -30,6 +30,7 @@ interface WebSocketEvents {
 	reconnect: (tries: number) => void;
 	ping: () => void;
 	pong: () => void;
+	all: (event: Event) => void;
 }
 
 export class WebSockette extends (EventEmitter as new () => TypedEventEmitter<WebSocketEvents>) {
@@ -60,38 +61,43 @@ export class WebSockette extends (EventEmitter as new () => TypedEventEmitter<We
 		this.url = url;
 		this.protocols = protocols;
 
-		this.ws.addEventListener('message', (event: MessageEvent) => {
-			this.emit('message', event);
-		});
-
-		this.ws.addEventListener('open', (event) => {
-			this.emit('open', event);
-			this.num = 0;
-			clearTimeout(this.timer);
-		});
-
-		this.ws.addEventListener('close', (event) => {
-			switch (event.code) {
-				case WebSocketCloseCode.NormalClosure:
-				case WebSocketCloseCode.GoingAway:
-				case WebSocketCloseCode.NoStatusReceived:
-					this.emit('close', event);
-					clearTimeout(this.timer);
-					break;
-				case WebSocketCloseCode.AbnormalClosure:
-				default:
-					if (this.num === 0) {
-						this.emit('close', event);
-					}
-
-					this.reconnect(event);
-			}
-		});
-
-		this.ws.addEventListener('error', (event) => {
-			this.emit('error', event);
-		});
+		this.ws.addEventListener('message', this.onMessage);
+		this.ws.addEventListener('open', this.onOpen);
+		this.ws.addEventListener('close', this.onClose);
+		this.ws.addEventListener('error', this.onError);
 	}
+
+	private onMessage = (event: MessageEvent): void => {
+		this.emit('message', event);
+	};
+
+	private onOpen = (event: Event): void => {
+		this.emit('open', event);
+		this.num = 0;
+		clearTimeout(this.timer);
+	};
+
+	private onClose = (event: CloseEvent): void => {
+		switch (event.code) {
+			case WebSocketCloseCode.NormalClosure:
+			case WebSocketCloseCode.GoingAway:
+			case WebSocketCloseCode.NoStatusReceived:
+				this.emit('close', event);
+				clearTimeout(this.timer);
+				break;
+			case WebSocketCloseCode.AbnormalClosure:
+			default:
+				if (this.num === 0) {
+					this.emit('close', event);
+				}
+
+				this.reconnect(event);
+		}
+	};
+
+	private onError = (event: Event): void => {
+		this.emit('error', event);
+	};
 
 	get state(): WebSocketState {
 		return this.ws.readyState;
@@ -123,6 +129,12 @@ export class WebSockette extends (EventEmitter as new () => TypedEventEmitter<We
 			clearTimeout(this.timer);
 		}
 
+		this.ws.removeEventListener('message', this.onMessage);
+		this.ws.removeEventListener('open', this.onOpen);
+
 		this.ws.close(code, reason);
+
+		this.ws.removeEventListener('close', this.onClose);
+		this.ws.removeEventListener('error', this.onError);
 	}
 }

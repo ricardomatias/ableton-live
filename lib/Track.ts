@@ -405,8 +405,6 @@ export interface RawTrack {
  */
 export const RawTrackKeys = ['name', 'has_audio_input'];
 
-
-
 function routingGetter<T extends keyof TrackTransformedProperties>(prop: T) {
 	return (details): TrackTransformedProperties[T] => {
 		if (typeof details === 'number') return details as TrackTransformedProperties[T];
@@ -440,7 +438,7 @@ export class Track extends Properties<
 	static async get<T extends keyof TrackGetProperties>(
 		live: AbletonLive,
 		trackNumber: number,
-		prop: T,
+		prop: T
 	): Promise<TrackGetProperties[T]> {
 		return await live.get(Track.getPath(trackNumber), prop);
 	}

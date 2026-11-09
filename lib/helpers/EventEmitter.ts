@@ -1,18 +1,12 @@
-import mitt, {
-	Emitter,
-	EventType,
-	Handler,
-	EventHandlerMap,
-} from 'mitt';
+import mitt, { Emitter, EventType, Handler, EventHandlerMap } from 'mitt';
 
-export type Arguments<T> = [T] extends [(...args: infer U) => any]
-	? U
-	: [T] extends [void] ? [] : [T]
+export type Arguments<T> = [T] extends [(...args: infer U) => any] ? U : [T] extends [void] ? [] : [T];
 
 export interface TypedEventEmitter<Events> {
-	on<E extends keyof Events>(event: E, listener: Events[E]): void
-	off<E extends keyof Events>(event: E, listener: Events[E]): void
-	emit<E extends keyof Events>(event: E, ...args: Arguments<Events[E]>): void
+	removeAllListeners(): void;
+	on<E extends keyof Events>(event: E, listener: Events[E]): void;
+	off<E extends keyof Events>(event: E, listener?: Events[E]): void;
+	emit<E extends keyof Events>(event: E, ...args: Arguments<Events[E]>): void;
 }
 
 export class EventEmitter<Events extends Record<EventType, unknown>> {
@@ -37,5 +31,10 @@ export class EventEmitter<Events extends Record<EventType, unknown>> {
 	emit<T>(type: EventType, event?: T): void;
 	emit(type: '*', event?: any): void {
 		this.mitt.emit(type, event);
+	}
+
+	removeAllListeners(): void {
+		this.mitt.off('*');
+		this.mitt.all.clear();
 	}
 }

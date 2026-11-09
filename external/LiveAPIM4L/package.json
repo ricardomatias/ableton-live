@@ -1,0 +1,19 @@
+{
+	"name": "@ricardomatias/node-content",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"private": true,
+	"keywords": [],
+	"author": "Ricardo Matias <ricardo.matias0@gmail.com>",
+	"engines": {
+		"node": ">14.4.0"
+	},
+	"dependencies": {
+		"nanoid": "6.0.2",
+		"uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.71.0"
+	}
+}
