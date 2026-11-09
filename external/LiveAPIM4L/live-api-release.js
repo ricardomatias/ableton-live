@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use strict';
 
-// * version 0.12.1
+// * version 12.4.0
 
 var apis = {};
 var callbackEvents = {};
@@ -20,7 +20,6 @@ setinletassist(5, 'getThenCall');
 setinletassist(6, 'observe');
 setinletassist(7, 'removeObserver');
 setinletassist(8, 'close');
-
 
 function sample_callback(args) {
 	// do nothing
@@ -48,8 +47,7 @@ function handleLiveOutput(prop, value, type) {
 	if (Array.isArray(value)) {
 		if (value.length === 1) {
 			result = value[0];
-		} else
-		if (value.length === 2 && (value[0] === 'id' || value[0] === prop)) {
+		} else if (value.length === 2 && (value[0] === 'id' || value[0] === prop)) {
 			result = value[1];
 		}
 	}
@@ -84,7 +82,7 @@ function onSuccess(id, data, eventType) {
 	var response = {
 		uuid: id,
 		event: eventType || 'success',
-		result: data
+		result: data,
 	};
 
 	outlet(0, JSON.stringify(response));
@@ -95,8 +93,8 @@ function onCallback(listeners, data) {
 		event: 'callback',
 		result: {
 			data: data,
-			listeners: listeners
-		}
+			listeners: listeners,
+		},
 	};
 
 	outlet(0, JSON.stringify(response));
@@ -115,7 +113,6 @@ function onFailure(id, data) {
 	outlet(0, JSON.stringify(response));
 }
 
-
 // Name for callback to ensure it's fully unique
 function callbackName(path, id) {
 	if (id) {
@@ -123,7 +120,6 @@ function callbackName(path, id) {
 	}
 	return path;
 }
-
 
 // **** GET
 function get(args) {
@@ -145,7 +141,7 @@ function get(args) {
 	} else {
 		onSuccess(uuid, api.id);
 	}
-};
+}
 
 // **** CHILDREN
 function getChildProps(childApi, initialProps, childName) {
@@ -156,10 +152,10 @@ function getChildProps(childApi, initialProps, childName) {
 
 	const childData = {
 		id: childApi.id,
-		path: childApi.path.replace(/"/g, "")
+		path: childApi.path.replace(/"/g, ''),
 	};
 
-	initialProps.reduce(function(obj, elem) {
+	initialProps.reduce(function (obj, elem) {
 		if (typeof elem === 'string') {
 			obj[elem] = apiGet(childApi, elem);
 		} else {
@@ -189,7 +185,7 @@ function processChildren(ids, initialProps) {
 
 		var childData = {
 			id: childApi.id,
-			path: childApi.path.replace(/"/g, "")
+			path: childApi.path.replace(/"/g, ''),
 		};
 
 		if (childApi.id === '0') {
@@ -224,22 +220,19 @@ function children(args) {
 
 	var nsApi = liveApi(path, objectId);
 
-    var childId;
-    if (index) {
-        var childPath =
-            nsApi.path.replace(/"/g, "") + " " + child + " " + index;
-        var childApi = liveApi(childPath);
-        childId = ["id", childApi.id];
-    }
+	var childId;
+	if (index) {
+		var childPath = nsApi.path.replace(/"/g, '') + ' ' + child + ' ' + index;
+		var childApi = liveApi(childPath);
+		childId = ['id', childApi.id];
+	}
 
-    var ids = childId ? childId : nsApi.get(child);
+	var ids = childId ? childId : nsApi.get(child);
 
 	const data = processChildren(ids, initialProps);
 
 	return onSuccess(uuid, data);
-};
-
-
+}
 
 // **** SET
 function set(args) {
@@ -257,8 +250,7 @@ function set(args) {
 	api.set(prop, value);
 
 	onSuccess(uuid, value);
-};
-
+}
 
 // **** CALL
 function call(args) {
@@ -278,7 +270,7 @@ function call(args) {
 
 		log(methodArgs);
 
-		if (debugMode) log(new Error().lineNumber, " call ", method, ":", result);
+		if (debugMode) log(new Error().lineNumber, ' call ', method, ':', result);
 
 		if (isError(result)) {
 			onFailure(uuid, method);
@@ -286,12 +278,12 @@ function call(args) {
 		}
 
 		onSuccess(uuid, result);
-	} catch(err) {
+	} catch (err) {
 		log('Error', err);
 
-		onFailure(uuid, err)
+		onFailure(uuid, err);
 	}
-};
+}
 
 // **** CALL MULTIPLE
 function callMultiple(args) {
@@ -311,34 +303,34 @@ function callMultiple(args) {
 			const call = calls[index];
 			api.call.apply(api, call);
 
-			if (debugMode) log(new Error().lineNumber, " call multiple: ", call);
+			if (debugMode) log(new Error().lineNumber, ' call multiple: ', call);
 		}
 
 		onSuccess(uuid);
 	} catch (err) {
 		log(err);
 
-		onFailure(uuid, err)
+		onFailure(uuid, err);
 	}
-};
+}
 
 function callback(objectPath, objectId, property) {
-	return function(result) {
+	return function (result) {
 		const event = callbackEvents[callbackName(objectPath, objectId)];
 
 		if (event && event.listeners.length) {
 			if (debugMode) log(new Error().lineNumber, ' event:', event);
 
 			if (event.initialProps) {
-				result.shift() //* result returns ['tracks', 'id', 123, 'id',..]
+				result.shift(); //* result returns ['tracks', 'id', 123, 'id',..]
 				result = processChildren(result, event.initialProps);
 			}
 
 			const value = handleLiveOutput(property, result, event.type);
 			onCallback(event.listeners, value);
 		}
-	}
-};
+	};
+}
 
 function observe(args) {
 	const res = JSON.parse(args);
@@ -357,7 +349,7 @@ function observe(args) {
 		path = 'id ' + objectId;
 	}
 
-	var cbName = callbackName(objectPath, objectId)
+	var cbName = callbackName(objectPath, objectId);
 
 	if (callbackEvents[cbName] !== undefined) {
 		callbackEvents[cbName].listeners.push(eventId);
@@ -374,11 +366,11 @@ function observe(args) {
 		listeners: [eventId],
 		type: api.proptype,
 		api: api,
-		initialProps: initialProps
+		initialProps: initialProps,
 	};
 
 	onSuccess(uuid, eventId);
-};
+}
 
 function removeObserver(args) {
 	const res = JSON.parse(args);
@@ -389,7 +381,7 @@ function removeObserver(args) {
 	var eventId = res.args.eventId;
 	var objectPath = res.args.objectPath;
 
-	var cbName = callbackName(objectPath, objectId)
+	var cbName = callbackName(objectPath, objectId);
 
 	if (callbackEvents[cbName] !== undefined) {
 		var listeners = callbackEvents[cbName].listeners;
@@ -407,7 +399,6 @@ function removeObserver(args) {
 	onSuccess(uuid);
 }
 
-
 function close() {
 	const paths = Object.keys(callbackEvents);
 	log('Closing LiveAPI Bridge..');
@@ -419,7 +410,7 @@ function close() {
 		api.id = 0;
 		delete callbackEvents[path];
 	}
-};
+}
 
 // =============================================================================
 // **** UTILS
@@ -433,8 +424,7 @@ function log() {
 		var message = arguments[i];
 		if (Array.isArray(message)) {
 			post(JSON.stringify(message));
-		} else
-		if (message && message.toString) {
+		} else if (message && message.toString) {
 			var s = message.toString();
 			if (s.indexOf('[object ') >= 0) {
 				s = JSON.stringify(message);

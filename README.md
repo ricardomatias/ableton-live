@@ -4,9 +4,8 @@ A library for communicating with Ableton Live via WebSockets, works both in Node
 
 ## Requirements
 
-* Ableton Live 12
-* Max 4 Live
-
+- Ableton Live 12
+- Max 4 Live
 
 ## Installation
 
@@ -33,7 +32,7 @@ import { AbletonLive } from 'ableton-live';
 ```js
 // polyfill for a browser API compatible WebSocket
 if (process) {
-    global.WebSocket = require('ws');
+	global.WebSocket = require('ws');
 }
 ```
 
@@ -51,17 +50,17 @@ import { AbletonLive } from 'ableton-live';
 const live = new AbletonLive();
 
 const main = async () => {
-    try {
-        await live.connect();
+	try {
+		await live.connect();
 
-        const tracks = await live.song.children('tracks');
-        const clips = await tracks[0].getClips();
-        const notes = await clips[0].getNotes();
+		const tracks = await live.song.children('tracks');
+		const clips = await tracks[0].getClips();
+		const notes = await clips[0].getNotes();
 
-        notes.forEach(note => console.log(note.pitch));
-    } catch (error) {
-        console.error(error);
-    }
+		notes.forEach((note) => console.log(note.pitch));
+	} catch (error) {
+		console.error(error);
+	}
 };
 
 main();
@@ -76,4 +75,5 @@ Found at [https://ricardomatias.net/ableton-live/](https://ricardomatias.net/abl
 A loose fork of ableton-js, which was a great source of inspiration on how to approach handling Live's Object Model.
 
 ## Development
+
 When not receiving try running `sudo lsof -i :send_port_number` and make sure only **Max** is using it.

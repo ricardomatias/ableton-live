@@ -29,7 +29,7 @@
 		"build": "npm run cleanup && npm run build:node && npm run build:browser && npm run types && npm run copy:liveapi && npm run copy:liveapioffline",
 		"build:browser": "node esbuild.config.browser.js",
 		"build:node": "node esbuild.config.node.js",
-		"copy:liveapi": "cp ./external/live-api.js ./external/LiveAPI/code/live-api-release.js",
+		"copy:liveapi": "cp ./external/live-api.js ./external/LiveAPIM4L/live-api-release.js",
 		"copy:liveapioffline": "cp ./external/live-api.js ./external/LiveAPIOffline/live-api-release.js",
 		"dev": "nodemon --watch 'lib/**' --ext 'ts' --exec 'npm run build'",
 		"comments": "leasot -x -i 'node_modules/**/*','**/*.json' --tags '>' **/*.js **/*.ts",
@@ -72,7 +72,7 @@
 	},
 	"devDependencies": {
 		"@sisense/typedoc-plugin-markdown": "^4.0.0-next.46",
-		"@types/node": "25.3.3",
+		"@types/node": "26.6.6",
 		"@typescript-eslint/eslint-plugin": "8.72.1",
 		"@typescript-eslint/parser": "8.72.1",
 		"esbuild": "0.28.2",
@@ -86,9 +86,6 @@
 		"prettier": "3.9.10",
 		"rimraf": "6.1.4",
 		"typedoc": "0.28.20",
-		"typescript": "^6.0.3"
-	},
-	"volta": {
-		"node": "24.12.0"
+		"typescript": "^7.0.2"
 	}
 }
