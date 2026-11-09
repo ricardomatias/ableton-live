@@ -9,6 +9,18 @@ export enum DeviceType {
 	Undefined = 'undefined',
 }
 
+/** Live reports `type` as a number: 0 = undefined, 1 = instrument, 2 = audio effect, 4 = MIDI effect. */
+const LiveDeviceTypes: Record<number, DeviceType> = {
+	0: DeviceType.Undefined,
+	1: DeviceType.Instrument,
+	2: DeviceType.AudioEffect,
+	4: DeviceType.MidiEffect,
+};
+
+function toDeviceType(type: number | DeviceType): DeviceType {
+	return typeof type === 'number' ? (LiveDeviceTypes[type] ?? DeviceType.Undefined) : type;
+}
+
 export interface DeviceGetProperties {
 	/**
 	 * false for a single device</br>
@@ -144,9 +156,13 @@ export class Device<
 
 		this._id = raw.id;
 		this._name = raw.name;
-		this._type = raw.type;
+		this._type = toDeviceType(raw.type);
 		this._className = raw.class_name;
 		this._classDisplayName = raw.class_display_name;
+
+		this.getterTransformers = {
+			type: toDeviceType,
+		} as any;
 
 		this.childrenTransformers = {
 			parameters: (parameters: RawDeviceParameter[]) =>

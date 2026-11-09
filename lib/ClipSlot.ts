@@ -134,7 +134,7 @@ export class ClipSlot extends Properties<
 
 	private _hasClip: boolean;
 	private _playingStatus: PlayingStatus;
-	private _clip: Clip;
+	private _clip: Clip | null;
 
 	/**
 	 * Creates an instance of ClipSlot.
@@ -148,7 +148,8 @@ export class ClipSlot extends Properties<
 
 		this._id = raw.id;
 		this._hasClip = raw.has_clip;
-		this._clip = new Clip(this.ableton, raw.clip);
+		// * Live reports an empty slot's clip as id 0
+		this._clip = raw.clip && raw.clip.id !== '0' ? new Clip(this.ableton, raw.clip) : null;
 
 		this.childrenTransformers = {
 			clip: ([ clip ]) => {

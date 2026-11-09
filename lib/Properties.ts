@@ -133,12 +133,22 @@ export class Properties<GP, CP, TP, SP, OP> {
 	}
 
 	protected async call(method: string, parameters?: any[], timeout?: number): Promise<any> {
-		return this.ableton.call(this.path, { parameters, method }, this._id, timeout);
+		return this.ableton.call(this.path, { parameters: parameters?.map(toLiveValue), method }, this._id, timeout);
 	}
 
 	protected async callMultiple(calls: any[][], timeout?: number): Promise<any> {
-		return this.ableton.callMultiple(this.path, calls, this._id, timeout);
+		return this.ableton.callMultiple(
+			this.path,
+			calls.map(([method, ...args]) => [method, ...args.map(toLiveValue)]),
+			this._id,
+			timeout
+		);
 	}
+}
+
+/** Live's API rejects JSON booleans as call arguments; it expects 0/1. */
+function toLiveValue(value: any): any {
+	return typeof value === 'boolean' ? Number(value) : value;
 }
 
 type PropertyType<TName extends keyof CP, TP, CP> = TName extends keyof TP ? TP[TName] : CP[TName];

@@ -6,6 +6,9 @@ export * from './ClipSlot';
 export * from './Chain';
 export * from './ChainMixerDevice';
 export * from './createDevice';
+// * explicit: CuePoint's `ObservableProperties` would clash with ClipSlot's under `export *`
+export { CuePoint, RawCuePointKeys } from './CuePoint';
+export type { CuePointGetProperties, CuePointSetProperties, RawCuePoint } from './CuePoint';
 export * from './Device';
 export * from './DeviceParameter';
 export * from './DrumPad';

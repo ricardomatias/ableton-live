@@ -659,7 +659,7 @@ export class Song extends Properties<
         super(ableton, 'song', Song.path, SongChildrenProperties);
 
         this.childrenTransformers = {
-            master_track: (track) => new Track(this.ableton, track, 'live_set master_track'),
+            master_track: (track) => new Track(this.ableton, Array.isArray(track) ? track[0] : track, 'live_set master_track'),
             tracks: (tracks) => tracks.map((t, i) => new Track(this.ableton, { ...t, index: i })),
             scenes: (scenes) => scenes.map((s, i) => new Scene(this.ableton, { ...s, index: i })),
             return_tracks: (tracks) => tracks.map((t, i) => new Track(this.ableton, { ...t, index: i })),
