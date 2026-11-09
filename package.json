@@ -38,7 +38,8 @@
 		"prepare": "npm run build",
 		"cleanup": "rimraf ./build",
 		"types": "tsc --emitDeclarationOnly --outDir build/types && cp build/types/index.d.ts build/types/index.d.mts",
-		"docs": "typedoc"
+		"docs": "typedoc",
+		"test:live": "pnpm run build:node && node --test --test-concurrency=1 'tests/live/*.test.mjs'"
 	},
 	"files": [
 		"external/LiveAPI.amxd",

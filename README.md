@@ -77,3 +77,12 @@ A loose fork of ableton-js, which was a great source of inspiration on how to ap
 ## Development
 
 When not receiving try running `sudo lsof -i :send_port_number` and make sure only **Max** is using it.
+
+### Live integration tests
+
+`tests/live/` runs against a real Live 12 instance, using Node's built-in test runner:
+
+1. Open the stock **Live 12 Demo Set** and drop `external/LiveAPI.amxd` on the Master track.
+2. Run `pnpm test:live`. It builds the Node bundle and then runs the suite against `ws://127.0.0.1:9001`. Override with `LIVE_HOST` / `LIVE_PORT`.
+
+The suite changes the set (tempo, names, mute, device parameters, a temporary MIDI track and scene, and transport start/stop) and puts each change back. Don't save the set while it runs.
