@@ -48,7 +48,6 @@ export class AbletonLiveOffline extends AbletonLiveBase {
 	 * @memberof AbletonLive
 	 */
 	constructor(callback: LiveCallback) {
-		// eslint-disable-next-line constructor-super
 		super();
 
 		this.liveCallback = callback;
@@ -99,7 +98,7 @@ export class AbletonLiveOffline extends AbletonLiveBase {
 		path: string,
 		objectId?: string,
 		args: { [k: string]: any } = {},
-		timeout = 2000
+		_timeout = 2000
 	): Promise<any> {
 		return new Promise((resolve, reject) => {
 			// * remove undefined entries

@@ -43,7 +43,6 @@ export class WebSockette extends (EventEmitter as new () => TypedEventEmitter<We
 	private protocols: string | string[];
 
 	constructor({ maxAttempts = 20, timeout = 1000 }: WebSocketteOptions = {}) {
-		// eslint-disable-next-line constructor-super
 		super();
 
 		this.maxAttempts = maxAttempts;
@@ -53,7 +52,7 @@ export class WebSockette extends (EventEmitter as new () => TypedEventEmitter<We
 	open(url: string, protocols: string | string[] = []): void {
 		try {
 			this.ws = new WebSocket(url, protocols);
-		} catch (err) {
+		} catch {
 			this.emit('error', new Event('error'));
 			return;
 		}

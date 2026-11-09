@@ -33,8 +33,8 @@
 		"copy:liveapioffline": "cp ./external/live-api.js ./external/LiveAPIOffline/live-api-release.js",
 		"dev": "nodemon --watch 'lib/**' --ext 'ts' --exec 'npm run build'",
 		"comments": "leasot -x -i 'node_modules/**/*','**/*.json' --tags '>' **/*.js **/*.ts",
-		"lint": "eslint lib",
-		"lint:quiet": "eslint lib  --quiet",
+		"lint": "eslint .",
+		"lint:quiet": "eslint . --quiet",
 		"prepare": "npm run build",
 		"cleanup": "rimraf ./build",
 		"types": "tsc --emitDeclarationOnly --outDir build/types && cp build/types/index.d.ts build/types/index.d.mts",
@@ -71,21 +71,21 @@
 		"nanoid": "6.0.2"
 	},
 	"devDependencies": {
+		"@eslint/js": "^10.0.1",
 		"@sisense/typedoc-plugin-markdown": "^4.0.0-next.46",
 		"@types/node": "26.6.6",
-		"@typescript-eslint/eslint-plugin": "8.72.1",
-		"@typescript-eslint/parser": "8.72.1",
+		"@typescript/native": "npm:typescript@^7.0.2",
 		"esbuild": "0.28.2",
 		"eslint": "10.14.0",
-		"eslint-config-google": "^0.14.0",
 		"eslint-config-prettier": "10.1.8",
-		"eslint-plugin-import": "2.32.0",
+		"globals": "^17.14.0",
 		"husky": "9.1.7",
 		"leasot": "14.4.0",
 		"nodemon": "3.1.14",
 		"prettier": "3.9.10",
 		"rimraf": "6.1.4",
 		"typedoc": "0.28.20",
-		"typescript": "^7.0.2"
+		"typescript": "npm:@typescript/typescript6@^6.0.2",
+		"typescript-eslint": "^8.72.1"
 	}
 }

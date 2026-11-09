@@ -27,11 +27,6 @@ interface Response {
 	result: any;
 }
 
-interface ConnectionEvents {
-	connect: () => void;
-	disconnect: () => void;
-}
-
 type Listener = (data: any) => any;
 type Callback = (err: Error | null, data?: any) => any;
 
@@ -92,7 +87,6 @@ export class AbletonLive extends AbletonLiveBase {
 		timeout = 1000,
 		logRequests = false,
 	}: AbletonLiveOptions = {}) {
-		// eslint-disable-next-line constructor-super
 		super();
 
 		this._host = host;
