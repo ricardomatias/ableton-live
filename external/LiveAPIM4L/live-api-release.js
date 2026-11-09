@@ -27,18 +27,28 @@ function sample_callback(args) {
 
 function liveApi(path, id) {
 	// * preference for id
-	if (id !== undefined) {
+	if (id !== undefined && id !== null) {
 		path = 'id ' + id;
 	}
 
 	if (debugMode) log(new Error().lineNumber, ' path: ', path);
 
-	if (apis[path]) {
-		return apis[path];
+	var api = apis[path];
+
+	if (!api) {
+		api = apis[path] = new LiveAPI(null, path);
+		return api;
 	}
 
-	apis[path] = new LiveAPI(null, path);
-	return apis[path];
+	// * An id always names the same object, but a path like "live_set tracks 3" is
+	// * positional: a LiveAPI created from it stays bound to whatever object was there
+	// * at creation time. Re-resolve cached path lookups so they follow the set's
+	// * current structure after tracks/scenes are added, moved or deleted.
+	if (path.indexOf('id ') !== 0) {
+		api.goto(path);
+	}
+
+	return api;
 }
 
 function handleLiveOutput(prop, value, type) {
@@ -221,7 +231,8 @@ function children(args) {
 	var nsApi = liveApi(path, objectId);
 
 	var childId;
-	if (index) {
+	// * index 0 is valid; only skip when no index was sent
+	if (index !== undefined && index !== null) {
 		var childPath = nsApi.path.replace(/"/g, '') + ' ' + child + ' ' + index;
 		var childApi = liveApi(childPath);
 		childId = ['id', childApi.id];
