@@ -39,6 +39,18 @@ export interface DeviceGetProperties {
 	 * The type of the device
 	 */
 	type: DeviceType;
+	/**
+	 * true = the device supports A/B preset comparison.
+	 *
+	 * Available since Live 12.3.
+	 */
+	can_compare_ab: boolean;
+	/**
+	 * true = the device is currently using preset B of its A/B comparison.
+	 *
+	 * Available since Live 12.3.
+	 */
+	is_using_compare_preset_b: boolean;
 }
 
 export interface DeviceChildrenProperties {
@@ -64,6 +76,10 @@ export interface DeviceSetProperties {
 	 * @inheritdoc DeviceGetProperties.is_active
 	 */
 	is_active: boolean;
+	/**
+	 * @inheritdoc DeviceGetProperties.is_using_compare_preset_b
+	 */
+	is_using_compare_preset_b: boolean;
 }
 
 export interface DeviceObservableProperties {
@@ -75,11 +91,16 @@ export interface DeviceObservableProperties {
 	 * @inheritdoc DeviceGetProperties.is_active
 	 */
 	is_active: boolean;
+	/**
+	 * @inheritdoc DeviceGetProperties.is_using_compare_preset_b
+	 */
+	is_using_compare_preset_b: boolean;
 	// parameters: string;
 }
 
 export interface RawDevice {
 	id: string;
+	path?: string;
 	name: string;
 	type: DeviceType;
 	class_name: string;
@@ -95,16 +116,19 @@ const initialProps = {
 /**
  * This class represents a MIDI or audio device in Live.
  *
+ * Specialised devices (racks, Simpler, plug-ins, Looper) extend this class with their own properties.
+ * Use `createDevice` to get the right subclass for a raw device.
+ *
  * @class Device
  * @extends {Properties<DeviceGetProperties, DeviceChildrenProperties, DeviceTransformedProperties, DeviceSetProperties, DeviceObservableProperties>}
  */
-export class Device extends Properties<
-	DeviceGetProperties,
-	DeviceChildrenProperties,
-	DeviceTransformedProperties,
-	DeviceSetProperties,
-	DeviceObservableProperties
-> {
+export class Device<
+	GP extends DeviceGetProperties = DeviceGetProperties,
+	CP extends DeviceChildrenProperties = DeviceChildrenProperties,
+	TP extends DeviceTransformedProperties = DeviceTransformedProperties,
+	SP extends DeviceSetProperties = DeviceSetProperties,
+	OP extends DeviceObservableProperties = DeviceObservableProperties,
+> extends Properties<GP, CP, TP, SP, OP> {
 	static path = 'live_set tracks $1 devices';
 	private _name: string;
 	private _type: DeviceType;
@@ -116,7 +140,7 @@ export class Device extends Properties<
 		public raw: RawDevice,
 		path?: string
 	) {
-		super(ableton, 'device', path ? path : Device.path, initialProps);
+		super(ableton, 'device', path ?? raw.path ?? Device.path, initialProps as any);
 
 		this._id = raw.id;
 		this._name = raw.name;
@@ -125,8 +149,9 @@ export class Device extends Properties<
 		this._classDisplayName = raw.class_display_name;
 
 		this.childrenTransformers = {
-			parameters: (parameters) => parameters.map((parameter) => new DeviceParameter(this.ableton, parameter)),
-		};
+			parameters: (parameters: RawDeviceParameter[]) =>
+				parameters.map((parameter) => new DeviceParameter(this.ableton, parameter)),
+		} as any;
 	}
 
 	/**
@@ -171,5 +196,31 @@ export class Device extends Properties<
 	 */
 	get type(): DeviceType {
 		return this._type;
+	}
+
+	/**
+	 * Stores the current device state in the A/B comparison slot that is not in use.
+	 * Same as "Compare: Copy A to B / Copy B to A" in the device title bar.
+	 *
+	 * Available since Live 12.3.
+	 *
+	 * @memberof Device
+	 * @return {Promise<void>}
+	 */
+	public async savePresetToCompareAbSlot(): Promise<void> {
+		return this.call('save_preset_to_compare_ab_slot');
+	}
+
+	/**
+	 * Switches between preset A and preset B of the device's A/B comparison.
+	 *
+	 * Available since Live 12.3.
+	 *
+	 * @memberof Device
+	 * @param {boolean} useB true = switch to B, false = switch to A
+	 * @return {Promise<null>}
+	 */
+	public async compareAb(useB: boolean): Promise<null> {
+		return this.set('is_using_compare_preset_b', useB as SP['is_using_compare_preset_b']);
 	}
 }

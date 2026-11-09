@@ -72,6 +72,12 @@ export interface DeviceParameterGetProperties {
 	 * Only available for parameters that are quantized (see `is_quantized`).
 	 */
 	value_items: string[];
+	/**
+	 * The parameter's value as shown in Live's UI, as opposed to `value`, which is the raw linear-to-GUI value.
+	 *
+	 * Available since Live 12.2.
+	 */
+	display_value: number;
 }
 
 // export interface ChildrenProperties { }
@@ -83,6 +89,10 @@ export interface DeviceParameterSetProperties {
 	 * @inheritdoc DeviceParameterGetProperties.value
 	 */
 	value: number;
+	/**
+	 * @inheritdoc DeviceParameterGetProperties.display_value
+	 */
+	display_value: number;
 }
 
 export interface DeviceParameterObservableProperties {
@@ -102,6 +112,10 @@ export interface DeviceParameterObservableProperties {
 	 * @inheritdoc DeviceParameterGetProperties.value
 	 */
 	value: number;
+	/**
+	 * @inheritdoc DeviceParameterGetProperties.display_value
+	 */
+	display_value: number;
 }
 
 export interface RawDeviceParameter {

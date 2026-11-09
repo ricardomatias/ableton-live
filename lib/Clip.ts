@@ -2,6 +2,7 @@ import { Properties } from './Properties';
 import { Note, SerializedNote } from './Note';
 import { ClipView } from './ClipView';
 import { AbletonLiveBase } from './AbletonLiveBase';
+import type { ScaleName } from './Song';
 
 // TODO Missing properties
 // > groove
@@ -178,6 +179,40 @@ export interface ClipGetProperties {
 	 * true for MIDI clips which are in triggered state, with the track armed and MIDI Arrangement Overdub on.
 	 */
 	will_record_on_start: number;
+	/**
+	 * true = the clip lives in a take lane of an Arrangement track.
+	 *
+	 * Available since Live 12.2.
+	 */
+	is_take_lane_clip: boolean;
+	/**
+	 * true = the clip is a Session View clip.
+	 */
+	is_session_clip: boolean;
+	/**
+	 * The clip's root note, a number between 0 and 11, where 0 = C and 11 = B.
+	 *
+	 * Available since Live 12.4.15.
+	 */
+	root_note: number;
+	/**
+	 * The name of the clip's scale.
+	 *
+	 * Available since Live 12.4.15.
+	 */
+	scale_name: ScaleName;
+	/**
+	 * Access to the clip's Scale Mode setting.
+	 *
+	 * Available since Live 12.4.15.
+	 */
+	scale_mode: boolean;
+	/**
+	 * A list of integers representing the intervals in the clip's scale, expressed as the interval between the first scale degree and the scale degree at the list index.
+	 *
+	 * Available since Live 12.4.15.
+	 */
+	scale_intervals: number[];
 
 	// !IMPORTANT: AUDIO ONLY
 	// warp modes
@@ -309,6 +344,18 @@ export interface ClipSetProperties {
 	 * @inheritdoc ClipGetProperties.velocity_amount
 	 */
 	velocity_amount: number;
+	/**
+	 * @inheritdoc ClipGetProperties.root_note
+	 */
+	root_note: number;
+	/**
+	 * @inheritdoc ClipGetProperties.scale_name
+	 */
+	scale_name: ScaleName;
+	/**
+	 * @inheritdoc ClipGetProperties.scale_mode
+	 */
+	scale_mode: boolean;
 
 	// !IMPORTANT: AUDIO ONLY
 	/**
@@ -434,6 +481,26 @@ export interface ClipObservableProperties {
 	 * @inheritdoc ClipGetProperties.velocity_amount
 	 */
 	velocity_amount: number;
+	/**
+	 * @inheritdoc ClipGetProperties.start_time
+	 */
+	start_time: number;
+	/**
+	 * @inheritdoc ClipGetProperties.root_note
+	 */
+	root_note: number;
+	/**
+	 * @inheritdoc ClipGetProperties.scale_name
+	 */
+	scale_name: ScaleName;
+	/**
+	 * @inheritdoc ClipGetProperties.scale_mode
+	 */
+	scale_mode: boolean;
+	/**
+	 * @inheritdoc ClipGetProperties.scale_intervals
+	 */
+	scale_intervals: number[];
 
 	// !IMPORTANT: AUDIO ONLY
 	/**
