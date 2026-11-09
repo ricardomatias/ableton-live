@@ -73,8 +73,8 @@
 	"devDependencies": {
 		"@sisense/typedoc-plugin-markdown": "^4.0.0-next.46",
 		"@types/node": "25.3.3",
-		"@typescript-eslint/eslint-plugin": "8.56.1",
-		"@typescript-eslint/parser": "8.56.1",
+		"@typescript-eslint/eslint-plugin": "8.72.1",
+		"@typescript-eslint/parser": "8.72.1",
 		"esbuild": "0.28.2",
 		"eslint": "10.14.0",
 		"eslint-config-google": "^0.14.0",
@@ -86,7 +86,7 @@
 		"prettier": "3.9.10",
 		"rimraf": "6.1.4",
 		"typedoc": "0.28.20",
-		"typescript": "^7.0.2"
+		"typescript": "^6.0.3"
 	},
 	"volta": {
 		"node": "24.12.0"
